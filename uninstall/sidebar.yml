@@ -1,0 +1,22 @@
+---
+section: uninstall
+title: 卸载SnapCenter服务器和插件
+entries:
+- title: 卸载SnapCenter插件包
+  entries:
+  - title: 删除主机的先决条件
+    url: "/uninstall/reference_prerequisites_for_removing_a_host.html"
+  - title: 删除主机
+    url: "/uninstall/task_remove_a_host.html"
+  - title: 使用SnapCenter GUI 卸载插件
+    url: "/uninstall/task_uninstall_plug_ins_from_a_host_using_the_snapcenter_gui.html"
+  - title: 使用 PowerShell cmdlet 卸载 Windows 插件
+    url: "/uninstall/task_uninstalling_windows_plug_ins_using_the_command_line_interface_on_the_snapcenter_server_host.html"
+  - title: 在主机本地卸载插件
+    url: "/uninstall/task_uninstall_plug_ins_locally_on_a_host.html"
+  - title: 使用 CLI 卸载 Linux 或 AIX 的插件包
+    url: "/uninstall/task_uninstall_snapcenter_plug_ins_package_for_linux_or_aix_using_command_line_interface.html"
+- title: 在 Windows 主机上卸载SnapCenter服务器
+  url: "/uninstall/task_uninstalling_the_snapcenter_server.html"
+- title: 在 Linux 主机上卸载SnapCenter服务器
+  url: "/uninstall/uninstall_snapcenter_server_linux.html"

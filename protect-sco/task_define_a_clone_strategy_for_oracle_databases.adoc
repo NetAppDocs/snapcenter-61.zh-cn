@@ -1,0 +1,74 @@
+---
+permalink: protect-sco/task_define_a_clone_strategy_for_oracle_databases.html 
+sidebar: sidebar 
+keywords: backup types, cloning type, clone name, limitations 
+summary: 在克隆数据库之前定义策略可确保克隆操作成功。 
+---
+= 定义 Oracle 数据库的克隆策略
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+在克隆数据库之前定义策略可确保克隆操作成功。
+
+
+
+== 克隆支持的备份类型
+
+SnapCenter支持克隆不同类型的 Oracle 数据库备份。
+
+* 在线数据备份
+* 在线完整备份
+* 离线挂载备份
+* 离线关机备份
+* Data Guard 备用数据库和 Active Data Guard 备用数据库的备份
+* 真实应用集群 (RAC) 配置中的在线数据备份、在线完整备份、离线挂载备份和离线关机备份
+* 自动存储管理 (ASM) 配置中的在线数据备份、在线完整备份、离线挂载备份和离线关机备份
++
+
+IMPORTANT: 如果多路径配置文件中的 user_friendly_names 选项设置为 yes，则不支持 SAN 配置。
+
+
+
+
+NOTE: 不支持克隆存档日志备份。
+
+
+
+== Oracle 数据库支持的克隆类型
+
+在 Oracle 数据库环境中， SnapCenter支持克隆数据库备份。您可以从主存储系统和辅助存储系统克隆备份。
+
+SnapCenter服务器使用NetApp FlexClone技术来克隆备份。
+
+您可以通过运行“Refresh-SmClone”命令来刷新克隆。此命令创建数据库的备份，删除现有的克隆，并创建同名的克隆。
+
+
+NOTE: 克隆刷新操作只能使用 UNIX 命令执行。
+
+
+
+== Oracle 数据库的克隆命名约定
+
+从SnapCenter 3.0 开始，文件系统克隆使用的命名约定与 ASM 磁盘组的克隆不同。
+
+* SAN 或 NFS 文件系统的命名约定是 FileSystemNameofsourcedatabase_CLONESID。
+* ASM 磁盘组的命名约定是 SC_HASHCODEofDISKGROUP_CLONESID。
++
+HASHCODEofDISKGROUP 是自动生成的数字（2 到 10 位数字），每个 ASM 磁盘组都有唯一的 HASHCODE。
+
+
+
+
+
+== 克隆 Oracle 数据库的局限性
+
+在克隆数据库之前，您应该了解克隆操作的局限性。
+
+* 如果您使用的是 Oracle 11.2.0.4 至 12.1.0.1 中的任何版本，则运行 _renamedg_ 命令时克隆操作将处于挂起状态。您可以应用 Oracle 补丁 19544733 来修复此问题。
+* 不支持将数据库从直接连接到主机的 LUN（例如，通过在 Windows 主机上使用 Microsoft iSCSI Initiator）克隆到同一 Windows 主机或另一个 Windows 主机上的 VMDK 或 RDM LUN，反之亦然。
+* 卷挂载点的根目录不能是共享目录。
+* 如果将包含克隆的 LUN 移动到新卷，则无法删除该克隆。
+

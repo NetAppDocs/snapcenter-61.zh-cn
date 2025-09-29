@@ -1,0 +1,20 @@
+---
+permalink: protect-postgresql/back-up-postgresql-resources.html 
+sidebar: sidebar 
+keywords: SnapCenter Plug-in for PostgreSQL 
+summary: 您可以创建资源（集群）或资源组的备份。备份工作流程包括规划、识别要备份的集群、管理备份策略、创建资源组和附加策略、创建备份以及监控操作。 
+---
+= 备份 PostgreSQL 资源
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您可以创建资源（集群）或资源组的备份。备份工作流程包括规划、识别要备份的集群、管理备份策略、创建资源组和附加策略、创建备份以及监控操作。
+
+以下工作流程显示了执行备份操作必须遵循的顺序：
+
+image::../media/db2_backup_workflow.gif[PostgreSQL 备份工作流程]
+
+您还可以手动或在脚本中使用 PowerShell cmdlet 来执行备份、还原和克隆操作。 SnapCenter cmdlet 帮助和 cmdlet 参考信息包含有关 PowerShell cmdlet 的更多信息。https://docs.netapp.com/us-en/snapcenter-cmdlets/index.html["SnapCenter软件 Cmdlet 参考指南"^] 。

@@ -1,0 +1,23 @@
+---
+permalink: protect-scw/concept_how_snapcenter_backs_up_windows_file_systems.html 
+sidebar: sidebar 
+keywords: SnapCenter 
+summary: SnapCenter使用 Snapshot 技术备份驻留在 LUN、CSV（集群共享卷）、RDM（原始设备映射）卷、Windows 集群中的 ALM（非对称 LUN 映射）以及基于 VMFS/NFS（使用 NFS 的 VMware 虚拟机文件系统）的 VMDK 上的 Windows 文件系统资源。 
+---
+= SnapCenter如何备份 Windows 文件系统
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+SnapCenter使用 Snapshot 技术备份驻留在 LUN、CSV（集群共享卷）、RDM（原始设备映射）卷、Windows 集群中的 ALM（非对称 LUN 映射）以及基于 VMFS/NFS（使用 NFS 的 VMware 虚拟机文件系统）的 VMDK 上的 Windows 文件系统资源。
+
+SnapCenter通过创建文件系统的快照来创建备份。联合备份（其中一个卷包含来自多个主机的 LUN）比每个单独的 LUN 的备份更快、更高效，因为与每个文件系统的单独快照相比，只创建卷的一个快照。
+
+当SnapCenter创建快照时，整个存储系统卷都会被捕获到快照中。但是，备份仅对创建备份的主机服务器有效。
+
+如果其他主机服务器的数据驻留在同一卷上，则无法从快照恢复该数据。
+
+
+NOTE: 如果 Windows 文件系统包含数据库，那么备份文件系统与备份数据库不同。要备份数据库，您必须使用其中一个数据库插件。

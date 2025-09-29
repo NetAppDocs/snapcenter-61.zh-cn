@@ -1,0 +1,49 @@
+---
+permalink: uninstall/reference_prerequisites_for_removing_a_host.html 
+sidebar: sidebar 
+keywords: uninstall, prerequisites, plug-in, plug-in packages 
+summary: 如果您不再想使用SnapCenter来管理其数据保护作业，则可以删除该主机。例如，如果主机不再有需要保护的数据，您可能想要删除它。从SnapCenter Server 中删除主机之前，必须执行先决条件任务。 
+---
+= 删除主机的先决条件
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您可以使用SnapCenter GUI 删除主机并卸载单个插件或插件包。您还可以使用SnapCenter Server 主机上的命令行界面 (CLI) 或在任何主机上本地使用 Windows *卸载程序* 选项卸载远程主机上的各个插件或插件包。
+
+从SnapCenter Server 中删除主机之前，您应该完成先决条件。
+
+* 您应该以管理员身份登录。
+* 您应该确保发现作业未在主机上运行。
+* 您应该被分配一个具有所需权限的角色来删除与主机相关的所有对象。否则，删除操作失败。
+* 如果将主机添加到SnapCenter后修改了 SSH 密钥，则应确认指纹。
+* 如果SnapCenter主机升级到更高版本的SnapCenter ，但插件主机仍在运行早期版本的插件，则应确认指纹。
+
+
+
+
+== 使用基于角色的访问控制删除主机的先决条件
+
+* 您应该使用具有读取、删除主机、安装、卸载插件和删除对象权限的 RBAC 角色登录。
++
+对象可以是克隆、备份、资源组、存储系统等等。
+
+* 您应该已将 RBAC 用户添加到 RBAC 角色。
+* 您应该将 RBAC 用户分配给要删除的主机、插件、凭据、资源组和存储系统（用于克隆）。
+* 您应该以 RBAC 用户身份登录SnapCenter 。
+
+
+
+
+== 删除具有通过克隆生命周期操作创建的克隆的主机的先决条件
+
+* 您应该已经使用 SQL 数据库的克隆生命周期管理创建了克隆作业。
+* 您应该已经创建了一个具有克隆读取和删除、资源读取和删除、资源组读取和删除、存储读取和删除、配置读取和删除、挂载、卸载、插件安装和卸载、主机读取和删除权限的 RBAC 角色。
+* 您应该已将 RBAC 用户分配给 RBAC 角色。
+* 您应该已将 RBAC 用户分配给主机、适用于 Microsoft SQL Server 的SnapCenter插件、凭据、克隆生命周期资源组和存储系统。
+* 您应该以 RBAC 用户身份登录SnapCenter 。
+
+
+有关卸载适用SnapCenter Plug-in for VMware vSphere的信息，请参阅 https://docs.netapp.com/us-en/sc-plugin-vmware-vsphere/scpivs44_remove_plugin.html["删除SnapCenter Plug-in for VMware vSphere"^]。

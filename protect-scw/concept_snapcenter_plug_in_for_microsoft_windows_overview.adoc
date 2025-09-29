@@ -1,0 +1,24 @@
+---
+permalink: protect-scw/concept_snapcenter_plug_in_for_microsoft_windows_overview.html 
+sidebar: sidebar 
+keywords: SnapCenter Plug-in for Microsoft Windows 
+summary: 适用于 Microsoft Windows 的SnapCenter插件是NetApp SnapCenter软件的主机端组件，可实现对 Microsoft 文件系统资源的应用程序感知数据保护管理。此外，它还为 Windows 文件系统提供存储配置、快照一致性和空间回收。适用于 Windows 的插件可在您的SnapCenter环境中自动执行文件系统备份、恢复和克隆操作。 
+---
+= 适用于 Microsoft Windows 的SnapCenter插件概述
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+适用于 Microsoft Windows 的SnapCenter插件是NetApp SnapCenter软件的主机端组件，可实现对 Microsoft 文件系统资源的应用程序感知数据保护管理。此外，它还为 Windows 文件系统提供存储配置、快照一致性和空间回收。适用于 Windows 的插件可在您的SnapCenter环境中自动执行文件系统备份、恢复和克隆操作。
+
+安装适用于 Windows 的插件后，您可以将SnapCenter与NetApp SnapMirror技术结合使用，在另一个卷上创建备份集的镜像副本，并使用NetApp SnapVault技术执行磁盘到磁盘的备份复制，以满足存档或标准合规性。
+
+* 为SnapCenter环境中 Windows 主机中运行的其他插件启用应用程序感知数据保护
+* 自动执行SnapCenter环境中 Microsoft 文件系统的应用程序感知备份、还原和克隆操作
+* 支持 Windows 主机的存储配置、快照一致性和空间回收
+
+
+
+NOTE: Windows 插件在物理和 RDM LUN 上配置 SMB 共享和 Windows 文件系统，但不支持对 SMB 共享上的 Windows 文件系统进行备份操作。

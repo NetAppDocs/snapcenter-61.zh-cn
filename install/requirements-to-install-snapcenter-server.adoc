@@ -1,0 +1,361 @@
+---
+permalink: install/requirements-to-install-snapcenter-server.html 
+sidebar: sidebar 
+keywords: active directory domain, workgroups, multi-domain forests, cross-domain, cross-forest domains, browsers, chrome, IE, Edge, ports, port requirements, host utilities, Microsoft DSM, Windows MPIO 
+summary: 在安装SnapCenter服务器之前，应确保满足所有要求 
+---
+= 安装SnapCenter服务器的要求
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+在 Windows 或 Linux 主机上安装SnapCenter Server 之前，您应该检查并确保满足您的环境的所有要求。
+
+
+
+== Windows 主机的域和工作组要求
+
+SnapCenter服务器可以安装在域或工作组中的 Windows 主机上。
+
+具有管理员权限的用户可以安装SnapCenter服务器。
+
+* Active Directory 域：您必须使用具有本地管理员权限的域用户。域用户必须是 Windows 主机上本地管理员组的成员。
+* 工作组：您必须使用具有本地管理员权限的本地帐户。
+
+
+虽然支持域信任、多域林和跨域信任，但不支持跨林域。有关 Active Directory 域和信任的 Microsoft 文档包含更多信息。
+
+
+NOTE: 安装SnapCenter服务器后，您不应更改SnapCenter主机所在的域。如果从安装SnapCenter Server 时所在的域中删除SnapCenter Server 主机，然后尝试卸载SnapCenter Server，则卸载操作将失败。
+
+
+
+== 空间和尺寸要求
+
+您应该熟悉空间和尺寸要求。
+
+|===
+| 物品 | Windows 主机要求 | Linux 主机要求 
+
+
+ a| 
+操作系统
+ a| 
+Microsoft Windows
+
+仅支持英语、德语、日语和简体中文版本的操作系统。
+
+有关受支持版本的最新信息，请参阅https://imt.netapp.com/matrix/imt.jsp?components=121033;&solution=1258&isHWU&src=IMT["NetApp 互操作性表工具"^]。
+ a| 
+* Red Hat Enterprise Linux (RHEL) 8 和 9
+* SUSE Linux 企业服务器 (SLES) 15
+
+
+有关受支持版本的最新信息，请参阅https://imt.netapp.com/matrix/imt.jsp?components=121032;&solution=1258&isHWU&src=IMT["NetApp 互操作性表工具"^]。
+
+
+
+ a| 
+最小 CPU 数量
+ a| 
+4 核
+ a| 
+4 核
+
+
+
+ a| 
+最低内存
+ a| 
+8 GB
+
+
+NOTE: MySQL 服务器缓冲池使用了总 RAM 的 20%。
+ a| 
+8 GB
+
+
+
+ a| 
+SnapCenter服务器软件和日志的最小硬盘空间
+ a| 
+7 GB
+
+
+NOTE: 如果SnapCenter存储库与安装SnapCenter Server 的驱动器位于同一驱动器中，则建议使用 15 GB。
+ a| 
+15 GB
+
+
+
+ a| 
+SnapCenter存储库的最小硬盘空间
+ a| 
+8 GB
+
+
+NOTE: 注意：如果SnapCenter服务器与安装SnapCenter存储库的驱动器相同，则建议使用 15 GB。
+ a| 
+不适用
+
+
+
+ a| 
+所需的软件包
+ a| 
+* ASP.NET Core Runtime 8.0.12（以及所有后续 8.0.x 补丁）托管包
+* PowerShell 7.4.2 或更高版本
+
+
+有关 .NET 特定的故障排除信息，请参阅 https://kb.netapp.com/Advice_and_Troubleshooting/Data_Protection_and_Security/SnapCenter/SnapCenter_upgrade_or_install_fails_with_%22This_KB_is_not_related_to_the_OS%22["对于没有 Internet 连接的传统系统， SnapCenter升级或安装失败"^]。
+ a| 
+* .NET Framework 8.0.12（以及所有后续的 8.0.x 补丁）
+* PowerShell 7.4.2 或更高版本
+* Nginx 是一个可以用作反向代理的 Web 服务器
+* Pam-devel
++
+PAM（可插入式身份验证模块）是一种系统安全工具，它允许系统管理员设置身份验证策略，而无需重新编译执行身份验证的程序。
+
+
+
+|===
+
+NOTE: ASP.NET 核心需要 IIS_IUSRS 来访问 Windows 上SnapCenter Server 中的临时文件系统。
+
+
+
+== SAN 主机要求
+
+SnapCenter不包括主机实用程序或 DSM。如果SnapCenter主机是 SAN（FC/iSCSI）环境的一部分，则可能需要在SnapCenter Server 主机上安装和配置其他软件。
+
+* 主机实用程序：主机实用程序支持 FC 和 iSCSI，它使您能够在 Windows 服务器上使用 MPIO。 https://docs.netapp.com/us-en/ontap-sanhost/hu_sanhost_index.html["了解更多"^] 。
+* Microsoft DSM for Windows MPIO：该软件与 Windows MPIO 驱动程序配合使用，以管理NetApp和 Windows 主机之间的多条路径。高可用性配置需要 DSM。
++
+
+NOTE: 如果您使用的是ONTAP DSM，则应该迁移到 Microsoft DSM。有关更多信息，请参阅 https://kb.netapp.com/Advice_and_Troubleshooting/Data_Storage_Software/Data_ONTAP_DSM_for_Windows_MPIO/How_to_migrate_from_Data_ONTAP_DSM_4.1p1_to_Microsoft_native_DSM["如何从ONTAP DSM 迁移到 Microsoft DSM"^] 。
+
+
+
+
+
+== 浏览器要求
+
+SnapCenter software支持 Chrome 125 及更高版本以及 Microsoft Edge 110.0.1587.17 及更高版本。
+
+
+
+== 端口要求
+
+SnapCenter software需要不同的端口来实现不同组件之间的通信。
+
+* 应用程序不能共享端口。
+* 对于可自定义的端口，如果您不想使用默认端口，您可以在安装期间选择自定义端口。
+* 对于固定端口，您应该接受默认端口号。
+* 防火墙
++
+** 防火墙、代理或其他网络设备不应干扰连接。
+** 如果在安装SnapCenter时指定自定义端口，则应在插件主机上为SnapCenter插件Loader的该端口添加防火墙规则。
+
+
+
+
+下表列出了不同的端口及其默认值。
+
+|===
+| 端口名称 | 端口号 | 协议 | 方向 | 描述 
+
+
+ a| 
+SnapCenter端口
+ a| 
+8146
+ a| 
+HTTPS
+ a| 
+双向
+ a| 
+此端口用于SnapCenter客户端（ SnapCenter用户）与SnapCenter服务器之间的通信，也用于从插件主机到SnapCenter服务器的通信。
+
+您可以自定义端口号。
+
+
+
+ a| 
+SnapCenter SMCore 通信端口
+ a| 
+8145
+ a| 
+HTTPS
+ a| 
+双向
+ a| 
+此端口用于SnapCenter服务器与安装了SnapCenter插件的主机之间的通信。
+
+您可以自定义端口号。
+
+
+
+ a| 
+调度程序服务端口
+ a| 
+8154
+ a| 
+HTTPS
+ a| 
+ a| 
+此端口用于以集中方式协调SnapCenter服务器主机内所有托管插件的SnapCenter调度程序工作流。
+
+您可以自定义端口号。
+
+
+
+ a| 
+RabbitMQ 端口
+ a| 
+5672
+ a| 
+TCP
+ a| 
+ a| 
+这是 RabbitMQ 监听的默认端口，用于 Scheduler 服务和SnapCenter之间的发布者-订阅者模型通信。
+
+
+
+ a| 
+MySQL 端口
+ a| 
+3306
+ a| 
+HTTPS
+ a| 
+ a| 
+该端口用于与SnapCenter存储库数据库通信。您可以创建从SnapCenter服务器到 MySQL 服务器的安全连接。link:../install/concept_configure_secured_mysql_connections_with_snapcenter_server.html["了解更多"]
+
+
+
+ a| 
+Windows 插件主机
+ a| 
+135，445
+ a| 
+TCP
+ a| 
+ a| 
+此端口用于SnapCenter服务器与安装插件的主机之间的通信。  Microsoft 指定的其他动态端口范围也应开放。
+
+
+
+ a| 
+Linux 或 AIX 插件主机
+ a| 
+22
+ a| 
+SSH
+ a| 
+单向
+ a| 
+此端口用于SnapCenter服务器和主机之间的通信，从服务器发起到客户端主机。
+
+
+
+ a| 
+适用于 Windows、Linux 或 AIX 的SnapCenter插件包
+ a| 
+8145
+ a| 
+HTTPS
+ a| 
+双向
+ a| 
+该端口用于SMCore与安装插件包的主机进行通信。可定制。
+
+您可以自定义端口号。
+
+
+
+ a| 
+适用于 Oracle 数据库的 SnapCenter 插件
+ a| 
+27216
+ a| 
+ a| 
+ a| 
+Oracle 插件使用默认 JDBC 端口来连接 Oracle 数据库。
+
+
+
+ a| 
+适用于 Exchange 数据库的SnapCenter插件
+ a| 
+909
+ a| 
+ a| 
+ a| 
+Windows 插件使用默认的 NET.TCP 端口来连接 Exchange VSS 回调。
+
+
+
+ a| 
+NetApp支持的SnapCenter插件
+ a| 
+9090
+ a| 
+HTTPS
+ a| 
+ a| 
+这是仅在插件主机上使用的内部端口；不需要防火墙例外。
+
+SnapCenter服务器和插件之间的通信通过端口 8145 进行。
+
+
+
+ a| 
+ONTAP集群或 SVM 通信端口
+ a| 
+* 443（HTTPS）
+* 80（HTTP）
+
+ a| 
+* HTTPS
+* HTTP
+
+ a| 
+双向
+ a| 
+该端口由 SAL（存储抽象层）用于运行SnapCenter Server 的主机和 SVM 之间的通信。  SnapCenter for Windows 插件主机上的 SAL 当前也使用该端口来实现SnapCenter插件主机和 SVM 之间的通信。
+
+
+
+ a| 
+适用于 SAP HANA 数据库的SnapCenter插件
+ a| 
+* 3instance_number13
+* 3instance_number15
+
+ a| 
+* HTTPS
+* HTTP
+
+ a| 
+双向
+ a| 
+对于多租户数据库容器（MDC）单租户，端口号以13结尾；对于非MDC，端口号以15结尾。
+
+您可以自定义端口号。
+
+
+
+ a| 
+适用于 PostgreSQL 的SnapCenter插件
+ a| 
+5432
+ a| 
+ a| 
+ a| 
+此端口是 PostgreSQL 插件与 PostgreSQL 集群通信所使用的默认 PostgreSQL 端口。
+
+您可以自定义端口号。
+
+|===

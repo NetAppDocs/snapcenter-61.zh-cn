@@ -1,0 +1,50 @@
+---
+permalink: protect-scsql/task_storage_disaster_recovery_for_scsql.html 
+sidebar: sidebar 
+keywords: disaster recovery 
+summary: 您可以通过在“全局设置”页面中启用存储的 DR 模式来恢复用于 SQL Server 存储的SnapCenter插件。 
+---
+= SnapCenter Plug-in for SQL Server 的存储灾难恢复 (DR)
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您可以通过在“全局设置”页面中启用存储的 DR 模式来恢复用于 SQL Server 存储的SnapCenter插件。
+
+.开始之前
+* 确保插件处于维护模式。
+* 中断SnapMirror/ SnapVault关系。link:https://docs.netapp.com/ontap-9/topic/com.netapp.doc.onc-sm-help-950/GUID-8A3F828F-CD3D-48E8-A171-393581FEB2ED.html["中断SnapMirror关系"]
+* 将从属磁盘的 LUN 连接到具有相同驱动器号的主机。
+* 确保所有磁盘都使用 DR 之前使用的相同驱动器号进行连接。
+* 重新启动 MSSQL 服务器服务。
+* 确保 SQL 资源重新联机。
+
+
+.关于此任务
+VMDK 和 RDM 配置不支持灾难恢复 (DR)。
+
+.步骤
+. 在“设置”页面中，导航至“*设置*”>“*全局设置*”>“*灾难恢复*”。
+. 选择“启用灾难恢复”。
+. 单击“*应用*”。
+. 单击“*监控*”>“*作业*”来验证 DR 作业是否已启用。
+
+
+.完成后
+* 如果故障转移后创建了新的数据库，则数据库将处于非 DR 模式。
++
+新的数据库将像故障转移之前一样继续运行。
+
+* 在 DR 模式下创建的新备份将在拓扑页面中的SnapMirror或SnapVault （辅助）下列出。
++
+新备份旁边会显示一个“i”图标，表示这些备份是在 DR 模式期间创建的。
+
+* 您可以使用 UI 或以下 cmdlet 删除故障转移期间创建的 SQL Server 备份的SnapCenter插件： `Remove-SmBackup`
+* 故障转移后，如果您希望某些资源处于非 DR 模式，请使用以下 cmdlet： `Remove-SmResourceDRMode`
++
+更多信息请参阅 https://docs.netapp.com/us-en/snapcenter-cmdlets/index.html["SnapCenter软件 Cmdlet 参考指南"^]。
+
+* SnapCenter Server 将管理处于 DR 或非 DR 模式的单个存储资源（SQL 数据库），但不管理处于 DR 模式或非 DR 模式的存储资源的资源组。
+

@@ -1,0 +1,53 @@
+---
+permalink: protect-azure/backup-sql-server-databases.html 
+sidebar: sidebar 
+keywords: SnapCenter Plug-in for SQL Server Database, back up, databases, Azure NetApp Files 
+summary: 从资源页面备份资源。 
+---
+= 备份在Azure NetApp Files上运行的 SQL Server 数据库
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+如果资源尚未属于任何资源组，您可以从资源页面备份该资源。
+
+.开始之前
+如果 Azure Windows 故障转移群集没有分配群集 IP 或者无法从SnapCenter访问，则应该创建负载均衡器。应配置负载平衡器的 IP 并使其可从SnapCenter服务器访问。
+
+.步骤
+. 在左侧导航窗格中，选择*资源*，然后从列表中选择适当的插件。
+. 在资源页面中，从视图下拉列表中选择*数据库*、*实例*或*可用性组*。
+. 在资源页面中，选择*使用自定义名称格式作为 Snapshot 副本*，然后输入要用于 Snapshot 名称的自定义名称格式。
+. 在“策略”页面中，执行以下步骤：
++
+.. 从下拉列表中选择一个或多个策略。
+.. 选择 *image:../media/add_policy_from_resourcegroup.gif["从资源组添加策略"] * 在您想要配置计划的策略的配置计划列中。
+.. 在为策略_policy_name_添加计划对话框中，配置计划，然后选择*确定*。
++
+_policy_name_ 是您选择的策略的名称。
+
+.. 选择“使用 Microsoft SQL Server 调度程序”，然后从与调度策略关联的“调度程序实例”下拉列表中选择调度程序实例。
+
+
+. 在验证页面中，执行以下步骤：
++
+.. 选择验证服务器。
+.. 选择您要配置验证计划的策略，然后单击*image:../media/add_policy_from_resourcegroup.gif["从资源组添加策略"] *.
+.. 选择*备份后运行验证*或*运行计划验证*。
+.. 单击“OK”。
+
+
+. 在通知页面中，从*电子邮件首选项*下拉列表中，选择您想要发送电子邮件的场景。
+. 查看摘要，然后单击“*完成*”。
+. 选择*立即备份*。
+. 在备份页面中，执行以下步骤：
++
+.. 如果多个策略与资源关联，请从“*策略*”下拉列表中选择要用于备份的策略。
+.. 选择*备份后验证*。
+.. 选择*备份*。
+
+
+. 通过单击“*监视*”>“*作业*”来监视操作进度。
+

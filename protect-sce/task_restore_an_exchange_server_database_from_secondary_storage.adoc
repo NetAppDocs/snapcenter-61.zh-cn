@@ -1,0 +1,34 @@
+---
+permalink: protect-sce/task_restore_an_exchange_server_database_from_secondary_storage.html 
+sidebar: sidebar 
+keywords: SnapCenter plug-in for Exchange Server 
+summary: 您可以从辅助存储（镜像或保管库）还原备份的 Exchange Server 数据库。 
+---
+= 从辅助存储还原 Exchange Server 数据库
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您可以从辅助存储（镜像或保管库）还原备份的 Exchange Server 数据库。
+
+您必须已将快照从主存储复制到辅助存储。
+
+.关于此任务
+* 对于ONTAP 9.12.1 及以下版本、作为恢复的一部分从SnapLock Vault 快照创建的克隆将继承SnapLock Vault 到期时间。存储管理员应在SnapLock到期后手动清理克隆。
+* 对于SnapMirror活动同步恢复操作，您必须从主位置选择备份。
+
+
+.步骤
+. 在左侧导航窗格中，单击“*资源*”，然后从列表中选择“*Microsoft Exchange Server 插件*”。
+. 在资源页面中，从*视图*下拉列表中选择*数据库*或*资源组*。
+. 选择数据库或资源组。
++
+进入数据库或资源组拓扑页面。
+
+. 在“管理副本”部分，从辅助存储系统（镜像或保险库）中选择“*备份*”。
+. 从列表中选择备份，然后单击image:../media/restore_icon.gif["恢复图标"]。
+. 在“位置”页面中，选择用于还原所选资源的目标卷。
+. 完成还原向导，查看摘要，然后单击“完成”。
+

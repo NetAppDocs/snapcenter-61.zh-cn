@@ -1,0 +1,71 @@
+---
+permalink: protect-sco/catalog-backups.html 
+sidebar: sidebar 
+keywords: oracle databases discover 
+summary: SnapCenter如何发现 Oracle 数据库。 
+---
+= 如何使用 Oracle Recovery Manager 对备份进行编目
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您可以使用 Oracle Recovery Manager (RMAN) 对 Oracle 数据库的备份进行分类，以将备份信息存储在 Oracle RMAN 存储库中。
+
+编目备份稍后可用于块级恢复或表空间时间点恢复操作。当您不需要这些编目备份时，您可以删除目录信息。
+
+数据库必须处于已安装或更高状态才能进行编目。您可以对数据备份、存档日志备份和完整备份执行编目。如果对具有多个数据库的资源组的备份启用了编目，则会对每个数据库执行编目。对于 Oracle RAC 数据库，将在数据库至少处于安装状态的首选节点上执行编目。
+
+如果要对 RAC 数据库的备份进行编目，请确保没有针对该数据库运行其他作业。如果另一个作业正在运行，则编目操作将失败而不是排队。
+
+
+
+== 外部目录数据库
+
+默认情况下，使用目标数据库控制文件进行编目。如果要添加外部目录数据库，可以使用SnapCenter图形用户界面 (GUI) 中的数据库设置向导指定外部目录的凭据和透明网络底层 (TNS) 名称来配置它。您还可以通过运行带有 -OracleRmanCatalogCredentialName 和 -OracleRmanCatalogTnsName 选项的 Configure-SmOracleDatabase 命令从 CLI 配置外部目录数据库。
+
+
+
+== RMAN 命令
+
+如果在从SnapCenter GUI 创建 Oracle 备份策略时启用了编目选项，则备份将使用 Oracle RMAN 作为备份操作的一部分进行编目。您还可以通过运行 `Catalog-SmBackupWithOracleRMAN`命令。
+
+对备份进行编目后，您可以运行 `Get-SmBackupDetails`命令获取编目备份信息，例如编目数据文件的标签、控制文件编目路径和编目存档日志位置。
+
+
+
+== 命名格式
+
+如果 ASM 磁盘组名称大于或等于 16 个字符，从SnapCenter 3.0 开始，备份使用的命名格式为 SC_HASHCODEofDISKGROUP_DBSID_BACKUPID。但是，如果磁盘组名称少于 16 个字符，则备份使用的命名格式为 DISKGROUPNAME_DBSID_BACKUPID，这与SnapCenter 2.0 中使用的格式相同。
+
+HASHCODEofDISKGROUP 是自动生成的每个 ASM 磁盘组独有的数字（2 到 10 位数字）。
+
+
+
+== 交叉检查操作
+
+您可以执行交叉检查来更新有关存储库记录与其物理状态不匹配的备份的过时 RMAN 存储库信息。例如，如果用户使用操作系统命令从磁盘中删除存档日志，则控制文件仍指示日志在磁盘上，而实际上并不在。
+
+交叉检查操作使您能够使用信息更新控制文件。您可以通过运行 Set-SmConfigSettings 命令并将值 TRUE 分配给 ENABLE_CROSSCHECK 参数来启用交叉检查。默认值设置为 FALSE。
+
+`sccli Set-SmConfigSettings-ConfigSettingsTypePlugin-PluginCodeSCO-ConfigSettings "KEY=ENABLE_CROSSCHECK, VALUE=TRUE"`
+
+
+
+== 删除目录信息
+
+您可以通过运行 Uncatalog-SmBackupWithOracleRMAN 命令来删除目录信息。您无法使用SnapCenter GUI 删除目录信息。但是，在删除备份或删除与该编目备份关联的保留和资源组时，编目备份的信息将被删除。
+
+
+NOTE: 当您强制删除SnapCenter主机时，与该主机关联的编目备份的信息不会被删除。在强制删除主机之前，您必须删除该主机的所有编目备份的信息。
+
+如果由于操作时间超出了 ORACLE_PLUGIN_RMAN_CATALOG_TIMEOUT 参数指定的超时值而导致编目和取消编目失败，则应通过运行以下命令来修改该参数的值：
+
+`/opt/Netapp/snapcenter/spl/bin/sccli Set-SmConfigSettings-ConfigSettingsType Plugin -PluginCode SCO-ConfigSettings "KEY=ORACLE_PLUGIN_RMAN_CATALOG_TIMEOUT,VALUE=user_defined_value"`
+
+修改参数值后，通过运行以下命令重新启动SnapCenter插件Loader(SPL) 服务：
+
+`/opt/NetApp/snapcenter/spl/bin/spl restart`
+
+可以通过运行 Get-Help command_name 获取有关可与命令一起使用的参数及其描述的信息。或者，您可以参考 https://library.netapp.com/ecm/ecm_download_file/ECMLP3337666["SnapCenter软件命令参考指南"^]。

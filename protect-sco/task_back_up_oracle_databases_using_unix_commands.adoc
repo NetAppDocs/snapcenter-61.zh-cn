@@ -1,0 +1,51 @@
+---
+permalink: protect-sco/task_back_up_oracle_databases_using_unix_commands.html 
+sidebar: sidebar 
+keywords: backup, cli, commands 
+summary: 备份工作流程包括规划、确定备份资源、创建备份策略、创建资源组和附加策略、创建备份以及监控操作。 
+---
+= 使用 UNIX 命令备份 Oracle 数据库
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+备份工作流程包括规划、确定备份资源、创建备份策略、创建资源组和附加策略、创建备份以及监控操作。
+
+*您需要什么*
+
+* 您应该已经使用命令_Add-SmStorageConnection_和_Add-SmCredential_添加了存储系统连接并创建了凭证。
+* 您应该已经使用命令_Open-SmConnection_与SnapCenter服务器建立连接会话。
++
+您只能有一个SnapCenter帐户登录会话，并且令牌存储在用户主目录中。
+
++
+
+NOTE: 连接会话仅在 24 小时内有效。但是，您可以使用 TokenNeverExpires 选项创建令牌，以创建永不过期的令牌，并且会话将始终有效。
+
+
+
+*关于此任务*
+
+您应该执行以下命令来与SnapCenter服务器建立连接，发现 Oracle 数据库实例，添加策略和资源组，备份并验证备份。
+
+可以通过运行 Get-Help _command_name_ 来获取有关可与命令一起使用的参数及其描述的信息。或者，您也可以参考 https://library.netapp.com/ecm/ecm_download_file/ECMLP3337666["SnapCenter软件命令参考指南"^]。
+
+*步骤*
+
+. 为指定用户启动与SnapCenter服务器的连接会话：_Open-SmConnection_
+. 执行主机资源发现操作：_Get-SmResources_
+. 为 Real Application Cluster (RAC) 数据库的备份操作配置 Oracle 数据库凭据和首选节点：_Configure-SmOracleDatabase_
+. 创建备份策略：_Add-SmPolicy_
+. 检索有关二级（SnapVault或SnapMirror）存储位置的信息：_Get-SmSecondaryDetails_
++
+此命令检索指定资源的主存储到辅助存储映射详细信息。您可以在创建备份资源组时使用映射详细信息来配置二次验证设置。
+
+. 向SnapCenter添加资源组：_Add-SmResourceGroup_
+. 创建备份：_New-SmBackup_
++
+您可以使用 WaitForCompletion 选项轮询作业。如果指定了此选项，则命令将继续轮询服务器，直到备份作业完成。
+
+. 从SnapCenter检索日志：_Get-SmLogs_
+

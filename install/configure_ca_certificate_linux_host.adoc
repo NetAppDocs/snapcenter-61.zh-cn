@@ -1,0 +1,73 @@
+---
+permalink: install/configure_ca_certificate_linux_host.html 
+sidebar: sidebar 
+keywords: SnapCenter, configure, CA certificate, linux, linux host 
+summary: 您应该在 Linux 主机上使用SnapCenter Server 配置 CA 证书。 
+---
+= 为Linux主机配置CA证书
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+在 Linux 上安装SnapCenter服务器后，安装程序会创建自签名证书。如果要使用 CA 证书，则应配置 nginx 反向代理、审计日志和SnapCenter服务的证书。
+
+
+
+== 配置nginx证书
+
+.步骤
+. 导航到_/etc/nginx/conf.d_： `cd /etc/nginx/conf.d`
+. 使用 vi 或任何文本编辑器打开 *snapcenter.conf*。
+. 导航到配置文件中的服务器部分。
+. 修改_ssl_certificate_和_ssl_certificate_key_的路径以指向CA证书。
+. 保存并关闭此文件。
+. 重新加载 nginx： `$nginx -s reload`
+
+
+
+
+== 配置审核日志证书
+
+.步骤
+. 使用 vi 或任何文本编辑器打开 _INSTALL_DIR/ NetApp/snapcenter/SnapManagerWeb/ SnapManager。
++
+_INSTALL_DIR_ 的默认值是 _/opt_。
+
+. 编辑 *AUDILOG_CERTIFICATE_PATH* 和 *AUDILOG_CERTIFICATE_PASSWORD* 键以分别包含 CA 证书路径和密码。
++
+审计日志证书仅支持 _.pfx_ 格式。
+
+. 保存并关闭此文件。
+. 重新启动 *snapmanagerweb* 服务： `$ systemctl restart snapmanagerweb`
+
+
+
+
+== 配置SnapCenter服务证书
+
+.步骤
+. 使用 vi 或任何文本编辑器打开以下配置文件。
++
+** _INSTALL_DIR/ NetApp/snapcenter/SnapManagerWeb/ SnapManager.Web.UI.dll.config_
+** 安装目录NetApp
+** 安装目录NetApp
++
+_INSTALL_DIR_ 的默认值是 _/opt_。
+
+
+
+. 编辑 *SERVICE_CERTIFICATE_PATH* 和 *SERVICE_CERTIFICATE_PASSWORD* 键以分别包含 CA 证书路径和密码。
++
+SnapCenter服务证书仅支持 _.pfx_ 格式。
+
+. 保存并关闭这些文件。
+. 重新启动所有服务。
++
+** `$ systemctl restart snapmanagerweb`
+** `$ systemctl restart smcore`
+** `$ systemctl restart scheduler`
+
+
+

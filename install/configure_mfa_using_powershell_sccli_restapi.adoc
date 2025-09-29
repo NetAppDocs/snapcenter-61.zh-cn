@@ -1,0 +1,183 @@
+---
+permalink: install/configure_mfa_using_powershell_sccli_restapi.html 
+sidebar: sidebar 
+keywords: mfa, authentication, multifactor authentication 
+summary: 您可以使用 Rest API、PowerShell 和 SCCLI 接口来配置 MFA。 
+---
+= 使用 PowerShell、SCCLI 和 REST API 在SnapCenter Server 中配置 MFA
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您可以使用 PowerShell、SCCLI 和 REST API 在SnapCenter Server 中配置 MFA。
+
+
+
+== SnapCenter MFA CLI 身份验证
+
+在 PowerShell 和 SCCLI 中，现有的 cmdlet（Open-SmConnection）扩展了一个名为“AccessToken”的字段，以使用承载令牌对用户进行身份验证。
+
+`Open-SmConnection -Credential <PSCredential> [-SMSbaseUrl <String>] [-Port <String>] [-RoleName <String>] [ -AccessToken <string>]`
+
+执行上述 cmdlet 后，将为相应用户创建一个会话以执行进一步的SnapCenter cmdlet。
+
+
+
+== SnapCenter MFA Rest API 身份验证
+
+在 REST API 客户端（如 Postman 或 swagger）中使用格式为 _Authorization=Bearer <access token>_ 的承载令牌，并在标头中提及用户 RoleName 以从SnapCenter获得成功响应。
+
+
+
+== MFA Rest API 工作流程
+
+当使用 AD FS 配置 MFA 时，您应该使用访问（承载）令牌进行身份验证，以通过任何 Rest API 访问SnapCenter应用程序。
+
+*关于此任务*
+
+* 您可以使用任何 REST 客户端，如 Postman、Swagger UI 或 FireCamp。
+* 获取访问令牌并使用它来验证后续请求（SnapCenter Rest API）以执行任何操作。
+
+
+*步骤*
+
+*通过 AD FS MFA 进行身份验证*
+
+. 配置 REST 客户端以调用 AD FS 端点来获取访问令牌。
++
+当您点击按钮获取应用程序的访问令牌时，您将被重定向到 AD FS SSO 页面，您必须在该页面提供您的 AD 凭据并使用 MFA 进行身份验证。1.在 AD FS SSO 页面中，在用户名文本框中输入您的用户名或电子邮件。
+
++
++ 用户名必须格式化为 user@domain 或 domain\user。
+
+. 在密码文本框中，输入您的密码。
+. 单击“登录”。
+. 从*登录选项*部分，选择一个身份验证选项并进行身份验证（取决于您的配置）。
++
+** 推送：批准发送到您手机的推送通知。
+** 二维码：使用 AUTH Point 手机应用程序扫描二维码，然后输入应用程序中显示的验证码
+** 一次性密码：输入您的令牌的一次性密码。
+
+
+. 身份验证成功后，将打开一个弹出窗口，其中包含访问、ID 和刷新令牌。
++
+复制访问令牌并在SnapCenter Rest API 中使用它来执行操作。
+
+. 在 Rest API 中，您应该在标题部分传递访问令牌和角色名称。
+. SnapCenter从 AD FS 验证此访问令牌。
++
+如果它是有效令牌， SnapCenter会对其进行解码并获取用户名。
+
+. SnapCenter使用用户名和角色名称对用户进行身份验证以执行 API。
++
+如果身份验证成功， SnapCenter将返回结果，否则将显示错误消息。
+
+
+
+
+
+== 为 Rest API、CLI 和 GUI 启用或禁用SnapCenter MFA 功能
+
+*图形用户界面*
+
+*步骤*
+
+. 以SnapCenter管理员身份登录SnapCenter服务器。
+. 单击“设置”>“全局设置”>“多重身份验证 (MFA) 设置”
+. 选择界面（GUI/RST API/CLI）以启用或禁用 MFA 登录。
+
+
+PowerShell 界面
+
+*步骤*
+
+. 运行 PowerShell 或 CLI 命令以启用 GUI、Rest API、PowerShell 和 SCCLI 的 MFA。
++
+`Set-SmMultiFactorAuthentication -IsGuiMFAEnabled -IsRestApiMFAEnabled`
+`-IsCliMFAEnabled -Path`
+
++
+路径参数指定 AD FS MFA 元数据 xml 文件的位置。
+
++
+使用指定的 AD FS 元数据文件路径配置的SnapCenter GUI、Rest API、PowerShell 和 SCCLI 启用 MFA。
+
+. 使用 `Get-SmMultiFactorAuthentication`命令。
+
+
+*SCCLI 接口*
+
+*步骤*
+
+. `# sccli Set-SmMultiFactorAuthentication -IsGuiMFAEnabled true -IsRESTAPIMFAEnabled true -IsCliMFAEnabled true  -Path "C:\ADFS_metadata\abc.xml"`
+. `# sccli Get-SmMultiFactorAuthentication`
+
+
+REST API
+
+. 运行以下帖子 API 以启用 GUI、Rest API、PowerShell 和 SCCLI 的 MFA。
++
+|===
+
+
+| 参数 | 值 
+
+
+ a| 
+请求的 URL
+ a| 
+/api/4.9/settings/multifactorauthentication
+
+
+
+ a| 
+HTTP 方法
+ a| 
+发布
+
+
+
+ a| 
+请求正文
+ a| 
+{ “IsGuiMFAEnabled”：false，“IsRestApiMFAEnabled”：true，“IsCliMFAEnabled”：false，“ADFSConfigFilePath”：“C:\\ADFS_metadata\\abc.xml”}
+
+
+
+ a| 
+响应主体
+ a| 
+{ “MFAConfiguration”：{ “IsGuiMFAEnabled”：false，“ADFSConfigFilePath”：“C：\\ADFS_metadata \\abc.xml”， “SCConfigFilePath”：null，“IsRestApiMFAEnabled”：true，“IsCliMFAEnabled”：false，“ADFSHostName”：“win-adfs-sc49.winscedom2.com” } }
+
+|===
+. 使用以下 API 检查 MFA 配置状态和设置。
++
+|===
+
+
+| 参数 | 值 
+
+
+ a| 
+请求的 URL
+ a| 
+/api/4.9/settings/multifactorauthentication
+
+
+
+ a| 
+HTTP 方法
+ a| 
+获取
+
+
+
+ a| 
+响应主体
+ a| 
+{ “MFAConfiguration”：{ “IsGuiMFAEnabled”：false，“ADFSConfigFilePath”：“C：\\ADFS_metadata \\abc.xml”， “SCConfigFilePath”：null，“IsRestApiMFAEnabled”：true，“IsCliMFAEnabled”：false，“ADFSHostName”：“win-adfs-sc49.winscedom2.com” } }
+
+|===
+

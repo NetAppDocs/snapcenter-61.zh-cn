@@ -1,0 +1,95 @@
+---
+permalink: protect-db2/create-a-storage-system-connection-and-a-run-as-account-using-powershell-cmdlets-for-ibm-db2.html 
+sidebar: sidebar 
+keywords: SnapCenter Plug-in for IBM Db2 
+summary: '在使用 PowerShell cmdlet 备份、还原或克隆 IBM Db2 数据库之前，必须创建存储虚拟机 (SVM) 连接和凭据。' 
+---
+= 使用 PowerShell cmdlet 为 IBM Db2 创建存储系统连接和凭据
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+在使用 PowerShell cmdlet 备份、还原或克隆 IBM Db2 数据库之前，必须创建存储虚拟机 (SVM) 连接和凭据。
+
+.开始之前
+* 您应该已经准备好 PowerShell 环境来执行 PowerShell cmdlet。
+* 您应该拥有基础设施管理员角色所需的权限来创建存储连接。
+* 您应该确保插件安装没有正在进行中。
++
+添加存储系统连接时，不得进行主机插件安装，因为主机缓存可能不会更新，并且数据库状态可能会在SnapCenter GUI 中显示为“不可用于备份”或“不在NetApp存储上”。
+
+* 存储系统名称应该是唯一的。
++
+SnapCenter不支持不同集群上具有相同名称的多个存储系统。  SnapCenter支持的每个存储系统都应具有唯一的名称和唯一的数据 LIF IP 地址。
+
+
+
+.步骤
+. 单击 *SnapCenterPS* 启动 PowerShell Core。
+. 使用 Add-SmStorageConnection cmdlet 创建与存储系统的新连接。
++
+[listing]
+----
+PS C:\> Add-SmStorageConnection -StorageType DataOntap -Type DataOntap -OntapStorage ‘scsnfssvm’ -Protocol Https -Timeout 60
+----
+. 使用 Add-SmCredential cmdlet 创建新凭据。
++
+此示例显示如何使用 Windows 凭据创建名为 FinanceAdmin 的新凭据：
+
++
+[listing]
+----
+PS C:\> Add-SmCredential -Name 'FinanceAdmin' -Type Linux -AuthenticationType PasswordBased -Credential db2hostuser -EnableSudoPrevileges:$true
+----
+. 将 IBM Db2 通信主机添加到SnapCenter Server。
++
+对于 Linux：
+
++
+[listing]
+----
+PS C:\> Add-SmHost -HostType Linux -HostName '10.232.204.61' -CredentialName 'defaultcreds'
+----
++
+对于 Windows：
+
++
+[listing]
+----
+PS C:\> Add-SmHost -HostType Windows -HostName '10.232.204.61' -CredentialName 'defaultcreds'
+----
+. 在主机上安装软件包和适用于 IBM Db2 的SnapCenter插件。
++
+对于 Linux：
+
++
+[listing]
+----
+PS C:\> Install-SmHostPackage -HostNames '10.232.204.61' -PluginCodes DB2
+----
++
+对于 Windows：
+
++
+[listing]
+----
+PS C:\> Install-SmHostPackage -HostNames '10.232.204.61' -PluginCodes DB2,SCW
+----
+. 设置 SQLLIB 的路径。
++
+对于 Windows，Db2 插件将使用 SQLLIB 文件夹的默认路径：“C:\Program Files\IBM\SQLLIB\BIN”
+
++
+如果要覆盖默认路径，请使用以下命令。
+
++
+[listing]
+----
+PS C:\> Set-SmConfigSettings -Plugin -HostName '10.232.204.61' -PluginCode DB2 -configSettings @{"DB2_SQLLIB_CMD"="<custom_path>\IBM\SQLLIB\BIN"}
+
+----
+
+
+可以通过运行_Get-Help command_name_来获取有关可与 cmdlet 一起使用的参数及其描述的信息。或者，您也可以参考 https://docs.netapp.com/us-en/snapcenter-cmdlets/index.html["SnapCenter软件 Cmdlet 参考指南"^]。

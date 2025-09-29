@@ -1,0 +1,98 @@
+---
+permalink: protect-scsql/reference_minimum_ontap_privileges_required_for_sql_plug_in.html 
+sidebar: sidebar 
+keywords: Minimum ONTAP privileges 
+summary: 所需的最低ONTAP权限根据您用于数据保护的SnapCenter插件而有所不同。 
+---
+= SQL 插件所需的最低ONTAP权限
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+所需的最低ONTAP权限根据您用于数据保护的SnapCenter插件而有所不同。
+
+* 全访问命令： ONTAP 9.12.1 及更高版本所需的最低权限
++
+** 事件生成自动支持日志
+** 工作历史显示
+** 工作停止
+** lun
+** lun create
+** lun delete
+** lun igroup 添加
+** lun igroup create
+** lun igroup 删除
+** lun igroup 重命名
+** lun igroup show
+** lun 映射添加报告节点
+** lun 映射创建
+** lun mapping delete
+** lun 映射删除报告节点
+** lun mapping show
+** lun modify
+** lun 移入卷
+** lun 离线
+** 伦在线
+** lun resize
+** lun 序列号
+** lun show
+** snapmirror policy add-rule
+** snapmirror policy modify-rule
+** snapmirror 策略删除规则
+** snapmirror policy show
+** snapmirror restore
+** snapmirror show
+** snapmirror 显示历史记录
+** snapmirror update
+** snapmirror 更新 ls 设置
+** snapmirror list-destinations
+** version
+** volume clone create
+** 卷克隆显示
+** 卷克隆拆分开始
+** 卷克隆拆分停止
+** volume create
+** 卷销毁
+** volume file clone create
+** volume file show-disk-usage
+** 卷离线
+** 在线量
+** volume modify
+** volume qtree create
+** volume qtree delete
+** 卷 qtree 修改
+** 卷 qtree 显示
+** 音量限制
+** volume show
+** 卷快照创建
+** volume snapshot delete
+** 卷快照修改
+** 卷快照重命名
+** volume snapshot restore
+** volume snapshot restore-file
+** volume snapshot show
+** volume unmount
+** 虚拟服务器 CIFS
+** 虚拟服务器 CIFS 共享创建
+** 虚拟服务器 CIFS 共享删除
+** vserver cifs 影子复制显示
+** vserver cifs 共享显示
+** 虚拟服务器 CIFS 显示
+** 虚拟服务器导出策略
+** vserver export-policy create
+** 虚拟服务器导出策略删除
+** vserver export-policy rule create
+** vserver export-policy rule show
+** 虚拟服务器导出策略显示
+** 虚拟服务器 iSCSI
+** vserver iscsi 连接显示
+** vserver show
+** 网络接口
+** network interface show
+** vserver
+** metrocluster show
+
+
+

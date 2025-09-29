@@ -1,0 +1,40 @@
+---
+permalink: uninstall/uninstall_snapcenter_server_linux.html 
+sidebar: sidebar 
+keywords: uninstall, snapcenter server, linux 
+summary: 如果您不再希望使用SnapCenter Server 来管理数据保护作业，则可以卸载SnapCenter Server。 
+---
+= 在 Linux 主机上卸载SnapCenter服务器
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+如果您不再希望使用SnapCenter Server 来管理数据保护作业，则可以卸载SnapCenter Server。卸载SnapCenter服务器将删除其所有组件。
+
+.步骤
+. 执行其中一项操作来卸载SnapCenter Server。
++
+|===
+| 如果你想表演... | 操作 
+
+
+ a| 
+非交互式卸载
+ a| 
+`$ sudo /opt/NetApp/snapcenter/SnapManagerWeb/installation/uninstall -i silent -DCONFIRM=1`
+
+示例：sudo /opt/ NetApp/snapcenter/SnapManagerWeb/installation/uninstall
+
+
+
+ a| 
+交互式卸载
+ a| 
+`$ sudo <USER_INSTALL_DIR>/NetApp/snapcenter/SnapManagerWeb/installation/uninstall`
+
+在确认输入中输入除 0 以外的任何值以确认卸载。
+
+|===
+

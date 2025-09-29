@@ -1,0 +1,180 @@
+---
+permalink: protect-db2/restore-manually-added-resource-backup.html 
+sidebar: sidebar 
+keywords: SnapCenter Plug-in for IBM Db2 
+summary: 您可以使用SnapCenter从一个或多个备份中还原和恢复数据。 
+---
+= 还原手动添加的资源备份
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您可以使用SnapCenter从一个或多个备份中还原和恢复数据。
+
+.开始之前
+* 您必须已备份资源或资源组。
+* 您必须取消当前正在进行的要还原的资源或资源组的任何备份操作。
+* 对于还原前、还原后、安装和卸载命令，您应该检查这些命令是否存在于插件主机上可用的命令列表中，路径如下：
++
+** Windows 主机上的默认位置：_C:\Program Files\ NetApp\ SnapCenter\Snapcenter Plug-in Creator\etc\allowed_commands.config_
+** Linux 主机上的默认位置：_/opt/ NetApp/snapcenter/scc/etc/allowed_commands.config_
+
+
+
+
+
+NOTE: 如果命令列表中不存在该命令，则操作将失败。
+
+.关于此任务
+* 对于ONTAP 9.12.1 及以下版本、作为恢复的一部分从SnapLock Vault 快照创建的克隆将继承SnapLock Vault 到期时间。存储管理员应在SnapLock到期后手动清理克隆。
+
+
+[role="tabbed-block"]
+====
+.SnapCenter UI
+--
+.步骤
+. 在左侧导航窗格中，单击“*资源*”，然后从列表中选择适当的插件。
+. 在资源页面中，根据资源类型从*查看*下拉列表中过滤资源。
++
+资源与类型、主机、相关资源组和策略以及状态一起显示。
+
++
+
+NOTE: 尽管备份可能针对资源组，但在恢复时，您必须选择要恢复的单个资源。
+
++
+如果资源未受保护，则“总体状态”列中显示“未受保护”。这可能意味着该资源未受到保护，或者该资源已被其他用户备份。
+
+. 选择资源，或者选择一个资源组，然后选择该组中的资源。
++
+进入资源拓扑页面。
+
+. 从“管理副本”视图中，从主存储系统或辅助存储系统（镜像或保管）中选择“*备份*”。
+. 在主备份表中，选择要从中还原的备份，然后单击 *image:../media/restore_icon.gif["恢复图标"] *.
++
+image::../media/restoring_resource.gif[恢复资源]
+
+. 在“恢复范围”页面中，选择“*完整资源*”。
++
+.. 如果选择*完整资源*，则会恢复 IBM Db2 数据库的所有已配置数据卷。
++
+如果资源包含卷或 qtree，则在这些卷或 qtree 上选择还原的快照之后拍摄的快照将被删除，并且无法恢复。此外，如果在相同的卷或 qtree 上托管任何其他资源，则该资源也会被删除。
+
++
+您可以选择多个 LUN。
+
+
+
++
+
+NOTE: 如果选择“*全部*”，则会还原卷、qtree 或 LUN 上的所有文件。
+
+. 在“Pre ops”页面中，输入执行恢复作业之前要运行的预恢复和卸载命令。
+. 在 Post ops 页面中，输入执行还原作业后要运行的 mount 和 post restore 命令。
+. 在通知页面中，从*电子邮件首选项*下拉列表中，选择您想要发送电子邮件的场景。
++
+您还必须指定发件人和收件人的电子邮件地址以及电子邮件的主题。还必须在*设置* > *全局设置*页面上配置 SMTP。
+
+. 查看摘要，然后单击“*完成*”。
+. 通过单击“*监视*”>“*作业*”来监视操作进度。
+
+
+.完成后
+仅当 Rollforward 状态处于“DB pending”状态时才可以进行恢复。此状态适用于启用了存档日志记录的 Db2 数据库。
+
+--
+.PowerShell cmdlet
+--
+.步骤
+. 使用 Open-SmConnection cmdlet 为指定用户启动与SnapCenter服务器的连接会话。
++
+[listing]
+----
+PS C:\> Open-SmConnection
+----
+. 使用 Get-SmBackup 和 Get-SmBackupReport cmdlet 识别要还原的备份。
++
+此示例显示有两个备份可供还原：
+
++
+[listing]
+----
+ PS C:\> Get-SmBackup -AppObjectId cn24.sccore.test.com\DB2\db2inst1\Library
+
+        BackupId    BackupName                    BackupTime            BackupType
+        --------    ----------                    ----------            ----------
+         1          Payroll Dataset_vise-f6_08... 8/4/2015 11:02:32 AM  Full Backup
+         2          Payroll Dataset_vise-f6_08... 8/4/2015 11:23:17 AM
+----
++
+此示例显示有关 2015 年 1 月 29 日至 2015 年 2 月 3 日备份的详细信息：
+
++
+[listing]
+----
+PS C:\> Get-SmBackupReport -FromDateTime "1/29/2015" -ToDateTime "2/3/2015"
+
+SmBackupId           : 113
+   SmJobId              : 2032
+   StartDateTime        : 2/2/2015 6:57:03 AM
+   EndDateTime          : 2/2/2015 6:57:11 AM
+   Duration             : 00:00:07.3060000
+   CreatedDateTime      : 2/2/2015 6:57:23 AM
+   Status               : Completed
+   ProtectionGroupName  : Clone
+   SmProtectionGroupId  : 34
+   PolicyName           : Vault
+   SmPolicyId           : 18
+   BackupName           : Clone_SCSPR0019366001_02-02-2015_06.57.08
+   VerificationStatus   : NotVerified
+
+   SmBackupId           : 114
+   SmJobId              : 2183
+   StartDateTime        : 2/2/2015 1:02:41 PM
+   EndDateTime          : 2/2/2015 1:02:38 PM
+   Duration             : -00:00:03.2300000
+   CreatedDateTime      : 2/2/2015 1:02:53 PM
+   Status               : Completed
+   ProtectionGroupName  : Clone
+   SmProtectionGroupId  : 34
+   PolicyName           : Vault
+   SmPolicyId           : 18
+   BackupName           : Clone_SCSPR0019366001_02-02-2015_13.02.45
+   VerificationStatus   : NotVerified
+----
+. 使用 Restore-SmBackup cmdlet 从备份中还原数据。
++
+
+NOTE: AppObjectId 是“Host\Plugin\UID”，其中 UID = <instance_name> 表示手动发现的 DB2 实例资源，UID = <instance_name>\<databse_name> 表示 IBM Db2 数据库资源。您可以从 Get-smResources cmdlet 获取 ResourceID。
+
++
+[listing]
+----
+Get-smResources  -HostName cn24.sccore.test.com  -PluginCode DB2
+----
++
+此示例显示如何从主存储恢复数据库：
+
++
+[listing]
+----
+Restore-SmBackup -PluginCode DB2 -AppObjectId cn24.sccore.test.com\DB2\db2inst1\DB01 -BackupId 3
+----
++
+此示例显示如何从辅助存储恢复数据库：
+
++
+[listing]
+----
+Restore-SmBackup -PluginCode 'DB2' -AppObjectId cn24.sccore.test.com\DB2\db2inst1\DB01 -BackupId 399 -Confirm:$false  -Archive @( @{"Primary"="<Primary Vserver>:<PrimaryVolume>";"Secondary"="<Secondary Vserver>:<SecondaryVolume>"})
+----
++
+可以通过运行_Get-Help command_name_来获取有关可与 cmdlet 一起使用的参数及其描述的信息。或者，您也可以参考 https://docs.netapp.com/us-en/snapcenter-cmdlets/index.html["SnapCenter软件 Cmdlet 参考指南"^]。
+
+
+
+--
+====

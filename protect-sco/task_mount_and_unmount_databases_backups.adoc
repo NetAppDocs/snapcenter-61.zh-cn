@@ -1,0 +1,102 @@
+---
+permalink: protect-sco/task_mount_and_unmount_databases_backups.html 
+sidebar: sidebar 
+keywords: mount, unmount, backup, ASM, asm_diskstring 
+summary: 如果您想访问备份中的文件，您可以安装单个或多个数据并仅记录备份。您可以将备份安装到创建备份的同一主机，也可以安装到具有相同类型的 Oracle 和主机配置的远程主机。如果您已手动安装了备份，则应在完成操作后手动卸载备份。您只能在主机上为特定数据库安装一次数据库备份。在执行操作时，您只能安装一个备份。 
+---
+= 挂载和卸载数据库备份
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+如果您想访问备份中的文件，您可以安装单个或多个数据并仅记录备份。您可以将备份安装到创建备份的同一主机，也可以安装到具有相同类型的 Oracle 和主机配置的远程主机。如果您已手动安装了备份，则应在完成操作后手动卸载备份。在任何给定实例中，数据库的备份都可以安装到任何一个主机上。在执行操作时，您只能安装一个备份。
+
+
+NOTE: 在 Flex ASM 设置中，如果基数小于 RAC 集群中的节点数，则无法在 Leaf 节点上执行挂载操作。
+
+
+
+== 装载数据库备份
+
+如果您想访问备份中的文件，则应该手动安装数据库备份。
+
+*您需要什么*
+
+* 如果您在 NFS 环境中有一个自动存储管理 (ASM) 数据库实例并且想要挂载 ASM 备份，则应该将 ASM 磁盘路径 _/var/opt/snapcenter/sco/backup_*/_*_/_*_/_*_/_*_ 添加到 asm_diskstring 参数中定义的现有路径。
+* 如果您在 NFS 环境中有一个 ASM 数据库实例，并且想要将 ASM 日志备份作为恢复操作的一部分挂载，则应该将 ASM 磁盘路径 _/var/opt/snapcenter/scu/clones/_*_/_*_ 添加到 asm_diskstring 参数中定义的现有路径。
+* 在 asm_diskstring 参数中，如果使用 ASMFD，则应配置 _AFD:*_；如果使用 ASMLIB，则应配置 _ORCL:*_。
+
+
+
+NOTE: 有关如何编辑 asm_diskstring 参数的信息，请参阅 https://kb.netapp.com/Advice_and_Troubleshooting/Data_Protection_and_Security/SnapCenter/Disk_paths_are_not_added_to_the_asm_diskstring_database_parameter["如何将磁盘路径添加到 asm_diskstring"^]。
+
+* 如果 ASM 凭据和 ASM 端口与源数据库主机的不同，则在装载备份时应配置 ASM 凭据和 ASM 端口。
+* 如果要挂载到备用主机，则必须验证备用主机是否满足以下要求：
++
+** 与原始主机相同的 UID 和 GID
+** 与原始主机相同的 Oracle 版本
+** 与原始主机相同的操作系统发行版和版本
+** 对于 NVMe，应安装 NVMe util
+
+
+* 您应该确保 LUN 没有使用由混合协议 iSCSI 和 FC 组成的 iGroup 映射到 AIX 主机。有关更多信息，请参阅 https://kb.netapp.com/mgmt/SnapCenter/SnapCenter_Plug-in_for_Oracle_operations_fail_with_error_Unable_to_discover_the_device_for_LUN_LUN_PATH["操作失败，错误：无法发现 LUN 的设备"^] 。
+
+
+*步骤*
+
+. 在左侧导航窗格中，单击“*资源*”，然后从列表中选择适当的插件。
+. 在资源页面中，从*视图*列表中选择*数据库*或*资源组*。
+. 从数据库详细信息视图或资源组详细信息视图中选择数据库。
++
+进入数据库拓扑页面。
+
+. 从“管理副本”视图中，从主存储系统或辅助存储系统（镜像或复制）中选择“*备份*”。
+. 从表中选择备份，然后单击image:../media/mount_icon.gif["安装图标"]。
+. 在“挂载备份”页面中，从*选择要挂载备份的主机*下拉列表中选择要挂载备份的主机。
++
+显示挂载路径 _/var/opt/snapcenter/sco/backup_mount/backup_name/database_name_。
+
++
+如果正在挂载 ASM 数据库的备份，则会显示挂载路径 +diskgroupname_SID_backupid。
+
+. 单击“*安装*”。
+
+
+*完成后*
+
+* 您可以运行以下命令来检索与已挂载备份相关的信息：
++
+`./sccli Get-SmBackup -BackupName backup_name -ListMountInfo`
+
+* 如果您已经安装了 ASM 数据库，则可以运行以下命令来检索与已安装备份相关的信息：
++
+`./sccli Get-Smbackup -BackupNamediskgroupname_SID_backupid-listmountinfo`
+
+* 要检索备份 ID，请运行以下命令：
++
+`./sccli Get-Smbackup-BackupNamebackup_name`
+
++
+可以通过运行 Get-Help _command_name_ 来获取有关可与命令一起使用的参数及其描述的信息。或者，您也可以参考 https://library.netapp.com/ecm/ecm_download_file/ECMLP3337666["SnapCenter软件命令参考指南"^]。
+
+
+
+
+
+== 卸载数据库备份
+
+当您不再想访问备份上的文件时，可以手动卸载已安装的数据库备份。
+
+*步骤*
+
+. 在左侧导航窗格中，单击“*资源*”，然后从列表中选择适当的插件。
+. 在资源页面中，从*视图*列表中选择*数据库*或*资源组*。
+. 从数据库详细信息视图或资源组详细信息视图中选择数据库。
++
+进入数据库拓扑页面。
+
+. 选择已装载的备份，然后单击image:../media/unmount_icon.gif["卸载图标"]。
+. 单击“*确定*”。
+

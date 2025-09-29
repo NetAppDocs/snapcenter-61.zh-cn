@@ -1,0 +1,47 @@
+---
+permalink: protect-db2/discover-the-databases-automatically.html 
+sidebar: sidebar 
+keywords: credentials 
+summary: 资源是 Linux 主机上由SnapCenter管理的 IBM Db2 数据库。发现可用的 IBM Db2 数据库后，您可以将这些资源添加到资源组以执行数据保护操作。 
+---
+= 自动发现数据库
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+资源是 Linux 主机上由SnapCenter管理的 IBM Db2 数据库。发现可用的 IBM Db2 数据库后，您可以将资源添加到资源组以执行数据保护操作。
+
+.开始之前
+* 您必须已经完成安装SnapCenter服务器、添加主机和设置存储系统连接等任务。
+* IBM Db2 的SnapCenter插件不支持自动发现驻留在 RDM/VMDK 虚拟环境中的资源。手动添加数据库时必须提供虚拟环境的存储信息。
+
+
+.关于此任务
+* 安装插件后，该Linux主机上的所有数据库都会被自动发现并显示在资源页面上。
+* 仅数据库是自动发现的。
+
+
+自动发现的资源不能被修改或删除。
+
+.步骤
+. 在左侧导航窗格中，单击“*资源*”，然后从列表中选择 IBM Db2 插件。
+. 在资源页面中，从视图列表中选择资源类型。
+. （可选）点击*image:../media/filter_icon.gif["筛选图标"] *，然后选择主机名。
++
+然后您可以点击 *image:../media/filter_icon.gif["筛选图标"] * 关闭筛选窗格。
+
+. 单击“*刷新资源*”以发现主机上可用的资源。
++
+资源与资源类型、主机名、关联资源组、备份类型、策略和总体状态等信息一起显示。
+
++
+** 如果数据库位于NetApp存储上且未受保护，则“总体状态”列中显示“未受保护”。
+** 如果数据库位于NetApp存储系统上并受到保护，并且没有执行备份操作，则“总体状态”列中会显示“备份未运行”。否则，状态将根据上次备份状态更改为备份失败或备份成功。
+
+
+
+
+
+IMPORTANT: 如果数据库在SnapCenter之外重命名，则必须刷新资源。

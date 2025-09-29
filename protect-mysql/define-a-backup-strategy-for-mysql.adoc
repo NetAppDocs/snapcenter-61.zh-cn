@@ -1,0 +1,27 @@
+---
+permalink: protect-mysql/define-a-backup-strategy-for-mysql.html 
+sidebar: sidebar 
+keywords: SnapCenter Plug-in for MySQL 
+summary: 在创建备份作业之前定义备份策略有助于您获得成功恢复或克隆资源所需的备份。您的服务级别协议（SLA）、恢复时间目标（RTO）和恢复点目标（RPO）在很大程度上决定了您的备份策略。 
+---
+= 定义 MySQL 的备份策略
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+在创建备份作业之前定义备份策略有助于您获得成功恢复或克隆资源所需的备份。您的服务级别协议 (SLA)、恢复时间目标 (RTO) 和恢复点目标 (RPO) 在很大程度上决定了您的备份策略。
+
+.关于此任务
+SLA 定义了预期的服务级别并解决了许多与服务相关的问题，包括服务的可用性和性能。  RTO 是服务中断后必须恢复业务流程的时间。  RPO 定义了必须从备份存储中恢复的文件的年龄策略，以便在故障后恢复常规操作。  SLA、RTO 和 RPO 有助于数据保护策略。
+
+.步骤
+. 确定何时应该备份资源。
+. 确定您需要多少个备份作业。
+. 决定如何命名您的备份。
+. 决定是否要创建基于 Snapshot 副本的策略来备份数据库的应用程序一致的快照。
+. 决定是否要使用NetApp SnapMirror技术进行复制或使用NetApp SnapVault技术进行长期保留。
+. 确定源存储系统和SnapMirror目标上的快照的保留期限。
+. 确定是否要在备份操作之前或之后运行任何命令，并提供前言或后记。
+

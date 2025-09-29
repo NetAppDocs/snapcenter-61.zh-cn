@@ -1,0 +1,16 @@
+---
+permalink: protect-nsp/install_netapp_supported_plugins.html 
+sidebar: sidebar 
+keywords: install workflow, NetApp supported plug-in 
+summary: 如果您想保护NetApp支持的插件资源，则应该安装并设置SnapCenter NetApp支持的插件。 
+---
+= SnapCenter NetApp支持的插件的安装工作流程
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+如果您想保护NetApp支持的插件资源，则应该安装并设置SnapCenter NetApp支持的插件。
+
+image::../media/scc_install_configure_workflow.gif[SnapCenter NetApp支持的插件的工作流程]

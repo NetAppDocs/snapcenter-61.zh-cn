@@ -1,0 +1,23 @@
+---
+permalink: protect-db2/what-you-can-do-using-the-snapcenter-plug-in-for-ibm-db2.html 
+sidebar: sidebar 
+keywords: SnapCenter Plug-in for IBM Db2 
+summary: 在您的环境中安装 IBM Db2 插件时，您可以使用SnapCenter备份、还原和克隆 IBM Db2 及其资源。您还可以执行支持这些操作的任务。 
+---
+= 使用适用于 IBM Db2 的SnapCenter插件可以做什么
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+在您的环境中安装 IBM Db2 数据库插件时，您可以使用SnapCenter备份、还原和克隆 IBM Db2 数据库及其资源。您还可以执行支持这些操作的任务。
+
+* 添加数据库。
+* 创建备份。
+* 从备份中恢复。
+* 克隆备份。
+* 安排备份操作。
+* 监控备份、恢复和克隆操作。
+* 查看备份、恢复和克隆操作的报告。
+

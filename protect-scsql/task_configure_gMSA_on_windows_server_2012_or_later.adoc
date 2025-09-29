@@ -1,0 +1,73 @@
+---
+permalink: protect-scsql/task_configure_gMSA_on_windows_server_2012_or_later.html 
+sidebar: sidebar 
+keywords: gMSA 
+summary: 'Windows Server 2016 或更高版本允许您创建组托管服务帐户 (gMSA)，该帐户从托管域帐户提供自动服务帐户密码管理。' 
+---
+= 在 Windows Server 2016 或更高版本上配置 gMSA
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Windows Server 2016 或更高版本允许您创建组托管服务帐户 (gMSA)，该帐户从托管域帐户提供自动服务帐户密码管理。
+
+.开始之前
+* 您应该拥有 Windows Server 2016 或更高版本的域控制器。
+* 您应该拥有一个 Windows Server 2016 或更高版本的主机，它是域的成员。
+
+
+.步骤
+. 创建 KDS 根密钥来为 gMSA 中的每个对象生成唯一的密码。
+. 对于每个域，从 Windows 域控制器运行以下命令：Add-KDSRootKey -EffectiveImmediately
+. 创建并配置 gMSA：
++
+.. 创建用户组账号，格式如下：
++
+ domainName\accountName$
+.. 将计算机对象添加到组中。
+.. 使用您刚刚创建的用户组来创建 gMSA。
++
+例如，
+
++
+ New-ADServiceAccount -name <ServiceAccountName> -DNSHostName <fqdn> -PrincipalsAllowedToRetrieveManagedPassword <group> -ServicePrincipalNames <SPN1,SPN2,…>
+.. 跑步 `Get-ADServiceAccount`命令来验证服务帐户。
+
+
+. 在您的主机上配置 gMSA：
++
+.. 在要使用 gMSA 帐户的主机上启用 Windows PowerShell 的 Active Directory 模块。
++
+为此，请从 PowerShell 运行以下命令：
+
++
+[listing]
+----
+PS C:\> Get-WindowsFeature AD-Domain-Services
+
+Display Name                           Name                Install State
+------------                           ----                -------------
+[ ] Active Directory Domain Services   AD-Domain-Services  Available
+
+
+PS C:\> Install-WindowsFeature AD-DOMAIN-SERVICES
+
+Success Restart Needed Exit Code      Feature Result
+------- -------------- ---------      --------------
+True    No             Success        {Active Directory Domain Services, Active ...
+WARNING: Windows automatic updating is not enabled. To ensure that your newly-installed role or feature is
+automatically updated, turn on Windows Update.
+----
+.. 重新启动主机。
+.. 通过从 PowerShell 命令提示符运行以下命令在主机上安装 gMSA： `Install-AdServiceAccount <gMSA>`
+.. 通过运行以下命令验证你的 gMSA 帐户： `Test-AdServiceAccount <gMSA>`
+
+
+. 将管理权限分配给主机上配置的 gMSA。
+. 通过在SnapCenter服务器中指定配置的 gMSA 帐户来添加 Windows 主机。
++
+SnapCenter Server 将在主机上安装选定的插件，并且指定的 gMSA 将在插件安装期间用作服务登录帐户。
+
+

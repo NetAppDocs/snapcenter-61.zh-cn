@@ -1,0 +1,32 @@
+---
+permalink: protect-nsp/prerequisites_for_using_netapp_supported_plugins.html 
+sidebar: sidebar 
+keywords: Credentials 
+summary: 在使用SnapCenter NetApp支持的插件之前， SnapCenter管理员必须安装和配置SnapCenter服务器并执行先决条件任务。 
+---
+= 使用NetApp支持的插件的先决条件
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+在使用SnapCenter NetApp支持的插件之前， SnapCenter管理员必须安装和配置SnapCenter服务器并执行先决条件任务。
+
+* 安装并配置SnapCenter服务器。
+* 登录到SnapCenter服务器。
+* 通过添加存储系统连接和创建凭据（如果适用）来配置SnapCenter环境。
+* 添加主机，并安装和上传插件。
+* 如果适用，请在插件主机上安装 Java 11。
+* 如果您有多个数据路径 (LIF) 或 dNFS 配置，则可以使用数据库主机上的SnapCenter CLI 执行以下操作：
++
+** 默认情况下，数据库主机的所有 IP 地址都会添加到克隆卷的存储虚拟机 (SVM) 中的 NFS 存储导出策略中。如果您想要特定的 IP 地址或限制为 IP 地址的子集，请运行 Set-PreferredHostIPsInStorageExportPolicy CLI。
+** 如果 SVM 中有多个数据路径 (LIF)， SnapCenter会选择适当的数据路径 (LIF) 来挂载 NFS 克隆卷。但是，如果要指定特定的数据路径 (LIF)，则必须运行 Set-SvmPreferredDataPath CLI。可以通过运行_Get-Help command_name_来获取有关可与命令一起使用的参数及其描述的信息。或者，您也可以参考 https://library.netapp.com/ecm/ecm_download_file/ECMLP3337666["SnapCenter软件命令参考指南"^]。
+
+
+* 如果您想要备份复制，请设置SnapMirror和SnapVault。
+* 确保端口 9090 未被主机上的任何其他应用程序使用。
++
+除了SnapCenter所需的其他端口外，还必须保留端口 9090 以供NetApp支持的插件使用。
+
+

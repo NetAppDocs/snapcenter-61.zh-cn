@@ -1,0 +1,16 @@
+---
+permalink: protect-sco/install-snapcenter-plug-in-for-oracle-workflow.html 
+sidebar: sidebar 
+keywords: installing 
+summary: 如果您想保护 Oracle 数据库，则应该安装并设置适用于 Oracle 数据库的SnapCenter插件。 
+---
+= Oracle 数据库的SnapCenter插件安装工作流程
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+如果您想保护 Oracle 数据库，则应该安装并设置适用于 Oracle 数据库的SnapCenter插件。
+
+image::../media/sco_install_configure_workflow.gif[安装oracle插件]

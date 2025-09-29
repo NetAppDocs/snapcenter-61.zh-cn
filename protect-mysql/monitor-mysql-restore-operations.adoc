@@ -1,0 +1,46 @@
+---
+permalink: protect-mysql/monitor-mysql-restore-operations.html 
+sidebar: sidebar 
+keywords: SnapCenter Server 
+summary: 您可以使用“作业”页面监控不同SnapCenter还原操作的进度。您可能想要检查操作的进度以确定操作何时完成或是否存在问题。 
+---
+= 监控 MySQL 恢复操作
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您可以使用“作业”页面监控不同SnapCenter还原操作的进度。您可能想要检查操作的进度以确定操作何时完成或是否存在问题。
+
+.关于此任务
+还原后状态描述了还原操作之后资源的状况以及您可以采取的任何进一步还原操作。
+
+以下图标出现在“作业”页面上，指示操作的状态：
+
+* image:../media/progress_icon.gif["正在进行图标"]进行中
+* image:../media/success_icon.gif["完成的图标"]成功完成
+* image:../media/failed_icon.gif["失败图标"]失败的
+* image:../media/warning_icon.gif["已完成，带有警告图标"]已完成但有警告，或由于警告而无法启动
+* image:../media/verification_job_in_queue.gif["验证作业已排队"]排队
+* image:../media/cancel_icon.gif["取消图标"]取消
+
+
+.步骤
+. 在左侧导航窗格中，单击“*监控*”。
+. 在“*监控*”页面中，单击“*作业*”。
+. 在 *Jobs* 页面中，执行以下步骤：
++
+.. 点击image:../media/filter_icon.gif["筛选图标"]过滤列表以便仅列出恢复操作。
+.. 指定开始和结束日期。
+.. 从“*类型*”下拉列表中，选择“*恢复*”。
+.. 从*状态*下拉列表中，选择恢复状态。
+.. 单击“*应用*”查看已成功完成的操作。
+
+
+. 选择恢复作业，然后单击“*详细信息*”以查看作业详细信息。
+. 在“作业详情”页面中，单击“查看日志”。
++
+*查看日志*按钮显示所选操作的详细日志。
+
+

@@ -1,0 +1,11 @@
+= 
+:allow-uri-read: 
+
+
+在执行任何数据保护操作（例如备份、克隆或恢复操作）之前，您必须定义策略并设置环境。您还可以设置SnapCenter服务器以使用SnapMirror和SnapVault技术。
+
+要利用SnapVault和SnapMirror技术，您必须在存储设备上配置并初始化源卷和目标卷之间的数据保护关系。您可以使用 NetAppSystem Manager 或存储控制台命令行来执行这些任务。
+
+*查找更多信息*
+
+link:https://docs.netapp.com/us-en/ontap-automation/getting_started_with_the_rest_api.html["开始使用 REST API"]

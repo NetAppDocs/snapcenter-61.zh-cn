@@ -1,0 +1,54 @@
+---
+permalink: protect-scw/task_cancel_backup_operations_for_windows_file_system.html 
+sidebar: sidebar 
+keywords: cancel backup 
+summary: 您可以取消排队的备份操作。 
+---
+= 取消备份操作
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您可以取消排队的备份操作。
+
+*您需要什么*
+
+* 您必须以SnapCenter管理员或作业所有者的身份登录才能取消操作。
+* 您可以从“*监视*”页面或“*活动*”窗格取消备份操作。
+* 您无法取消正在运行的备份操作。
+* 您可以使用SnapCenter GUI、PowerShell cmdlet 或 CLI 命令取消备份操作。
+* 对于无法取消的操作，“*取消作业*”按钮处于禁用状态。
+* 如果您在创建角色时在“用户\组”页面中选择了“*此角色的所有成员都可以查看和操作其他成员的对象*”，则可以在使用该角色时取消其他成员的排队备份操作。
+
+
+*步骤*
+
+. 请执行以下操作之一：
++
+|===
+| 从... | 操作 
+
+
+ a| 
+监控页面
+ a| 
+.. 在左侧导航窗格中，单击“*监控*”>“*作业*”。
+.. 选择操作，然后单击“取消作业”。
+
+
+
+
+ a| 
+活动窗格
+ a| 
+.. 启动备份操作后，单击*image:../media/activity_pane_icon.gif["活动窗格图标"] * 在活动窗格上查看最近的五项操作。
+.. 选择操作。
+.. 在“工作详情”页面中，单击“取消工作”。
+
+
+|===
+
+
+操作被取消，资源恢复到之前的状态。

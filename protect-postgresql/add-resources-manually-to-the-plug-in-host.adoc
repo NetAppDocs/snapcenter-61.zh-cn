@@ -1,0 +1,95 @@
+---
+permalink: protect-postgresql/add-resources-manually-to-the-plug-in-host.html 
+sidebar: sidebar 
+keywords: SnapCenter Plug-in for Postgresql 
+summary: 某些 PostgreSQL 实例不支持自动发现。您必须手动添加这些资源。 
+---
+= 手动将资源添加到插件主机
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Windows 主机不支持自动发现。您必须手动添加 Postgresql 集群资源。
+
+.开始之前
+* 您必须完成安装SnapCenter服务器、添加主机和设置存储系统连接等任务。
+
+
+.关于此任务
+以下配置不支持自动发现：
+
+* RDM 和 VMDK 布局
+
+
+.步骤
+. 在左侧导航窗格中，从下拉列表中选择适用于 Postgresql 的SnapCenter插件，然后单击“*资源*”。
+. 在资源页面中，单击*添加 Postgresql 资源*。
+. 在提供资源详细信息页面中，执行以下操作：
++
+|===
+| 对于这个领域... | 操作 
+
+
+ a| 
+名称
+ a| 
+指定集群名称。
+
+
+
+ a| 
+主机名称
+ a| 
+输入主机名。
+
+
+
+ a| 
+类型
+ a| 
+选择集群。
+
+
+
+ a| 
+实例
+ a| 
+指定实例的名称，该实例是集群的父级。
+
+
+
+ a| 
+凭据
+ a| 
+选择凭证或添加凭证信息。
+
+这是可选的。
+
+|===
+. 在“提供存储占用空间”页面中，选择存储类型并选择一个或多个卷、LUN 和 qtree，然后单击“保存”。
++
+可选：您可以点击 *image:../media/add_policy_from_resourcegroup.gif["从资源组添加策略"] * 图标用于从其他存储系统添加更多卷、LUN 和 qtree。
+
+. 可选：在资源设置页面中，对于 Windows 主机上的资源，输入 PostgreSQL 插件的自定义键值对
+. 查看摘要，然后单击“*完成*”。
++
+集群与主机名、相关资源组和策略以及总体状态等信息一起显示
+
+
+
+如果您想让用户访问资源，您必须将资源分配给用户。这使用户能够对分配给他们的资产执行他们有权限执行的操作。
+
+link:https://docs.netapp.com/us-en/snapcenter/install/task_add_a_user_or_group_and_assign_role_and_assets.html["添加用户或组并分配角色和资产"]
+
+.完成后
+* 添加集群后，您可以修改PostgreSQL集群的详细信息。
+* 从SnapCenter 5.0 迁移的资源（表空间和集群）将在SnapCenter 6.0 中标记为 PostgreSQL 集群类型。
+* 修改从SnapCenter 5.0 或更早版本迁移的手动添加的资源时，请在“资源设置”页面中对自定义键值对执行以下操作：
++
+** 在*名称*字段中指定术语“PORT”。
+** 在“*值*”字段中指定端口号。
+
+
+

@@ -1,0 +1,48 @@
+---
+permalink: protect-scsql/reference_back_up_sql_server_database_or_instance_or_availability_group.html 
+sidebar: sidebar 
+keywords: Backup workflow 
+summary: 在您的环境中安装适用于 Microsoft SQL Server 的SnapCenter插件时，您可以使用SnapCenter备份 SQL Server 资源。 
+---
+= 备份工作流程
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+在您的环境中安装适用于 Microsoft SQL Server 的SnapCenter插件时，您可以使用SnapCenter备份 SQL Server 资源。
+
+您可以安排多个备份同时在服务器之间运行。
+
+不能对同一资源同时执行备份和恢复操作。
+
+以下工作流程显示了执行备份操作必须遵循的顺序：
+
+image::../media/scsql_backup_workflow.gif[SCSQL 备份工作流程]
+
+
+NOTE: 如果您选择非NetApp LUN、已损坏的数据库或正在恢复的数据库，则“资源”页面上的“立即备份”、“恢复”、“管理备份”和“克隆”选项将被禁用。
+
+您还可以手动或在脚本中使用 PowerShell cmdlet 来执行备份、还原、恢复、验证和克隆操作。有关 PowerShell cmdlet 的详细信息，请使用SnapCenter cmdlet 帮助或参阅 https://docs.netapp.com/us-en/snapcenter-cmdlets/index.html["SnapCenter软件 Cmdlet 参考指南"]
+
+
+
+== SnapCenter如何备份数据库
+
+SnapCenter使用 Snapshot 技术来备份驻留在 LUN 或 VMDK 上的 SQL Server 数据库。  SnapCenter通过创建数据库快照来创建备份。
+
+当您从资源页面选择一个数据库进行完整数据库备份时， SnapCenter会自动选择驻留在同一存储卷上的所有其他数据库。如果 LUN 或 VMDK 仅存储单个数据库，则可以单独清除或重新选择该数据库。如果 LUN 或 VMDK 包含多个数据库，则必须清除或重新选择数据库作为一个组。
+
+驻留在单个卷上的所有数据库都使用快照同时备份。如果并发备份数据库的最大数量为 35，并且存储卷中驻留的数据库超过 35 个，则创建的快照总数等于数据库数量除以 35。
+
+
+NOTE: 您可以在备份策略中配置每个快照的最大数据库数量。
+
+当SnapCenter创建快照时，整个存储系统卷都会被捕获到快照中。但是，备份仅对创建备份的 SQL 主机服务器有效。
+
+如果其他 SQL 主机服务器的数据驻留在同一卷上，则无法从快照恢复该数据。
+
+*查找更多信息*
+
+link:https://kb.netapp.com/Advice_and_Troubleshooting/Data_Protection_and_Security/SnapCenter/Quiesce_or_grouping_resources_operations_fail["静默或分组资源操作失败"]

@@ -1,0 +1,42 @@
+---
+permalink: protect-mysql/enable-ca-certificates-for-plug-ins.html 
+sidebar: sidebar 
+keywords: SnapCenter 
+summary: 您应该配置 CA 证书并在SnapCenter服务器和相应的插件主机中部署 CA 证书。 
+---
+= 为插件启用 CA 证书
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您应该配置 CA 证书并在SnapCenter服务器和相应的插件主机中部署 CA 证书。您应该为插件启用 CA 证书验证。
+
+.开始之前
+* 您可以使用运行_Set-SmCertificateSettings_ cmdlet 来启用或禁用 CA 证书。
+* 您可以使用_Get-SmCertificateSettings_显示插件的证书状态。
+
+
+可以通过运行_Get-Help command_name_来获取有关可与 cmdlet 一起使用的参数及其描述的信息。或者，您也可以参考 https://docs.netapp.com/us-en/snapcenter-cmdlets/index.html["SnapCenter软件 Cmdlet 参考指南"^]。
+
+.步骤
+. 在左侧导航窗格中，单击“*主机*”。
+. 在“主机”页面中，单击“*托管主机*”。
+. 选择单个或多个插件主机。
+. 单击“更多选项”。
+. 选择*启用证书验证*。
+
+
+.完成后
+托管主机选项卡主机显示一个挂锁，挂锁的颜色表示SnapCenter服务器和插件主机之间的连接状态。
+
+* *image:../media/enable_ca_issues_icon.png["CA 证书未启用，也未分配给插件主机图标"] * 表示 CA 证书未启用或未分配给插件主机。
+* *image:../media/enable_ca_good_icon.png["CA 证书已成功验证图标"] * 表示 CA 证书验证成功。
+* *image:../media/enable_ca_failed_icon.png["无法验证 CA 证书图标"] * 表示无法验证 CA 证书。
+* *image:../media/enable_ca_undefined_icon.png["无法检索连接信息图标"] * 表示无法检索连接信息。
++
+
+NOTE: 当状态为黄色或绿色时，表示数据保护操作成功完成。
+
+

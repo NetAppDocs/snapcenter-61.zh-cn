@@ -1,0 +1,70 @@
+---
+permalink: install/task_configure_audit_log_settings.html 
+sidebar: sidebar 
+keywords: audit, log, configure 
+summary: 您可以配置记录软件平台以及在这些平台上运行的所有软件的安全事件。 
+---
+= 配置审核日志设置
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+SnapCenter服务器的每个活动都会生成审计日志。默认情况下，审计日志保存在默认安装位置 _C:\Program Files\ NetApp\ SnapCenter WebApp\audit\_。
+
+通过为每个审计事件生成数字签名摘要来保护审计日志，以防止未经授权的修改。生成的摘要保存在单独的审计校验和文件中，并进行定期的完整性检查以确保内容的完整性。
+
+您应该以“SnapCenterAdmin”角色登录。
+
+.关于此任务
+* 在以下情况下会发送警报：
++
+** 审计日志完整性检查计划或 Syslog 服务器已启用或禁用
+** 审计日志完整性检查、审计日志或 Syslog 服务器日志故障
+** 磁盘空间不足
+
+
+* 仅当完整性检查失败时才发送电子邮件。
+* 您应该同时修改审计日志目录和审计校验和日志目录路径。您不能只修改其中一个。
+* 当审计日志目录和审计校验和日志目录路径被修改时，无法对先前位置的审计日志执行完整性检查。
+* 审计日志目录和审计校验和日志目录路径应位于SnapCenter Server 的本地驱动器上。
++
+不支持共享或网络安装的驱动器。
+
+* 如果在 Syslog 服务器设置中使用 UDP 协议，则由于端口关闭或不可用而导致的错误无法在SnapCenter中捕获为错误或警报。
+* 您可以使用 Set-SmAuditSettings 和 Get-SmAuditSettings 命令来配置审计日志。
++
+可以通过运行 Get-Help command_name 获取有关可与 cmdlet 一起使用的参数及其描述的信息。或者，您也可以参考 https://docs.netapp.com/us-en/snapcenter-cmdlets/index.html["SnapCenter软件 Cmdlet 参考指南"^]。
+
+
+
+.步骤
+. 在*设置*页面中，导航到*设置*>*全局设置*>*审计日志设置*。
+. 在审计日志部分，输入详细信息。
+. 进入*审计日志目录*和*审计校验和日志目录*
++
+.. 输入最大文件大小
+.. 输入最大日志文件数
+.. 输入磁盘空间使用率百分比以发送警报
+
+
+. （可选）启用*记录 UTC 时间*。
+. （可选）启用*审计日志完整性检查计划*并单击*开始完整性检查*进行按需完整性检查。
++
+您还可以运行*Start-SmAuditIntegrityCheck*命令来启动按需完整性检查。
+
+. （可选）启用转发审计日志到远程系统日志服务器并输入系统日志服务器详细信息。
++
+您应该将 Syslog 服务器中的证书导入 TLS 1.2 协议的“受信任的根”。
+
++
+.. 输入 Syslog 服务器主机
+.. 输入 Syslog 服务器端口
+.. 输入 Syslog 服务器协议
+.. 输入 RFC 格式
+
+
+. 单击“保存”。
+. 您可以通过单击“*监视*”>“*作业*”查看审计完整性检查和磁盘空间检查。
+

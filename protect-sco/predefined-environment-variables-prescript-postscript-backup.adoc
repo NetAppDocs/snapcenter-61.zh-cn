@@ -1,0 +1,268 @@
+---
+permalink: protect-sco/predefined-environment-variables-prescript-postscript-backup.html 
+sidebar: sidebar 
+keywords: environment variable, predefined, prescript, postscript, backup, policy 
+summary: SnapCenter允许您在创建备份策略时执行前脚本和后脚本时使用预定义的环境变量。 
+---
+= 用于备份特定处方和后记的预定义环境变量
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+SnapCenter允许您在创建备份策略时执行前脚本和后脚本时使用预定义的环境变量。除 VMDK 之外的所有 Oracle 配置都支持此功能。
+
+SnapCenter预定义了可在执行 shell 脚本的环境中直接访问的参数值。执行脚本时，您不必手动指定这些参数的值。
+
+
+
+== 支持创建备份策略的预定义环境变量
+
+* *SC_JOB_ID* 指定操作的作业 ID。
++
+例如：256
+
+* *SC_ORACLE_SID* 指定数据库的系统标识符。
++
+如果操作涉及多个数据库，则参数将包含以管道分隔的数据库名称。
+
++
+此参数将填充应用程序卷。
+
++
+例如：NFSB32|NFSB31
+
+* *SC_HOST* 指定数据库的主机名。
++
+对于 RAC，主机名将是执行备份的主机的名称。
+
++
+此参数将填充应用程序卷。
+
++
+示例：scsmohost2.gdl.englabe.netapp.com
+
+* *SC_OS_USER* 指定数据库的操作系统所有者。
++
+数据将被格式化为 <db1>@<osuser1>|<db2>@<osuser2>。
+
++
+示例：NFSB31@oracle|NFSB32@oracle
+
+* *SC_OS_GROUP* 指定数据库的操作系统组。
++
+数据将被格式化为 <db1>@<osgroup1>|<db2>@<osgroup2>。
+
++
+示例：NFSB31@install|NFSB32@oinstall
+
+* *SC_BACKUP_TYPE*”指定备份类型（在线完整备份、在线数据备份、在线日志备份、离线关机备份、离线挂载备份）
++
+例子：
+
++
+** 对于完整备份：ONLINEFULL
+** 仅数据备份：ONLINEDATA
+** 对于仅日志备份：ONLINELOG
+
+
+* *SC_BACKUP_NAME* 指定备份的名称。
++
+此参数将填充应用程序卷。
+
++
+示例：DATA@RG2_scspr2417819002_07-20-2021_12.16.48.9267_0|LOG@RG2_scspr2417819002_07-20-2021_12.16.48.9267_1|AV@RG2_scspr2417819002_07-20-2021_12.16.48.9267
+
+* *SC_BACKUP_ID* 指定备份 ID。
++
+此参数将填充应用程序卷。
+
++
+示例：DATA@203|LOG@205|AV@207
+
+* *SC_ORACLE_HOME* 指定 Oracle 主目录的路径。
++
+示例：NFSB32@/ora01/app/oracle/product/18.1.0/db_1|NFSB31@/ora01/app/oracle/product/18.1.0/db_1
+
+* *SC_BACKUP_RETENTION* 指定策略中定义的保留期。
++
+例子：
+
++
+** 对于完整备份：每小时|DATA@DAYS:3|LOG@COUNT:4
+** 对于按需数据备份：Ondemand|DATA@COUNT:2
+** 对于仅按需日志备份：Ondemand|LOG@COUNT:2
+
+
+* *SC_RESOURCE_GROUP_NAME* 指定资源组的名称。
++
+例如：RG1
+
+* *SC_BACKUP_POLICY_NAME* 指定备份策略的名称。
++
+示例：backup_policy
+
+* *SC_AV_NAME* 指定应用程序卷的名称。
++
+示例：AV1|AV2
+
+* *SC_PRIMARY_DATA_VOLUME_FULL_PATH* 指定 SVM 到数据文件目录卷的存储映射。它将是 lun 和 qtree 的父卷的名称。
++
+数据格式为 <db1>@<SVM1:volume1>|<db2>@<SVM2:volume2>。
+
++
+例子：
+
++
+** 对于同一资源组中的 2 个数据库：NFSB32@buck:/vol/scspr2417819002_NFS_CDB_NFSB32_DATA|NFSB31@buck:/vol/scspr2417819002_NFS_CDB_NFSB31_DATA
+** 对于数据文件分布在多个卷上的单个数据库：buck:/vol/scspr2417819002_NFS_CDB_NFSB31_DATA,herculus:/vol/scspr2417819002_NFS
+
+
+* *SC_PRIMARY_ARCHIVELOGS_VOLUME_FULL_PATH* 指定 SVM 到日志文件目录卷的存储映射。它将是 lun 和 qtree 的父卷的名称。
++
+例子：
+
++
+** 对于单个数据库实例：buck:/vol/scspr2417819002_NFS_CDB_NFSB31_REDO
+** 对于多个数据库实例：NFSB31@buck:/vol/scspr2417819002_NFS_CDB_NFSB31_REDO|NFSB32@buck:/vol/scspr2417819002_NFS_CDB_NFSB32_REDO
+
+
+* *SC_PRIMARY_FULL_SNAPSHOT_NAME_FOR_TAG* 指定包含存储系统名称和卷名称的快照列表。
++
+例子：
+
++
+** 对于单个数据库实例：buck:/vol/scspr2417819002_NFS_CDB_NFSB32_DATA/RG2_scspr2417819002_07-21-2021_02.28.26.3973_0,buck:/vol/scspr2417819002_NFS_CDB_NFSB32_REDO/RG2_scspr2417819002_07-21-2021_02.28.26.3973_1
+** 对于多个数据库实例：NFSB32@buck:/vol/scspr2417819002_NFS_CDB_NFSB32_DATA/RG2_scspr2417819002_07-21-2021_02.28.26.3973_0,buck:/vol/scspr2417819002_NFS_CDB_NFSB32_REDO/RG2_scspr2417819002_07-21-2021_02.28.26.3973_1 |NFSB31@buck:/vol/scspr2417819002_NFS_CDB_NFSB31_DATA/RG2_scspr2417819002_07-21-2021_02.28.26.3973_0,buck:/vol/scspr2417819002_NFS_CDB_NFSB31_REDO/RG2_scspr2417819002_07-21-2021_02.28.26.3973_1
+
+
+* *SC_PRIMARY_SNAPSHOT_NAMES* 指定备份期间创建的主快照的名称。
++
+例子：
+
++
+** 对于单个数据库实例：RG2_scspr2417819002_07-21-2021_02.28.26.3973_0,RG2_scspr2417819002_07-21-2021_02.28.26.3973_1
+** 对于多个数据库实例：NFSB32@RG2_scspr2417819002_07-21-2021_02.28.26.3973_0,RG2_scspr2417819002_07-21-2021_02.28.26.3973_1|NFSB31@RG2_scspr2417819002_07-21-2021_02.28.26.3973_0,RG2_scspr2417819002_07-21-2021_02.28.26.3973_1
+** 对于涉及 2 个卷的一致性组快照：cg3_R80404CBEF5V1_04-05-2021_03.08.03.4945_0_bfc279cc-28ad-465c-9d60-5487ac17b25d_2021_4_5_3_8_58_350
+
+
+* *SC_PRIMARY_MOUNT_POINTS* 指定作为备份一部分的挂载点详细信息。
++
+详细信息包括卷的安装目录，而不是备份文件的直接父目录。对于 ASM 配置，它是磁盘组的名称。
+
++
+数据将被格式化为 <db1>@<mountpoint1,mountpoint2>|<db2>@<mountpoint1,mountpoint2>。
+
++
+例子：
+
++
+** 对于单个数据库实例：/mnt/nfsdb3_data、/mnt/nfsdb3_log、/mnt/nfsdb3_data1
+** 对于多个数据库实例：NFSB31@/mnt/nfsdb31_data,/mnt/nfsdb31_log,/mnt/nfsdb31_data1|NFSB32@/mnt/nfsdb32_data,/mnt/nfsdb32_log,/mnt/nfsdb32_data1
+** 对于 ASM：+DATA2DG,+LOG2DG
+
+
+* *SC_PRIMARY_SNAPSHOTS_AND_MOUNT_POINTS* 指定在每个挂载点备份期间创建的快照的名称。
++
+例子：
+
++
+** 对于单个数据库实例：RG2_scspr2417819002_07-21-2021_02.28.26.3973_0:/mnt/nfsb32_data,RG2_scspr2417819002_07-21-2021_02.28.26.3973_1:/mnt/nfsb31_log
+** 对于多个数据库实例：NFSB32@RG2_scspr2417819002_07-21-2021_02.28.26.3973_0:/mnt/nfsb32_data,RG2_scspr2417819002_07-21-2021_02.28.26.3973_1:/mnt/nfsb31_log|NFSB31@RG2_scspr2417819002_07-21-2021_02.28.26.3973_0:/mnt/nfsb31_data,RG2_scspr2417819002_07-21-2021_02.28.26.3973_1:/mnt/nfsb32_log
+
+
+* *SC_ARCHIVELOGS_LOCATIONS* 指定存档日志目录的位置。
++
+目录名称将是存档日志文件的直接父级。如果存档日志放置在多个位置，那么所有位置都会被捕获。这也包括 FRA 场景。如果目录使用软链接，则将填充相同的内容。
+
++
+例子：
+
++
+** 对于 NFS 上的单个数据库：/mnt/nfsdb2_log
+** 对于 NFS 上的多个数据库以及放置在两个不同位置的 NFSB31 数据库存档日志：NFSB31@/mnt/nfsdb31_log1、/mnt/nfsdb31_log2|NFSB32@/mnt/nfsdb32_log
+** 对于 ASM：+LOG2DG/ASMDB2/ARCHIVELOG/2021_07_15
+
+
+* *SC_REDO_LOGS_LOCATIONS* 指定重做日志目录的位置。
++
+目录名称将是重做日志文件的直接父级。如果目录使用软链接，则将填充相同的内容。
+
++
+例子：
+
++
+** 对于 NFS 上的单个数据库：/mnt/nfsdb2_data/newdb1
+** 对于 NFS 上的多个数据库：NFSB31@/mnt/nfsdb31_data/newdb31|NFSB32@/mnt/nfsdb32_data/newdb32
+** 对于 ASM：+LOG2DG/ASMDB2/ONLINELOG
+
+
+* *SC_CONTROL_FILES_LOCATIONS* 指定控制文件目录的位置。
++
+目录名称将是控制文件的直接父级。如果目录使用软链接，则将填充相同的内容。
+
++
+例子：
+
++
+** 对于 NFS 上的单个数据库：/mnt/nfsdb2_data/fra/newdb1,/mnt/nfsdb2_data/newdb1
+** 对于 NFS 上的多个数据库：NFSB31@/mnt/nfsdb31_data/fra/newdb31,/mnt/nfsdb31_data/newdb31|NFSB32@/mnt/nfsdb32_data/fra/newdb32,/mnt/nfsdb32_data/newdb32
+** 对于 ASM：+LOG2DG/ASMDB2/CONTROLFILE
+
+
+* *SC_DATA_FILES_LOCATIONS*”指定数据文件目录的位置。
++
+目录名称将是数据文件的直接父级。如果目录使用软链接，则将填充相同的内容。
+
++
+例子：
+
++
+** 对于 NFS 上的单个数据库：/mnt/nfsdb3_data1、/mnt/nfsdb3_data/NEWDB3/datafile
+** 对于 NFS 上的多个数据库：NFSB31@/mnt/nfsdb31_data1,/mnt/nfsdb31_data/NEWDB31/datafile|NFSB32@/mnt/nfsdb32_data1,/mnt/nfsdb32_data/NEWDB32/datafile
+** 对于 ASM：+DATA2DG/ASMDB2/DATAFILE、+DATA2DG/ASMDB2/TEMPFILE
+
+
+* *SC_SNAPSHOT_LABEL* 指定二级标签的名称。
++
+示例：每小时、每天、每周、每月或自定义标签。
+
+
+
+
+
+== 支持的分隔符
+
+* *:* 用于分隔 SVM 名称和卷名称
++
+示例：buck:/vol/scspr2417819002_NFS_CDB_NFSB32_DATA/RG2_scspr2417819002_07-21-2021_02.28.26.3973_0,buck:/vol/scspr2417819002_NFS_CDB_NFSB32_REDO/RG2_scspr2417819002_07-21-2021_02.28.26.3973_1
+
+* *@* 用于将数据与其数据库名称分开，并将值与其键分开。
++
+例子：
+
++
+** NFSB32 @ buck：/vol/scspr2417819002_NFS_CDB_NFSB32_DATA/RG2_scspr2417819002_07-21-2021_02.28.26.3973_0，buck：/vol/scspr2417819002_NFS_CDB_NFSB32_REDO/RG2_scspr2417819002_07-21-2021_02.28.26.3973_1 |NFSB31@buck:/vol/scspr2417819002_NFS_CDB_NFSB31_DATA/RG2_scspr2417819002_07-21-2021_02.28.26.3973_0,buck:/vol/scspr2417819002_NFS_CDB_NFSB31_REDO/RG2_scspr2417819002_07-21-2021_02.28.26.3973_1
+** NFSB31@oracle|NFSB32@oracle
+
+
+* *|* 用于分隔两个不同数据库之间的数据，以及分隔 SC_BACKUP_ID、SC_BACKUP_RETENTION 和 SC_BACKUP_NAME 参数的两个不同实体之间的数据。
++
+例子：
+
++
+** 数据@203|日志@205
+** 每小时|数据@天数:3|日志@计数:4
+** 数据@RG2_scspr2417819002_07-20-2021_12.16.48.9267_0|日志@RG2_scspr2417819002_07-20-2021_12.16.48.9267_1
+
+
+* */* 用于将卷名称与 SC_PRIMARY_SNAPSHOT_NAMES 和 SC_PRIMARY_FULL_SNAPSHOT_NAME_FOR_TAG 参数的快照分开。
++
+示例：NFSB32 @ buck：/vol/scspr2417819002_NFS_CDB_NFSB32_DATA/RG2_scspr2417819002_07-21-2021_02.28.26.3973_0，buck：/vol/scspr2417819002_NFS_CDB_NFSB32_REDO/RG2_scspr2417819002_07-21-2021_02.28.26.3973_1
+
+* *,* 用于分隔同一 DB 的变量集。
++
+示例：NFSB32 @ buck：/vol/scspr2417819002_NFS_CDB_NFSB32_DATA/RG2_scspr2417819002_07-21-2021_02.28.26.3973_0，buck：/vol/scspr2417819002_NFS_CDB_NFSB32_REDO/RG2_scspr2417819002_07-21-2021_02.28.26.3973_1 |NFSB31@buck:/vol/scspr2417819002_NFS_CDB_NFSB31_DATA/RG2_scspr2417819002_07-21-2021_02.28.26.3973_0,buck:/vol/scspr2417819002_NFS_CDB_NFSB31_REDO/RG2_scspr2417819002_07-21-2021_02.28.26.3973_1
+
+

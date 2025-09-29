@@ -1,0 +1,77 @@
+---
+permalink: protect-db2/split-a-clone-for-db2.html 
+sidebar: sidebar 
+keywords: split clone, snapcenter 
+summary: 您可以使用SnapCenter将克隆资源从父资源中拆分出来。被分割的克隆变得独立于父资源。 
+---
+= 分裂克隆
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您可以使用SnapCenter将克隆资源从父资源中拆分出来。被分割的克隆变得独立于父资源。
+
+.关于此任务
+* 您无法对中间克隆执行克隆分裂操作。
++
+例如，从数据库备份创建 clone1 后，您可以创建 clone1 的备份，然后克隆此备份（clone2）。创建clone2后，clone1为中间克隆，无法对clone1进行克隆分裂操作。但是可以对clone2进行克隆分裂操作。
+
++
+在对 clone2 进行分裂之后，就可以对 clone1 进行克隆分裂操作了，因为 clone1 已经不再是中间克隆了。
+
+* 当您拆分克隆时，克隆的备份副本和克隆作业将被删除。
+* 有关FlexClone卷拆分操作的信息，请参阅 https://docs.netapp.com/us-en/ontap/volumes/split-flexclone-from-parent-task.html["将FlexClone卷从其父卷中拆分出来"^]。
+* 确保存储系统上的卷或聚合处于在线状态。
+
+
+.步骤
+. 在左侧导航窗格中，单击“*资源*”，然后从列表中选择适当的插件。
+. 在“*资源*”页面中，从“查看”列表中选择适当的选项：
++
+|===
+| 选项 | 描述 
+
+
+ a| 
+对于数据库应用程序
+ a| 
+从视图列表中选择*数据库*。
+
+
+
+ a| 
+对于文件系统
+ a| 
+从视图列表中选择*路径*。
+
+|===
+. 从列表中选择适当的资源。
++
+进入资源拓扑页面。
+
+. 从“管理副本”视图中，选择克隆的资源（例如，数据库或 LUN），然后单击“*”image:../media/split_clone.gif["分裂克隆图标"] *.
+. 查看要拆分的克隆的估计大小以及聚合上可用的所需空间，然后单击“*开始*”。
+. 通过单击“*监视*”>“*作业*”来监视操作进度。
++
+如果 SMCore 服务重新启动，克隆拆分操作将停止响应。您应该运行 Stop-SmJob cmdlet 来停止克隆拆分操作，然后重试克隆拆分操作。
+
++
+如果您想要更长的轮询时间或更短的轮询时间来检查克隆是否拆分，您可以更改_SMCoreServiceHost.exe.config_文件中的_CloneSplitStatusCheckPollTime_参数的值来设置SMCore轮询克隆拆分操作状态的时间间隔。该值的单位是毫秒，默认值为5分钟。
+
++
+例如：
+
++
+[listing]
+----
+<add key="CloneSplitStatusCheckPollTime" value="300000" />
+----
++
+如果正在进行备份、恢复或另一个克隆拆分，则克隆拆分启动操作将失败。仅当正在运行的操作完成后，才应重新启动克隆拆分操作。
+
+
+
+.相关信息
+https://kb.netapp.com/Advice_and_Troubleshooting/Data_Protection_and_Security/SnapCenter/SnapCenter_clone_or_verfication_fails_with_aggregate_does_not_exist["SnapCenter克隆或验证失败，聚合不存在"]

@@ -1,0 +1,26 @@
+---
+permalink: protect-sco/reference_prepare_storage_systems_for_snapmirror_and_snapvault_replication_for_plugin_for_oracle.html 
+sidebar: sidebar 
+keywords: snapmirror, snapvault, storage system, replication 
+summary: 您可以将SnapCenter插件与ONTAP SnapMirror和SnapVault技术结合使用 
+---
+= 为 Oracle 插件准备SnapMirror和SnapVault复制的存储系统
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您可以使用带有ONTAP SnapMirror技术的SnapCenter插件在另一个卷上创建备份集的镜像副本，并使用ONTAP SnapVault技术执行磁盘到磁盘备份复制，以满足标准合规性和其他与治理相关的目的。在执行这些任务之前，您必须在源卷和目标卷之间配置数据保护关系并初始化该关系。
+
+SnapCenter完成 Snapshot 操作后对SnapMirror和SnapVault执行更新。SnapMirror和SnapVault更新作为SnapCenter作业的一部分执行；不要创建单独的ONTAP计划。
+
+
+NOTE: 如果您从NetApp SnapManager产品转到SnapCenter ，并且对所配置的数据保护关系感到满意，则可以跳过此部分。
+
+数据保护关系将主存储（源卷）上的数据复制到辅助存储（目标卷）。初始化关系时， ONTAP会将源卷上引用的数据块传输到目标卷。
+
+
+NOTE: SnapCenter不支持SnapMirror和SnapVault卷之间的级联关系（*Primary* > *Mirror* > *Vault*）。您应该使用扇出关系。
+
+SnapCenter支持版本灵活的SnapMirror关系的管理。有关版本灵活的SnapMirror关系及其设置方法的详细信息，请参阅 http://docs.netapp.com/ontap-9/index.jsp?topic=%2Fcom.netapp.doc.ic-base%2Fresources%2Fhome.html["ONTAP 文档"^]。

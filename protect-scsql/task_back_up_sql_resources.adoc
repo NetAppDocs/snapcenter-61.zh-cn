@@ -1,0 +1,261 @@
+---
+permalink: protect-scsql/task_back_up_sql_resources.html 
+sidebar: sidebar 
+keywords: backup 
+summary: 如果资源尚未属于任何资源组，您可以从资源页面备份该资源。 
+---
+= 备份 SQL 资源
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+如果资源尚未属于任何资源组，您可以从资源页面备份该资源。
+
+.关于此任务
+* 为了优化备份操作，您应该在 DNS 服务器中创建 Windows 群集名称和 IP 地址的反向查找记录。
+* 对于 Windows 凭据身份验证，您必须在安装插件之前设置您的凭据。
+* 对于 SQL Server 实例身份验证，您必须在安装插件后添加凭据。
+* 对于 gMSA 身份验证，您必须在 *添加主机* 或 *修改主机* 页面中向SnapCenter注册主机时设置 gMSA，以启用和使用 gMSA。
+* 如果主机添加了 gMSA，并且 gMSA 具有登录和系统管理员权限，则允许 gMSA 连接到 SQL 实例。
++
+** SnapCenter将验证是否配置了 SQL 实例的身份验证。如果配置了身份验证，则将使用此凭据访问 SQL 实例。
+** 如果未配置身份验证，请使用 gMSA 查看 SQL 插件当前是否正在运行。如果插件正在运行，它将用于建立与 SQL 实例的连接。
+** 当未配置 SQL 实例的身份验证且插件无法运行时，将通过 Windows 凭据身份验证访问 SQL 实例。
+
+
+
+
+[role="tabbed-block"]
+====
+.SnapCenter UI
+--
+.步骤
+. 在左侧导航窗格中，选择*资源*，然后从列表中选择适当的插件。
+. 在资源页面中，从*视图*下拉列表中选择*数据库*、*实例*或*可用性组*。
++
+.. 选择要备份的数据库、实例或可用性组。
++
+当您备份实例时，有关该实例的最后备份状态或时间戳的信息将不会在资源页面中提供。
+
++
+在拓扑视图中，您无法区分备份状态、时间戳或备份是针对实例还是数据库。
+
+
+
+. 在资源页面中，选中*Snapshot 副本的自定义名称格式*复选框，然后输入要用于 Snapshot 名称的自定义名称格式。
++
+例如，customtext_policy_hostname 或 resource_hostname。默认情况下，时间戳会附加到快照名称。
+
+. 在“策略”页面中，执行以下任务：
++
+.. 在“策略”部分中，从下拉列表中选择一个或多个策略。
++
+您可以通过选择 * 来创建策略image:../media/add_policy_from_resourcegroup.gif["从资源组添加策略"]* 启动策略向导。
+
++
+在“为选定的策略配置计划”部分中，列出了选定的策略。
+
+.. 选择 *image:../media/add_policy_from_resourcegroup.gif["从资源组添加策略"] * 在您想要配置计划的策略的配置计划列中。
+.. 在*添加政策时间表* `policy_name`对话框中，配置计划，然后选择*确定*。
++
+这里 `policy_name`是您选择的策略的名称。
+
++
+配置的计划列在“*已应用的计划*”列中。
+
+.. 选择“使用 Microsoft SQL Server 调度程序”，然后从与调度策略关联的“调度程序实例”下拉列表中选择调度程序实例。
+
+
+. 在验证页面中，执行以下步骤：
++
+.. 从*验证服务器*下拉列表中选择验证服务器。
++
+您可以选择多个验证服务器（本地主机或远程主机）。
+
++
+
+NOTE: 验证服务器版本应等于或高于托管主数据库的 SQL 服务器的版本。
+
+.. 选择*加载辅助定位器以验证辅助备份*以验证辅助存储系统上的备份。
+.. 选择您要配置验证计划的策略，然后选择*image:../media/add_policy_from_resourcegroup.gif["从资源组添加策略"] *.
+.. 在添加验证计划_policy_name_对话框中，执行以下操作：
++
+|===
+| 目的 | 操作 
+
+
+ a| 
+备份后运行验证
+ a| 
+选择*备份后运行验证*。
+
+
+
+ a| 
+安排验证
+ a| 
+选择*运行计划验证*。
+
+|===
++
+
+NOTE: 如果验证服务器没有存储连接，验证操作将失败并出现错误：无法挂载磁盘。
+
+.. 选择“确定”。
++
+配置的计划列在“已应用的计划”列中。
+
+
+
+. 在通知页面中，从*电子邮件首选项*下拉列表中，选择您想要发送电子邮件的场景。
++
+您还必须指定发件人和收件人的电子邮件地址以及电子邮件的主题。如果要附加对资源组执行的操作的报告，请选择*附加作业报告*。
+
++
+
+NOTE: 对于电子邮件通知，您必须使用 GUI 或 PowerShell 命令 Set-SmSmtpServer 指定 SMTP 服务器详细信息。
+
+. 查看摘要，然后选择*完成*。
++
+进入数据库拓扑页面。
+
+. 选择*立即备份*。
+. 在备份页面中，执行以下步骤：
++
+.. 如果您已对资源应用了多个策略，请从“*策略*”下拉列表中选择要用于备份的策略。
++
+如果为按需备份选择的策略与备份计划相关联，则按需备份将根据为计划类型指定的保留设置进行保留。
+
+.. 选择*备份后验证*来验证您的备份。
+.. 选择*备份*。
++
+
+NOTE: 您不应重命名在 Windows 调度程序或 SQL Server 代理中创建的备份作业。
+
++
+如果为按需备份选择的策略与备份计划相关联，则按需备份将根据为计划类型指定的保留设置进行保留。
+
++
+创建隐式资源组。您可以通过从“用户访问”页面选择相应的用户或组来查看。隐式资源组类型是“`Resource`”。
+
+
+
+. 通过选择 *Monitor* > *Jobs* 来监控操作进度。
+
+
+.完成后
+* 在MetroCluster配置中， SnapCenter可能无法在故障转移后检测到保护关系。
++
+https://kb.netapp.com/Advice_and_Troubleshooting/Data_Protection_and_Security/SnapCenter/Unable_to_detect_SnapMirror_or_SnapVault_relationship_after_MetroCluster_failover["MetroCluster故障转移后无法检测SnapMirror或SnapVault关系"]
+
+* 如果您正在备份 VMDK 上的应用程序数据，并且SnapCenter Plug-in for VMware vSphere的Java 堆大小不够大，则备份可能会失败。要增加 Java 堆大小，请找到脚本文件 /opt/netapp/init_scripts/scvservice。在该脚本中， `do_start method`命令启动SnapCenter VMware 插件服务。将该命令更新为以下内容： `Java -jar -Xmx8192M -Xms4096M` 。
+
+
+.相关信息
+link:task_create_backup_policies_for_sql_server_databases.html["为 SQL Server 数据库创建备份策略"]
+
+https://kb.netapp.com/Advice_and_Troubleshooting/Data_Protection_and_Security/SnapCenter/Clone_operation_might_fail_or_take_longer_time_to_complete_with_default_TCP_TIMEOUT_value["由于 TCP_TIMEOUT 延迟，备份操作因 MySQL 连接错误而失败"]
+
+https://kb.netapp.com/Advice_and_Troubleshooting/Data_Protection_and_Security/SnapCenter/Backup_fails_with_Windows_scheduler_error["备份因 Windows 调度程序错误而失败"]
+
+https://kb.netapp.com/Advice_and_Troubleshooting/Data_Protection_and_Security/SnapCenter/Quiesce_or_grouping_resources_operations_fail["静默或分组资源操作失败"]
+
+--
+.PowerShell cmdlet
+--
+.步骤
+. 使用 Open-SmConnection cmdlet 为指定用户启动与SnapCenter服务器的连接会话。
++
+[listing]
+----
+Open-smconnection  -SMSbaseurl  https://snapctr.demo.netapp.com:8146
+----
++
+显示用户名和密码提示。
+
+. 使用 Add-SmPolicy cmdlet 创建备份策略。
++
+此示例创建一个 SQL 备份类型为 FullBackup 的新备份策略：
+
++
+[listing]
+----
+PS C:\> Add-SmPolicy -PolicyName TESTPolicy
+-PluginPolicyType SCSQL -PolicyType Backup
+-SqlBackupType FullBackup -Verbose
+----
++
+此示例创建一个新的备份策略，其 Windows 文件系统备份类型为 CrashConsistent：
+
++
+[listing]
+----
+PS C:\> Add-SmPolicy -PolicyName FileSystemBackupPolicy
+-PluginPolicyType SCW -PolicyType Backup
+-ScwBackupType CrashConsistent -Verbose
+----
+. 使用 Get-SmResources cmdlet 发现主机资源。
++
+此示例发现指定主机上的 Microsoft SQL 插件的资源：
+
++
+[listing]
+----
+C:\PS>PS C:\> Get-SmResources -HostName vise-f6.sddev.mycompany.com
+-PluginCode SCSQL
+----
++
+此示例发现指定主机上的 Windows 文件系统的资源：
+
++
+[listing]
+----
+C:\PS>PS C:\> Get-SmResources -HostName vise2-f6.sddev.mycompany.com
+-PluginCode SCW
+----
+. 使用 Add-SmResourceGroup cmdlet 向SnapCenter添加新的资源组。
++
+此示例使用指定的策略和资源创建一个新的 SQL 数据库备份资源组：
+
++
+[listing]
+----
+PS C:\> Add-SmResourceGroup -ResourceGroupName AccountingResource
+-Resources @{"Host"="visef6.org.com";
+"Type"="SQL Database";"Names"="vise-f6\PayrollDatabase"}
+-Policies "BackupPolicy"
+----
++
+此示例使用指定的策略和资源创建一个新的 Windows 文件系统备份资源组：
+
++
+[listing]
+----
+PS C:\> Add-SmResourceGroup -ResourceGroupName EngineeringResource
+-PluginCode SCW -Resources @{"Host"="WIN-VOK20IKID5I";
+"Type"="Windows Filesystem";"Names"="E:\"}
+-Policies "EngineeringBackupPolicy"
+----
+. 使用 New-SmBackup cmdlet 启动新的备份作业。
++
+[listing]
+----
+PS C:> New-SmBackup -ResourceGroupName PayrollDataset -Policy FinancePolicy
+----
+. 使用 Get-SmBackupReport cmdlet 查看备份作业的状态。
++
+此示例显示在指定日期运行的所有作业的作业摘要报告：
+
++
+[listing]
+----
+PS C:\> Get-SmJobSummaryReport -Date '1/27/2016'
+----
+
+
+可以通过运行_Get-Help command_name_来获取有关可与 cmdlet 一起使用的参数及其描述的信息。或者，您也可以参考 https://docs.netapp.com/us-en/snapcenter-cmdlets/index.html["SnapCenter软件 Cmdlet 参考指南"^]。
+
+--
+====

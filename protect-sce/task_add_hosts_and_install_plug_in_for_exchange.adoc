@@ -1,0 +1,217 @@
+---
+permalink: protect-sce/task_add_hosts_and_install_plug_in_for_exchange.html 
+sidebar: sidebar 
+keywords: SnapCenter Plug-in for Microsoft Exchange Server, NET TCP 
+summary: 您可以使用 SnapCenterAdd Host 页面添加 Windows 主机。 Exchange 插件会自动安装在指定的主机上。这是安装插件的推荐方法。您可以添加主机并为单个主机或集群安装插件。 
+---
+= 添加主机并安装 Exchange 插件
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您可以使用SnapCenter添加主机页面来添加 Windows 主机。 Exchange 插件会自动安装在指定主机上。这是安装插件的推荐方法。您可以添加主机并为单个主机或集群安装插件。
+
+.开始之前
+* 如果SnapCenter Server 主机的操作系统是 Windows 2019，而插件主机的操作系统是 Windows 2022，则应执行以下操作：
++
+** 升级到 Windows Server 2019（操作系统内部版本 17763.5936）或更高版本
+** 升级到 Windows Server 2022（操作系统内部版本 20348.2402）或更高版本
+
+
+* 您必须是分配有插件安装和卸载权限的角色的用户，例如SnapCenter管理员。
+* 在 Windows 主机上安装插件时，如果指定非内置的凭据，或者用户属于本地工作组用户，则必须在主机上禁用 UAC。
+* 消息队列服务必须正在运行。
+* 如果您使用组托管服务帐户 (gMSA)，则应使用管理权限配置 gMSA。有关信息，请参阅link:task_configure_gMSA_on_windows_server_2012_or_later.html["在 Windows Server 2016 或更高版本上为 Microsoft Exchange Server 配置组托管服务帐户"^]。
+
+
+.关于此任务
+* 您不能将SnapCenter服务器作为插件主机添加到另一个SnapCenter服务器。
+* 您可以为单个主机或集群添加主机并安装插件包。
+* 如果交换节点是 DAG 的一部分，则不能仅将一个节点添加到SnapCenter服务器中。
+* 如果您在集群（Exchange DAG）上安装插件，即使某些节点在NetApp LUN 上没有数据库，它们也会安装在集群的所有节点上。
+
+
+从SnapCenter 4.6 开始，SCE 支持多租户，您可以使用以下方法添加主机：
+
+|===
+| 添加主机操作 | 4.5 及更早版本 | 4.6 及更高版本 
+
+
+| 在跨域或不同域中添加无 IP DAG | 不支持 | 支持 
+
+
+| 添加多个具有唯一名称的 IP DAG，位于同一域或跨域 | 支持 | 支持 
+
+
+| 在跨域中添加具有相同主机名和/或数据库名称的多个 IP 或无 IP DAG | 不支持 | 支持 
+
+
+| 添加多个具有相同名称和跨域的 IP/无 IP DAG | 不支持 | 支持 
+
+
+| 添加多个同名、跨域的独立主机 | 不支持 | 支持 
+|===
+Exchange 插件依赖于 Windows 的SnapCenter插件包，并且版本必须相同。在 Exchange 插件安装期间，默认选择适用于 Windows 的SnapCenter插件包，并与 VSS 硬件提供程序一起安装。
+
+如果已安装SnapManager for Microsoft Exchange Server 和SnapDrive for Windows，并且您想要在同一 Exchange Server 上安装 Plug-in for Exchange，则必须取消注册SnapDrive for Windows 使用的 VSS 硬件提供程序，因为它与使用 Plug-in for Exchange 和SnapCenter Plug-ins Package for Windows 安装的 VSS 硬件提供程序不兼容。有关更多信息，请参阅 https://kb.netapp.com/Advice_and_Troubleshooting/Data_Protection_and_Security/SnapCenter/How_to_manually_register_the_Data_ONTAP_VSS_Hardware_Provider["如何手动注册Data ONTAP VSS 硬件提供程序"] 。
+
+.步骤
+. 在左侧导航窗格中，单击“*主机*”。
+. 验证顶部是否选择了“*托管主机*”。
+. 单击“*添加*”。
+. 在“主机”页面中，执行以下操作：
++
+|===
+| 对于这个领域... | 操作 
+
+
+ a| 
+主机类型
+ a| 
+选择 *Windows* 作为主机类型。
+
+SnapCenter Server 添加主机，然后在主机上安装适用于 Windows 的插件和适用于 Exchange 的插件（如果尚未安装）。
+
+适用于 Windows 的插件和适用于 Exchange 的插件必须是同一版本。如果之前安装了不同版本的 Windows 插件， SnapCenter会在安装过程中更新该版本。
+
+
+
+ a| 
+主机名
+ a| 
+输入主机的完全限定域名 (FQDN) 或 IP 地址。
+
+SnapCenter依赖于 DNS 的正确配置。因此，最佳做法是输入完全限定域名 (FQDN)。
+
+仅当 IP 地址解析为 FQDN 时，不受信任的域主机才支持该 IP 地址。
+
+如果您使用SnapCenter添加主机并且它是子域的一部分，则必须提供 FQDN。
+
+您可以输入以下之一的 IP 地址或 FQDN：
+
+** 独立主机
+** 交易所 DAG
++
+对于 Exchange DAG，您可以：
+
++
+*** 通过提供 DAG 名称、DAG IP 地址、节点名称或节点 IP 地址来添加 DAG。
+*** 通过提供其中一个 DAG 群集节点的 IP 地址或 FQDN 来添加无 IP DAG 群集。
+*** 添加位于同一域或不同域的无 IP DAG。您还可以添加多个具有相同名称但不同域的 IP/无 IP DAG。
+
+
+
+
+
+NOTE: 对于独立主机或 Exchange DAG（跨域或同一域），建议提供主机或 DAG 的 FQDN 或 IP 地址。
+
+
+
+ a| 
+凭据
+ a| 
+选择您创建的凭证名称，或创建新的凭证。
+
+该凭证必须具有远程主机的管理权限。有关详细信息，请参阅有关创建凭证的信息。
+
+您可以将光标置于指定的凭证名称上来查看有关凭证的详细信息。
+
+
+NOTE: 凭证身份验证模式由您在添加主机向导中指定的主机类型决定。
+
+|===
+. 在选择要安装的插件部分中，选择要安装的插件。
++
+当您选择“Exchange 插件”时，将自动取消选择“Microsoft SQL Server 的SnapCenter插件”。由于 Exchange 所需的内存量和其他资源使用情况，Microsoft 建议不要在同一系统上安装 SQL Server 和 Exchange 服务器。
+
+. （可选）单击“更多选项”。
++
+|===
+| 对于这个领域... | 操作 
+
+
+ a| 
+端口
+ a| 
+保留默认端口号或指定端口号。
+
+默认端口号是 8145如果SnapCenter服务器安装在自定义端口上，则该端口号将显示为默认端口。
+
+
+NOTE: 如果您手动安装了插件并指定了自定义端口，则必须指定相同的端口。否则，操作失败。
+
+
+
+ a| 
+安装路径
+ a| 
+默认路径是 `C:\Program Files\NetApp\SnapCenter`。
+
+您可以选择自定义路径。
+
+
+
+ a| 
+添加 DAG 中的所有主机
+ a| 
+添加 DAG 时选中此复选框。
+
+
+
+ a| 
+跳过预安装检查
+ a| 
+如果您已经手动安装了插件并且不想验证主机是否满足安装插件的要求，请选中此复选框。
+
+
+
+ a| 
+使用组托管服务帐户 (gMSA) 运行插件服务
+ a| 
+如果要使用组托管服务帐户 (gMSA) 来运行插件服务，请选中此复选框。
+
+以以下格式提供 gMSA 名称：_domainName\accountName$_。
+
+
+NOTE: gMSA 将仅用作 Windows 服务的SnapCenter插件的登录服务帐户。
+
+|===
+. 单击“*提交*”。
++
+如果您未选中“跳过预检查”复选框，则会验证主机是否满足安装插件的要求。如果不满足最低要求，则会显示相应的错误或警告消息。
+
++
+如果错误与磁盘空间或 RAM 有关，您可以更新位于 `C:\Program Files\NetApp\SnapCenter`WebApp 修改默认值。如果错误与其他参数有关，则必须修复该问题。
+
++
+
+NOTE: 在 HA 设置中，如果您要更新 web.config 文件，则必须在两个节点上更新该文件。
+
+. 监控安装进度。
+
+
+
+
+== 为 NET TCP 通信配置自定义端口
+
+默认情况下，从SnapCenter 6.0 版本开始，适用于 Windows 的SnapCenter插件使用端口 909 进行 NET TCP 通信。如果端口 909 正在使用，您可以配置另一个端口用于 NET TCP 通信。
+
+.步骤
+. 将位于 _C:\Program Files\ NetApp\ SnapCenter\ SnapCenter Plug-in for Microsoft Windows\vssproviders\navssprv.exe.config_ 的 _NetTCPPort_ 键的值修改为所需的端口号。
+`<add key="NetTCPPort" value="new_port_number" />`
+. 将位于 _C:\Program Files\ NetApp\ SnapCenter\ SnapCenter Plug-in for Microsoft Windows\SnapDriveService.dll.config_ 的 _NetTCPPort_ 键的值修改为所需的端口号。
+`<add key="NetTCPPort" value="new_port_number" />`
+. 通过运行以下命令取消注册_Data ONTAP VSS Hardware Provider_服务：
+`"C:\Program Files\NetApp\SnapCenter\SnapCenter Plug-in for Microsoft Windows\navssprv.exe" -r service -u`
++
+验证该服务未显示在_services.msc_ 中的服务列表中。
+
+. 通过运行以下命令注册_Data ONTAP VSS Hardware Provider_服务：
+`"C:\Program Files\NetApp\SnapCenter\SnapCenter Plug-in for Microsoft Windows\vssproviders\navssprv.exe" -r service -a ".\LocalSystem"``
++
+验证该服务现在是否显示在_services.msc_ 中的服务列表中。
+
+. 重新启动_Plug-in for Windows_服务。
+

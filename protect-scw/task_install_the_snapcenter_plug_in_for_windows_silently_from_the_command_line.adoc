@@ -1,0 +1,104 @@
+---
+permalink: protect-scw/task_install_the_snapcenter_plug_in_for_windows_silently_from_the_command_line.html 
+sidebar: sidebar 
+keywords: install, snapcenter 
+summary: 如果您无法从SnapCenter GUI 远程安装插件，则可以在 Windows 主机上本地安装适用于 Microsoft Windows 的SnapCenter插件。您可以从 Windows 命令行以静默模式无人值守运行适用于 Microsoft Windows 的SnapCenter插件安装程序。 
+---
+= 从命令行静默安装适用于 Microsoft Windows 的SnapCenter插件
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+如果您无法从SnapCenter GUI 远程安装插件，则可以在 Windows 主机上本地安装适用于 Microsoft Windows 的SnapCenter插件。您可以从 Windows 命令行以静默模式无人值守运行适用于 Microsoft Windows 的SnapCenter插件安装程序。
+
+.开始之前
+* 您必须安装 ASP.NET Core Runtime 8.0.12（以及所有后续 8.0.x 补丁）托管包。
+* 您必须安装 PowerShell 7.4.2 或更高版本。
+* 您必须是主机上的本地管理员。
+
+
+.步骤
+. 从安装位置下载适用于 Microsoft Windows 的SnapCenter插件。
++
+例如，默认安装路径为 C:\ProgramData\ NetApp\ SnapCenter\Package Repository。
+
++
+可以从安装SnapCenter服务器的主机访问此路径。
+
+. 将安装文件复制到要安装插件的主机上。
+. 从命令提示符处，导航到下载安装文件的目录。
+. 输入以下命令，用您的数据替换变量：
++
+`"snapcenter_windows_host_plugin.exe"/silent / debuglog"" /log"" BI_SNAPCENTER_PORT= SUITE_INSTALLDIR="" BI_SERVICEACCOUNT= BI_SERVICEPWD= ISFeatureInstall=SCW`
+
++
+例如：
+
++
+ `"C:\ProgramData\NetApp\SnapCenter\Package Repository \snapcenter_windows_host_plugin.exe"/silent /debuglog"C: \HPPW_SCW_Install.log" /log"C:\" BI_SNAPCENTER_PORT=8145 SUITE_INSTALLDIR="C: \Program Files\NetApp\SnapCenter" BI_SERVICEACCOUNT=domain\administrator BI_SERVICEPWD=password ISFeatureInstall=SCW`
++
+
+NOTE: 安装 Windows 插件期间传递的所有参数均区分大小写。
+
++
+输入以下变量的值：
+
++
+|===
+| 变量 | 值 
+
+
+ a| 
+_/debuglog“<调试日志路径>_
+ a| 
+指定套件安装程序日志文件的名称和位置，如下例所示：Setup.exe /debuglog"C:\PathToLog\setupexe.log"。
+
+
+
+ a| 
+BI_SNAPCENTER_端口
+ a| 
+指定SnapCenter与 SMCore 通信的端口。
+
+
+
+ a| 
+套件安装目录
+ a| 
+指定主机插件包安装目录。
+
+
+
+ a| 
+BI_服务帐户
+ a| 
+为 Microsoft Windows Web 服务帐户指定SnapCenter插件。
+
+
+
+ a| 
+BI_SERVICEPWD
+ a| 
+指定 Microsoft Windows Web 服务帐户的SnapCenter插件的密码。
+
+
+
+ a| 
+ISFeature安装
+ a| 
+指定SnapCenter在远程主机上部署的解决方案。
+
+|===
++
+_debuglog_ 参数包括SnapCenter日志文件的路径。写入此日志文件是获取故障排除信息的首选方法，因为该文件包含安装对插件先决条件执行的检查结果。
+
++
+如有必要，您可以在SnapCenter for Windows 包的日志文件中找到其他故障排除信息。包的日志文件列在 _%Temp%_ 文件夹中（最早的在前），例如 _C:\temp\_。
+
++
+
+NOTE: Windows 插件的安装在主机上注册该插件，而不是在SnapCenter服务器上注册。您可以通过使用SnapCenter GUI 或 PowerShell cmdlet 添加主机在SnapCenter服务器上注册插件。添加主机后，会自动发现插件。
+
+

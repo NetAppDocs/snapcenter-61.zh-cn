@@ -1,0 +1,179 @@
+---
+permalink: protect-nsp/add_hosts_and_install_plug_in_packages_on_remote_hosts.html 
+sidebar: sidebar 
+keywords: add hostsNetApp supported plug-ins, MongoDB, ORASCPM, Oracle Applications, SAP ASE, SAP MaxDB, Storage plug-in 
+summary: 您必须使用 SnapCenterAdd Host 页面添加主机，然后安装插件包。插件会自动安装在远程主机上。您可以添加主机并为单个主机或集群安装插件包。 
+---
+= 添加主机并在远程主机上安装插件包
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您必须使用SnapCenter添加主机页面来添加主机，然后安装插件包。插件会自动安装在远程主机上。您可以添加主机并为单个主机或集群安装插件包。
+
+.开始之前
+* 您应该是被分配具有插件安装和卸载权限的角色的用户，例如SnapCenter管理员角色。
+* 您应该确保消息队列服务正在运行。
+* 如果您使用组托管服务帐户 (gMSA)，则应使用管理权限配置 gMSA。
++
+link:configure_gMSA_on_windows_server_2012_or_later.html["在 Windows Server 2016 或更高版本上为自定义应用程序配置组托管服务帐户"]
+
+* 对于 Windows 主机，您必须确保选择适用于 Windows 的SnapCenter插件。
+
+
+.关于此任务
+* 您不能将SnapCenter服务器作为插件主机添加到另一个SnapCenter服务器。
+* 如果在集群（WSFC）上安装插件，则插件将安装在集群的所有节点上。
+
+
+.步骤
+. 在左侧导航窗格中，选择*主机*。
+. 验证顶部的“*托管主机*”选项卡是否被选中。
+. 选择“*添加*”。
+. 在“主机”页面中，执行以下操作：
++
+|===
+| 对于这个领域... | 操作 
+
+
+ a| 
+主机类型
+ a| 
+选择主机类型：
+
+** Windows
+** Linux
+** AIX
+
+
+
+NOTE: NetApp支持的插件可以在 Windows、Linux 和 AIX 环境中使用。
+
+
+NOTE: AIX 支持存储和 Oracle 应用程序。
+
+
+
+ a| 
+主机名
+ a| 
+输入主机的完全限定域名 (FQDN) 或 IP 地址。
+
+SnapCenter依赖于 DNS 的正确配置。因此，最佳做法是输入 FQDN。
+
+对于 Windows 环境，仅当 IP 地址解析为 FQDN 时，不受信任的域主机才支持该 IP 地址。
+
+您可以输入独立主机的 IP 地址或 FQDN。
+
+如果您使用SnapCenter添加主机并且该主机是子域的一部分，则必须提供 FQDN。
+
+
+
+ a| 
+凭据
+ a| 
+选择您创建的凭证名称，或创建新的凭证。
+
+凭据必须具有远程主机的管理权限。有关详细信息，请参阅有关创建凭证的信息。
+
+您可以将光标置于指定的凭证名称上来查看有关凭证的详细信息。
+
+
+NOTE: 凭据身份验证模式由您在添加主机向导中指定的主机类型决定。
+
+|===
+. 在*选择要安装的插件*部分中，选择要安装的插件。
++
+您可以从列表中安装以下插件：
+
++
+** MongoDB
+** ORASCPM（显示为 Oracle 应用程序）
+** SAP ASE
+** SAP MaxDB
+** 存储
+
+
+. （可选）选择“更多选项”来安装其他插件。
++
+|===
+| 对于这个领域... | 操作 
+
+
+ a| 
+端口
+ a| 
+保留默认端口号，或者指定端口号。
+
+默认端口号是 8145如果SnapCenter服务器安装在自定义端口上，则该端口号将显示为默认端口。
+
+
+NOTE: 如果您手动安装了插件并指定了自定义端口，则必须指定相同的端口。否则，操作失败。
+
+
+
+ a| 
+安装路径
+ a| 
+NetApp支持的插件可以安装在 Windows 系统或 Linux 系统上。
+
+** 对于适用于 Windows 的SnapCenter插件包，默认路径为 C:\Program Files\ NetApp\ SnapCenter。
++
+您也可以选择自定义路径。
+
+** 对于 Linux 的SnapCenter插件包和 AIX 的SnapCenter插件包，默认路径为 `/opt/NetApp/snapcenter`。
++
+您也可以选择自定义路径。
+
+
+
+
+
+ a| 
+跳过预安装检查
+ a| 
+如果您已经手动安装了插件并且不想验证主机是否满足安装插件的要求，请选中此复选框。
+
+
+
+ a| 
+使用组托管服务帐户 (gMSA) 运行插件服务
+ a| 
+对于 Windows 主机，如果要使用组托管服务帐户 (gMSA) 来运行插件服务，请选中此复选框。
+
+
+IMPORTANT: 以以下格式提供 gMSA 名称：domainName\accountName$。
+
+
+NOTE: gMSA 将仅用作 Windows 服务的SnapCenter插件的登录服务帐户。
+
+|===
+. 选择*提交*。
++
+如果您未选中“跳过预检”复选框，则会验证主机是否满足安装插件的要求。系统会根据最低要求验证磁盘空间、RAM、PowerShell 版本、.NET 版本、位置（对于 Windows 插件）和 Java 版本（对于 Linux 插件）。如果不满足最低要求，则会显示相应的错误或警告消息。
+
++
+如果错误与磁盘空间或 RAM 有关，您可以更新位于 `C:\Program Files\NetApp\SnapCenter WebApp`修改默认值。如果错误与其他参数有关，则必须修复该问题。
+
++
+
+NOTE: 在 HA 设置中，如果要更新SnapManager.Web.UI.dll.config，则必须在两个节点上更新该文件并重新启动SnapCenter应用程序池。
+
++
+Windows 默认路径是 `C:\Program Files\NetApp\SnapCenter WebApp\SnapManager.Web.UI.dll.config`
+
++
+Linux 默认路径是 `/opt/NetApp/snapcenter/SnapManagerWeb/SnapManager.Web.UI.dll.config`
+
+. 如果主机类型是Linux，验证指纹，然后选择*确认并提交*。
++
+
+NOTE: 即使之前已将同一主机添加到SnapCenter并且已确认指纹，也必须进行指纹验证。
+
+. 监控安装进度。
++
+安装特定的日志文件位于 `/custom_location/snapcenter/`日志。
+
+

@@ -1,0 +1,105 @@
+---
+permalink: get-started/concept_snapcenter_licenses.html 
+sidebar: sidebar 
+keywords: licenses, FAS, AFF, ASA, SnapMirror, SnapVault, SnapRestore, FlexClone, SMBR, Single Mailbox Recovery 
+summary: SnapCenter需要多个许可证才能启用数据保护操作。您安装的SnapCenter许可证类型取决于您的存储环境和您想要使用的功能。 
+---
+= SnapCenter所需的许可证
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+SnapCenter需要多个许可证才能实现应用程序、数据库、文件系统和虚拟机的数据保护。您安装的SnapCenter许可证类型取决于您的存储环境和您想要使用的功能。
+
+|===
+| 许可证 | 需要时 
+
+
+ a| 
+SnapCenter标准基于控制器
+ a| 
+FAS、 AFF、 ASA必需
+
+SnapCenter标准许可证是基于控制器的许可证，是NetApp ONTAP One 的一部分。如果您拥有SnapManager Suite 许可证，您还可以获得SnapCenter Standard 许可证权利。如果您想使用FAS、 AFF或ASA存储试用安装SnapCenter ，您可以联系销售代表获取NetApp ONTAP One 评估许可证。
+
+有关NetApp ONTAP One 附带的许可证的信息，请参阅 https://docs.netapp.com/us-en/ontap/system-admin/manage-licenses-concept.html#licenses-included-with-ontap-one["NetApp ONTAP One 附带的许可证"]。
+
+
+NOTE: SnapCenter也作为数据保护包的一部分提供。如果您购买了 A400 或更高版本，则应该购买数据保护包。
+
+
+
+ a| 
+SnapMirror或SnapVault
+ a| 
+ONTAP
+
+如果在SnapCenter中启用了复制，则需要SnapMirror或SnapVault许可证。
+
+
+
+ a| 
+SnapRestore
+ a| 
+需要恢复和验证备份。
+
+在主存储系统上
+
+* 需要在SnapVault目标系统上执行远程验证并从备份中恢复。
+* 需要在SnapMirror目标系统上执行远程验证。
+
+
+
+
+ a| 
+FlexClone
+ a| 
+克隆数据库和验证操作所需。
+
+在主存储系统和辅助存储系统上
+
+* 需要在SnapVault目标系统上从二级保管库备份创建克隆。
+* 需要在SnapMirror目标系统上从二级SnapMirror备份创建克隆。
+
+
+
+
+ a| 
+协议许可证
+ a| 
+* LUN 的 iSCSI 或 FC 许可证
+* SMB 共享的 CIFS 许可证
+* NFS 类型 VMDK 的 NFS 许可证
+* VMFS 类型 VMDK 的 iSCSI 或 FC 许可证
+
+
+如果源卷不可用，则需要在SnapMirror目标系统上提供数据。
+
+
+
+ a| 
+SnapCenter标准许可证（可选）
+ a| 
+次要目的地
+
+
+NOTE: 建议（但不要求）将SnapCenter标准许可证添加到辅助目标。如果未在辅助目标上启用SnapCenter标准许可证，则执行故障转移操作后无法使用SnapCenter备份辅助目标上的资源。但是，在辅助目标上需要FlexClone许可证才能执行克隆和验证操作。
+
+
+
+ a| 
+单一邮箱恢复 (SMBR) 许可证
+ a| 
+如果您使用SnapCenter Plug-in for Exchange 来管理 Microsoft Exchange Server 数据库和单邮箱恢复 (SMBR)，则需要额外的 SMBR 许可证，该许可证需要根据用户邮箱单独购买。
+
+NetApp® 单邮箱恢复已于 2023 年 5 月 12 日停止提供 (EOA)。有关详细信息，请参阅link:https://mysupport.netapp.com/info/communications/ECMLP2885729.html["CPC-00507"]。  NetApp将在支持期限内继续为已通过 2020 年 6 月 24 日推出的营销部件号购买邮箱容量、维护和支持的客户提供支持。
+
+NetApp Single Mailbox Recovery 是 Ontrack 提供的合作伙伴产品。 Ontrack PowerControls 提供的功能与NetApp Single Mailbox Recovery 类似。客户可以从 Ontrack（通过 licenceteam@ontrack.com）购买新的 Ontrack PowerControls 软件许可证以及 Ontrack PowerControls 维护和支持续订，以便在 2023 年 5 月 12 日 EOA 日期之后进行细粒度的邮箱恢复。
+
+|===
+
+NOTE: SnapCenter Advanced 和SnapCenter NAS File Services 许可证已弃用，不再可用。  Amazon FSx for NetApp ONTAP、 ONTAP Select、 Cloud Volumes ONTAP和Azure NetApp Files不再需要标准许可证和基于容量的许可证。
+
+您应该安装一个或多个SnapCenter许可证。有关如何添加许可证的信息，请参阅link:../install/concept_snapcenter_standard_controller_based_licenses.html["添加基于SnapCenter Standard 控制器的许可证"]。

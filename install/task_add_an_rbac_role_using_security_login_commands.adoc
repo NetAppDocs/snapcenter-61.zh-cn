@@ -1,0 +1,85 @@
+---
+permalink: install/task_add_an_rbac_role_using_security_login_commands.html 
+sidebar: sidebar 
+keywords: RBAC roles, add, NetApp ONTAP RBAC role, storage system 
+summary: 当您的存储系统运行集群NetApp ONTAP时，您可以使用安全登录命令添加NetApp ONTAP RBAC 角色。 
+---
+= 使用安全登录命令添加NetApp ONTAP RBAC 角色
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+当您的存储系统运行集群ONTAP时，您可以使用安全登录命令添加NetApp ONTAP RBAC 角色。
+
+.开始之前
+* 确定您要执行的任务以及执行这些任务所需的权限。
+* 授予命令和/或命令目录权限。
++
+每个命令/命令目录有两种访问级别：全部访问和只读。
+
++
+您必须始终首先分配所有访问权限。
+
+* 为用户分配角色。
+* 根据您的SnapCenter插件是连接到整个集群的集群管理员 IP 还是直接连接到集群内的 SVM 来确定您的配置。
+
+
+.关于此任务
+为了简化存储系统上这些角色的配置，您可以使用NetApp ONTAP工具的 RBAC 用户创建器，该工具发布在NetApp社区论坛上。
+
+该工具会自动正确设置ONTAP权限。例如， NetApp ONTAP的 RBAC User Creator 工具会自动按正确的顺序添加权限，以便所有访问权限首先出现。如果您先添加只读权限，然后添加所有访问权限，ONTAP会将所有访问权限标记为重复并忽略它们。
+
+
+NOTE: 如果您稍后升级SnapCenter或ONTAP，则应重新运行NetApp ONTAP的 RBAC User Creator 工具来更新您之前创建的用户角色。为早期版本的SnapCenter或ONTAP创建的用户角色无法与升级后的版本正常配合使用。当您重新运行该工具时，它会自动处理升级。您不需要重新创建角色。
+
+有关设置ONTAP RBAC 角色的更多信息，请参阅 http://docs.netapp.com/ontap-9/topic/com.netapp.doc.pow-adm-auth-rbac/home.html["ONTAP 9 管理员身份验证和 RBAC 电源指南"^]。
+
+.步骤
+. 在存储系统上，输入以下命令创建新角色：
++
+`security login role create <role_name\> -cmddirname "command" -access all –vserver <svm_name\>`
+
++
+** svm_name 是 SVM 的名称。如果将其留空，则默认为集群管理员。
+** role_name 是您为角色指定的名称。
+** 命令是ONTAP功能。
++
+
+NOTE: 您必须对每个权限重复此命令。请记住，全访问命令必须列在只读命令之前。
+
++
+有关权限列表的信息，请参阅link:../install/task_create_an_ontap_cluster_role_with_minimum_privileges.html#ontap-cli-commands-for-creating-cluster-roles-and-assigning-permissions["用于创建角色和分配权限的ONTAP CLI 命令"^]。
+
+
+
+. 通过输入以下命令创建用户名：
++
+`security login create -username <user_name\> -application ontapi -authmethod <password\> -role <name_of_role_in_step_1\> –vserver <svm_name\> -comment "user_description"`
+
++
+** user_name 是您正在创建的用户的名称。
+** <password> 是您的密码。如果您未指定密码，系统将提示您输入密码。
+** svm_name 是 SVM 的名称。
+
+
+. 通过输入以下命令将角色分配给用户：
++
+`security login modify username <user_name\> –vserver <svm_name\> -role <role_name\> -application ontapi -application console -authmethod <password\>`
+
++
+** <user_name> 是您在步骤 2 中创建的用户的名称。此命令允许您修改用户以将其与角色关联。
+** <svm_name> 是 SVM 的名称。
+** <role_name> 是您在步骤 1 中创建的角色的名称。
+** <password> 是您的密码。如果您未指定密码，系统将提示您输入密码。
+
+
+. 通过输入以下命令验证用户是否已正确创建：
++
+`security login show –vserver <svm_name\> -user-or-group-name <user_name\>`
+
++
+user_name 是您在步骤 3 中创建的用户的名称。
+
+

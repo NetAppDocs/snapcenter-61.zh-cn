@@ -1,0 +1,73 @@
+---
+permalink: protect-sce/task_define_a_restore_strategy_for_exchange_databases.html 
+sidebar: sidebar 
+keywords: SnapCenter plug-in for Exchange Server 
+summary: 定义 Exchange Server 的恢复策略使您能够成功恢复数据库。 
+---
+= 定义 Exchange 数据库的还原策略
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+定义 Exchange Server 的恢复策略使您能够成功恢复数据库。
+
+
+
+== Exchange Server 中还原操作的来源
+
+您可以从主存储上的备份副本还原 Exchange Server 数据库。
+
+您只能从主存储恢复数据库。
+
+
+
+== Exchange Server 支持的还原操作类型
+
+您可以使用SnapCenter对 Exchange 资源执行不同类型的还原操作。
+
+* 恢复最新状态
+* 恢复到之前的时间点
+
+
+
+
+=== 恢复最新状态
+
+在最新的恢复操作中，数据库将恢复到故障点。  SnapCenter通过执行以下序列来实现此目的：
+
+. 从您选择的完整数据库备份中还原数据库。
+. 应用所有已备份的事务日志以及自最近一次备份以来创建的任何新日志。
++
+事务日志被向前移动并应用于任何选定的数据库。
+
++
+还原完成后，Exchange 会创建一个新的日志链。
+
++
+|===
+
+
+| *最佳实践：*建议您在恢复完成后执行新的完整备份和日志备份。 
+|===
++
+最新的恢复操作需要一组连续的事务日志。
+
++
+执行最新还原后，用于还原的备份仅可用于时间点还原操作。
+
++
+如果您不需要为所有备份保留最新的还原功能，则可以通过备份策略配置系统的事务日志备份保留。
+
+
+
+
+
+=== 恢复到之前的时间点
+
+在时间点还原操作中，数据库仅还原到过去的特定时间。时间点还原操作发生在以下还原情况下：
+
+* 数据库恢复到备份事务日志中的给定时间。
+* 数据库已恢复，并且仅将备份事务日志的子集应用于该数据库。
+

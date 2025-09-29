@@ -1,0 +1,51 @@
+---
+permalink: protect-hana/concept_auto_discovery_of_resources_on_linux_host.html 
+sidebar: sidebar 
+keywords: SnapCenter Plug-in for SAP HANA Database 
+summary: 资源是 Linux 主机上由SnapCenter管理的 SAP HANA 数据库和非数据卷。安装适用于 SAP HANA 数据库的SnapCenter插件后，该 Linux 主机上的 SAP HANA 数据库将自动被发现并显示在资源页面中。 
+---
+= Linux主机上的资源自动发现
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+资源是 Linux 主机上由SnapCenter管理的 SAP HANA 数据库和非数据卷。安装适用于 SAP HANA 数据库的SnapCenter插件后，该 Linux 主机上的 SAP HANA 数据库将自动被发现并显示在资源页面中。
+
+以下 SAP HANA 资源支持自动发现：
+
+* 单个容器
++
+安装或升级插件后，位于集中式主机插件上的单个容器资源将作为手动添加的资源继续使用。
+
++
+安装或升级插件后，仅在直接注册到SnapCenter的 SAP HANA Linux 主机上自动发现 SAP HANA 数据库。
+
+* 多租户数据库容器（MDC）
++
+安装或升级插件后，位于集中主机插件上的MDC资源将继续作为手动添加的资源。
+
++
+升级到SnapCenter 4.3 后，您必须继续在集中式主机插件上手动添加 MDC 资源。
+
++
+对于直接在SnapCenter中注册的 SAP HANA Linux 主机，安装或升级插件将触发主机上资源的自动发现。升级插件后，对于位于插件主机上的每个 MDC 资源，将自动发现具有不同 GUID 格式的另一个 MDC 资源并在SnapCenter中注册。新的资源将处于锁定状态。
+
++
+例如，在SnapCenter 4.2 中，如果 E90 MDC 资源位于插件主机上并手动注册，则升级到SnapCenter 4.3 后，将在SnapCenter中发现并注册另一个具有不同 GUID 的 E90 MDC 资源。
+
+
+
+以下配置不支持自动发现：
+
+* RDM 和 VMDK 布局
++
+
+NOTE: 一旦发现上述资源，则不支持对这些资源进行数据保护操作。
+
+* HANA 多主机配置
+* 同一主机上的多个实例
+* 多层横向扩展 HANA 系统复制
+* 系统复制模式下的级联复制环境
+

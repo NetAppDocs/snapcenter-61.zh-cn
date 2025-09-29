@@ -1,0 +1,163 @@
+---
+permalink: protect-scsql/task_add_hosts_and_install_snapcenter_plug_ins_package_for_windows.html 
+sidebar: sidebar 
+keywords: credentials 
+summary: 您必须使用 SnapCenterAdd Host 页面来添加主机并安装插件包。插件会自动安装在远程主机上。 
+---
+= 添加主机并安装适用于 Windows 的SnapCenter插件包
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您必须使用SnapCenter *添加主机*页面来添加主机并安装插件包。插件会自动安装在远程主机上。
+
+.开始之前
+* 如果SnapCenter Server 主机的操作系统是 Windows 2019，而插件主机的操作系统是 Windows 2022，则应执行以下操作：
++
+** 升级到 Windows Server 2019（操作系统内部版本 17763.5936）或更高版本
+** 升级到 Windows Server 2022（操作系统内部版本 20348.2402）或更高版本
+
+
+* 您必须是分配有插件安装和卸载权限的角色的用户，例如SnapCenter管理员角色。
+* 在 Windows 主机上安装插件时，如果指定非内置的凭据，则应在主机上禁用 UAC。
+* 您应该确保消息队列服务处于运行状态。
+* 如果您使用组托管服务帐户 (gMSA)，则应使用管理权限配置 gMSA。
++
+link:task_configure_gMSA_on_windows_server_2012_or_later.html["在 Windows Server 2016 或更高版本上为 SQL 配置组托管服务帐户"^]
+
+
+
+.关于此任务
+您不能将SnapCenter服务器作为插件主机添加到另一个SnapCenter服务器。
+
+您可以添加主机并为单个主机或集群安装插件包。如果您在群集或 Windows Server 故障转移群集 (WSFC) 上安装插件，则插件将安装在群集的所有节点上。
+
+有关管理主机的信息，请参阅link:../admin/concept_manage_hosts.html["管理主机"^]。
+
+.步骤
+. 在左侧导航窗格中，选择*主机*。
+. 验证顶部的“*托管主机*”选项卡是否被选中。
+. 选择“*添加*”。
+. 在“主机”页面中执行以下操作：
++
+|===
+| 对于这个领域... | 操作 
+
+
+ a| 
+主机类型
+ a| 
+选择 Windows 作为主机类型。  SnapCenter服务器添加主机，然后安装适用于 Windows 的插件（如果主机上尚未安装该插件）。
+
+如果您在“插件”页面上选择“Microsoft SQL Server”选项， SnapCenter服务器将安装 SQL Server 插件。
+
+
+
+ a| 
+主机名
+ a| 
+输入主机的完全限定域名 (FQDN) 或 IP 地址。仅当 IP 地址解析为 FQDN 时，不受信任的域主机才支持该 IP 地址。
+
+SnapCenter依赖于 DNS 的正确配置。因此，最佳做法是输入 FQDN。
+
+您可以输入以下之一的 IP 地址或 FQDN：
+
+** 独立主机
+** WSFC 如果您使用SnapCenter添加主机并且该主机是子域的一部分，则必须提供 FQDN。
+
+
+
+
+ a| 
+凭据
+ a| 
+选择您创建的凭证名称或创建新的凭证。该凭证必须具有远程主机的管理权限。有关详细信息，请参阅有关创建凭证的信息。
+
+您可以将光标置于指定的凭证名称上来查看有关凭证的详细信息。
+
+
+NOTE: 凭据身份验证模式由您在添加主机向导中指定的主机类型决定。
+
+|===
+. 在*选择要安装的插件*部分中，选择要安装的插件。
+. 选择*更多选项*。
++
+|===
+| 对于这个领域... | 操作 
+
+
+ a| 
+端口
+ a| 
+保留默认端口号或指定端口号。默认端口号是 8145如果SnapCenter服务器安装在自定义端口上，则该端口号将显示为默认端口。
+
+
+NOTE: 如果您手动安装了插件并指定了自定义端口，则必须指定相同的端口。否则，操作失败。
+
+
+
+ a| 
+安装路径
+ a| 
+默认路径为 C:\Program Files\ NetApp\ SnapCenter。您可以选择自定义路径。
+
+
+
+ a| 
+添加集群中的所有主机
+ a| 
+选中此复选框可添加 WSFC 或 SQL 可用性组中的所有集群节点。如果您想管理和识别集群内的多个可用的 SQL 可用性组，则应该通过选择 GUI 中的相应集群复选框来添加所有集群节点。
+
+
+
+ a| 
+跳过预安装检查
+ a| 
+如果您已经手动安装了插件并且不想验证主机是否满足安装插件的要求，请选中此复选框。
+
+
+
+ a| 
+使用组托管服务帐户 (gMSA) 运行插件服务
+ a| 
+如果要使用组托管服务帐户 (gMSA) 来运行插件服务，请选中此复选框。
+
+以以下格式提供 gMSA 名称：domainName\accountName$。
+
+
+NOTE: 如果主机添加了 gMSA，并且 gMSA 具有登录和系统管理员权限，则 gMSA 将用于连接到 SQL 实例。
+
+|===
+. 选择*提交*。
+. 对于SQL插件，选择主机来配置日志目录。
++
+.. 选择*配置日志目录*，在配置主机日志目录页面中选择*浏览*并完成以下步骤：
++
+仅列出NetApp LUN（驱动器）以供选择。  SnapCenter在备份操作过程中备份并复制主机日志目录。
+
++
+image::../media/host_managed_hosts_configureplugin.gif[配置插件页面]
+
++
+... 选择主机上将存储主机日志的驱动器号或挂载点。
+... 如果需要，选择一个子目录。
+... 选择*保存*。
+
+
+
+
+. 选择*提交*。
++
+如果您未选中“跳过预检查”复选框，则会验证主机是否满足安装插件的要求。系统会根据最低要求验证磁盘空间、RAM、PowerShell 版本、.NET 版本、位置（对于 Windows 插件）和 Java 版本（对于 Linux 插件）。如果不满足最低要求，则会显示相应的错误或警告消息。
+
++
+如果错误与磁盘空间或 RAM 有关，您可以更新位于 C:\Program Files\ NetApp\ SnapCenter WebApp 的 web.config 文件以修改默认值。如果错误与其他参数有关，则必须修复该问题。
+
++
+
+NOTE: 在 HA 设置中，如果您要更新 web.config 文件，则必须在两个节点上更新该文件。
+
+. 监控安装进度。
+

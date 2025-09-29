@@ -1,0 +1,38 @@
+---
+permalink: protect-scsql/task_restore_a_sql_server_database_from_secondary_storage.html 
+sidebar: sidebar 
+keywords: restore operation 
+summary: 您可以从辅助存储系统上的物理 LUN（RDM、iSCSI 或 FCP）恢复备份的 SQL Server 数据库。恢复功能是一个多阶段过程，它将所有数据和日志页从驻留在辅助存储系统上的指定 SQL Server 备份复制到指定的数据库。 
+---
+= 从辅助存储还原 SQL Server 数据库
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您可以从辅助存储系统上的物理 LUN（RDM、iSCSI 或 FCP）恢复备份的 SQL Server 数据库。恢复功能是一个多阶段过程，它将所有数据和日志页从驻留在辅助存储系统上的指定 SQL Server 备份复制到指定的数据库。
+
+.开始之前
+* 您必须已将快照从主存储系统复制到辅助存储系统。
+* 您必须确保SnapCenter服务器和插件主机能够连接到辅助存储系统。
+* 恢复向导页面上的大多数字段都在基本恢复过程中进行了解释。以下信息描述了您可能需要指导的一些字段。
+
+
+.关于此任务
+对于启用SnapLock的策略、对于ONTAP 9.12.1 及以下版本、如果指定 Snapshot 锁定期限、则作为恢复的一部分从防篡改快照创建的克隆将继承SnapLock到期时间。存储管理员应在SnapLock到期后手动清理克隆。
+
+.步骤
+. 在左侧导航窗格中，单击“*资源*”，然后从列表中选择“适用于 SQL Server 的SnapCenter插件*”。
+. 在资源页面中，从*视图*下拉列表中选择*数据库*或*资源组*。
+. 选择数据库或资源组。
++
+进入数据库或资源组拓扑页面。
+
+. 在“管理副本”部分，从辅助存储系统（镜像或保险库）中选择“*备份*”。
+. 从列表中选择备份，然后单击image:../media/restore_icon.gif["恢复图标"]。
+. 在位置页面中，选择还原所选资源的目标卷。
+. 完成还原向导，查看摘要，然后单击“完成”。
+
+
+如果将数据库还原到其他数据库共享的不同路径，则应执行完整备份和备份验证，以确认还原的数据库没有物理级损坏。

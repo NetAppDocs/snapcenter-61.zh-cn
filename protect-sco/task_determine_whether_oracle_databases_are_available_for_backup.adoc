@@ -1,0 +1,105 @@
+---
+permalink: protect-sco/task_determine_whether_oracle_databases_are_available_for_backup.html 
+sidebar: sidebar 
+keywords: credentials,SnapCenter Plug-in for Oracle Databases, non-database entries, oratab 
+summary: 资源是主机上由SnapCenter管理的 Oracle 数据库。发现可用的数据库后，您可以将这些数据库添加到资源组以执行数据保护操作。 
+---
+= 发现可供备份的 Oracle 数据库
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+资源是主机上由SnapCenter管理的 Oracle 数据库。发现可用的数据库后，您可以将这些数据库添加到资源组以执行数据保护操作。
+
+.开始之前
+* 您必须完成安装SnapCenter服务器、添加主机、创建存储系统连接和添加凭据等任务。
+* 如果数据库驻留在虚拟机磁盘 (VMDK) 或原始设备映射 (RDM) 上，则必须部署SnapCenter Plug-in for VMware vSphere并向SnapCenter注册该插件。
++
+有关更多信息，请参阅 https://docs.netapp.com/us-en/sc-plugin-vmware-vsphere/scpivs44_deploy_snapcenter_plug-in_for_vmware_vsphere.html["SnapCenter Plug-in for VMware vSphere"^] 。
+
+* 如果数据库驻留在 VMDK 文件系统上，则必须登录到 vCenter 并导航到 *VM 选项* > *高级* > *编辑配置*，将 VM 的 _disk.enableUUID_ 值设置为 true。
+* 您必须已经查看了SnapCenter遵循的流程来发现不同类型和版本的 Oracle 数据库。
+
+
+
+
+== 步骤 1：防止SnapCenter发现非数据库条目
+
+您可以阻止SnapCenter发现 oratab 文件中添加的非数据库条目。
+
+.步骤
+. 安装 Oracle 插件后，root 用户应在目录 _/var/opt/snapcenter/sco/etc/_ 下创建 *sc_oratab.config* 文件。
++
+授予 Oracle 二进制文件所有者和组写入权限，以便将来可以维护该文件。
+
+. 数据库管理员应在 *sc_oratab.config* 文件中添加非数据库条目。
++
+建议维护 _/etc/oratab_ 文件中非数据库条目定义的相同格式，或者用户可以只添加非数据库实体字符串。
+
++
+
+NOTE: 该字符串区分大小写。任何以 # 开头的文本都被视为注释。注释可以附加在非数据库名称后面。
+
++
+....
+For example:
+--------------------------------------------
+# Sample entries
+# Each line can have only one non-database name
+# These are non-database name
+oratar  # Added by the admin group -1
+#Added by the script team
+NEWSPT
+DBAGNT:/ora01/app/oracle/product/agent:N
+-----------------------------------------------
+....
+. 发现资源。
++
+*sc_oratab.config* 中添加的非数据库条目将不会在资源页面中列出。
+
+
+
+
+IMPORTANT: 始终建议在升级SnapCenter插件之前备份 sc_oratab.config 文件。
+
+
+
+== 第 2 步：发现资源
+
+安装插件后，该主机上的所有数据库都会被自动发现并显示在资源页面中。
+
+数据库至少应处于已安装状态或更高状态，才能成功发现数据库。在 Oracle 真正应用集群 (RAC) 环境中，执行发现的主机中的 RAC 数据库实例应至少处于已安装状态或更高状态，数据库实例的发现才能成功。只有成功发现的数据库才能添加到资源组中。
+
+如果您删除了主机上的 Oracle 数据库， SnapCenter Server 将不会意识到并会列出已删除的数据库。您应该手动刷新资源以更新SnapCenter资源列表。
+
+.步骤
+. 在左侧导航窗格中，单击“*资源*”，然后从列表中选择适当的插件。
+. 在资源页面中，从*视图*列表中选择*数据库*。
++
+点击image:../media/filter_icon.gif["筛选图标"]单击[过滤图标]，然后选择主机名和数据库类型来过滤资源。然后，您可以单击 imagfilter_icon.gif[过滤器图标]_icon.png[] 图标来关闭过滤器窗格。
+
+. 单击“刷新资源”。
++
+在 RAC One Node 场景中，数据库被发现为其当前所在节点上的 RAC 数据库。
+
+
+
+*结果*
+
+数据库与数据库类型、主机或集群名称、相关资源组和策略以及状态等信息一起显示。
+
+
+IMPORTANT: 如果数据库在SnapCenter之外重命名，则必须刷新资源。
+
+* 如果数据库位于非NetApp存储系统上，则用户界面将在“总体状态”列中显示“不可用于备份”消息。
++
+您无法对非NetApp存储系统上的数据库执行数据保护操作。
+
+* 如果数据库位于NetApp存储系统上且未受保护，则用户界面将在“总体状态”列中显示“未受保护”消息。
+* 如果数据库位于NetApp存储系统上并受到保护，则用户界面会在“总体状态”列中显示“可供备份”消息。
+
+
+
+NOTE: 如果您启用了 Oracle 数据库身份验证，则资源视图中会显示一个红色挂锁图标。您必须配置数据库凭据才能保护数据库或将其添加到资源组以执行数据保护操作。

@@ -1,0 +1,24 @@
+= 
+:allow-uri-read: 
+
+
+您可以使用默认快照命名约定，也可以使用自定义命名约定。默认备份命名约定会在快照名称中添加时间戳，以帮助您识别副本的创建时间。
+
+快照使用以下默认命名约定：
+
+`resourcegroupname_hostname_timestamp`
+
+您应该对备份资源组进行逻辑命名，如下例所示：
+
+[listing]
+----
+dts1_mach1x88_03-12-2015_23.17.26
+----
+在这个例子中，语法元素具有以下含义：
+
+* _dts1_ 是资源组名称。
+* _mach1x88_ 是主机名。
+* _03-12-2015_23.17.26_ 是日期和时间戳。
+
+
+或者，您可以在保护资源或资源组时通过选择“使用自定义名称格式进行 Snapshot 复制”来指定 Snapshot 名称格式。例如，customtext_resourcegroup_policy_hostname 或 resourcegroup_hostname。默认情况下，时间戳后缀会添加到快照名称中。

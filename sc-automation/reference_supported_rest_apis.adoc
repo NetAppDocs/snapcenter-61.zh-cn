@@ -1,0 +1,371 @@
+---
+permalink: sc-automation/reference_supported_rest_apis.html 
+sidebar: sidebar 
+keywords: REST API categories 
+summary: 通过SnapCenter REST API 可用的资源按类别组织，如SnapCenter API 文档页面所示。 
+---
+= SnapCenter服务器和插件支持的 REST API
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+通过SnapCenter REST API 可用的资源按类别组织，如SnapCenter API 文档页面所示。下面简要介绍了每个资源及其基本资源路径，并在适当的情况下提供了额外的使用注意事项。
+
+
+
+== 授权
+
+您可以使用此 API 登录SnapCenter服务器。此 API 返回一个用户授权令牌，用于验证后续请求。
+
+
+
+== 域
+
+您可以使用 API 来执行不同的操作。
+
+* 检索SnapCenter中的所有域
+* 检索特定域的详细信息
+* 注册或取消注册域名
+* 修改域名
+
+
+
+
+== 作业
+
+您可以使用 API 来执行不同的操作。
+
+* 检索SnapCenter中的所有作业
+* 检索作业状态
+* 取消或停止作业
+
+
+
+
+== 设置
+
+您可以使用 API 来执行不同的操作。
+
+* 注册、修改或删除凭证
+* 显示在SnapCenter服务器中注册的凭据信息
+* 配置通知设置
+* 检索当前配置为发送电子邮件通知的 SMTP 服务器的信息，并显示 SMTP 服务器的名称、收件人的名称以及发件人的姓名
+* 显示SnapCenter服务器登录的多重身份验证 (MFA) 配置
+* 为SnapCenter服务器登录启用或禁用并配置 MFA
+* 创建设置 MFA 所需的配置文件
+
+
+
+
+== 主机
+
+您可以使用 API 来执行不同的操作。
+
+* 查询所有SnapCenter主机
+* 从SnapCenter中删除一个或多个主机
+* 通过名称检索主机
+* 检索主机上的所有资源
+* 使用资源 ID 检索资源
+* 检索插件配置详细信息
+* 配置插件主机
+* 检索 Microsoft SQL Server 主机插件的所有资源
+* 检索 Oracle 数据库主机插件的所有资源
+* 检索自定义应用程序主机插件的所有资源
+* 检索 SAP HANA 主机插件的所有资源
+* 检索已安装的插件
+* 在现有主机上安装插件
+* 升级主机包
+* 从现有主机中删除插件
+* 在主机上添加插件
+* 添加或修改主机
+* 获取Linux主机的签名
+* 注册Linux主机的签名
+* 将主机置于维护或生产模式
+* 启动或重新启动主机上的插件服务
+* 重命名主机
+
+
+
+
+== 资源
+
+您可以使用 API 来执行不同的操作。
+
+* 检索所有资源
+* 使用资源 ID 检索资源
+* 检索 Microsoft SQL Server 主机插件的所有资源
+* 检索 Oracle 数据库主机插件的所有资源
+* 检索自定义应用程序主机插件的所有资源
+* 检索 SAP HANA 主机插件的所有资源
+* 使用密钥检索 Microsoft SQL Server 资源
+* 使用密钥检索自定义资源
+* 修改自定义应用程序主机插件的资源
+* 使用密钥删除自定义应用程序主机插件的资源
+* 使用密钥检索 SAP HANA 资源
+* 修改 SAP HANA 主机插件的资源
+* 使用密钥删除 SAP HANA 主机插件的资源
+* 使用密钥检索 Oracle 资源
+* 创建 Oracle 应用程序卷资源
+* 修改 Oracle 应用程序卷资源
+* 使用密钥删除 Oracle 应用程序卷资源
+* 检索 Oracle 资源的辅助详细信息
+* 使用 Microsoft SQL Server 插件备份 Microsoft SQL Server 资源
+* 使用 Oracle 数据库插件备份 Oracle 资源
+* 使用自定义应用程序插件备份自定义资源
+* 配置 SAP HANA 数据库
+* 配置 Oracle 数据库
+* 恢复 SQL 数据库备份
+* 恢复 Oracle 数据库备份
+* 恢复自定义应用程序备份
+* 创建 SAP HANA 资源
+* 使用自定义应用程序插件保护自定义资源
+* 使用 Microsoft SQL Server 插件保护 Microsoft SQL Server 资源
+* 修改受保护的 Microsoft SQL Server 资源
+* 删除对 Microsoft SQL Server 资源的保护
+* 使用 Oracle 数据库插件保护 Oracle 资源
+* 修改受保护的 Oracle 资源
+* 删除 Oracle 资源的保护
+* 使用自定义应用程序插件从备份中克隆资源
+* 使用 Oracle 数据库插件从备份克隆 Oracle 应用程序卷
+* 使用 Microsoft SQL Server 插件从备份克隆 Microsoft SQL Server 资源
+* 创建 Microsoft SQL Server 资源的克隆生命周期
+* 修改 Microsoft SQL Server 资源的克隆生命周期
+* 删除 Microsoft SQL Server 资源的克隆生命周期
+* 将现有的 Microsoft SQL Server 数据库从本地磁盘移动到NetApp LUN
+* 为 Oracle 数据库创建克隆规范文件
+* 启动 Oracle 资源的按需克隆刷新作业
+* 使用克隆规范文件从备份创建 Oracle 资源
+* 将数据库还原到辅助副本并将数据库重新加入可用性组
+* 创建 Oracle 应用程序卷资源
+
+
+
+
+== 备份
+
+您可以使用 API 来执行不同的操作。
+
+* 按备份名称、类型、插件、资源或日期检索备份详细信息
+* 检索所有备份
+* 检索备份详细信息
+* 重命名或删除备份
+* 挂载 Oracle 备份
+* 卸载 Oracle 备份
+* 编目 Oracle 备份
+* 取消编目 Oracle 备份
+* 获取执行时间点恢复所需的所有备份
+
+
+
+
+== 克隆
+
+您可以使用 API 来执行不同的操作。
+
+* 创建、显示、修改和删除 Oracle 数据库克隆规范文件
+* 显示 Oracle 数据库克隆层次结构
+* 检索克隆详细信息
+* 检索所有克隆
+* 删除克隆
+* 通过 ID 检索克隆详细信息
+* 启动 Oracle 资源的按需克隆刷新作业
+* 使用克隆规范文件从备份克隆 Oracle 资源
+
+
+
+
+== 克隆分裂
+
+您可以使用 API 来执行不同的操作。
+
+* 估计克隆资源的克隆分裂操作
+* 检索克隆分裂操作的状态
+* 启动或停止克隆分裂操作
+
+
+
+
+== 资源组
+
+您可以使用 API 来执行不同的操作。
+
+* 检索所有资源组的详细信息
+* 按名称检索资源组
+* 为自定义应用程序的插件创建资源组
+* 为 Microsoft SQL Server 插件创建资源组
+* 为 Oracle 数据库插件创建资源组
+* 修改自定义应用程序插件的资源组
+* 修改 Microsoft SQL Server 插件的资源组
+* 修改 Oracle 数据库插件的资源组
+* 创建、修改或删除 Microsoft SQL Server 插件资源组的克隆生命周期
+* 备份资源组
+* 将资源组置于维护或生产模式
+* 删除资源组
+
+
+
+
+== 策略
+
+您可以使用 API 来执行不同的操作。
+
+* 检索策略详细信息
+* 按名称检索策略详细信息
+* 删除策略
+* 创建现有策略的副本
+* 创建或修改自定义应用程序插件的策略
+* 创建或修改 Microsoft SQL Server 插件的策略
+* 创建或修改 Oracle 数据库插件的策略
+* 创建或修改 SAP HANA 数据库插件的策略
+
+
+
+
+== 存储
+
+您可以使用 API 来执行不同的操作。
+
+* 检索所有股份
+* 按名称检索共享
+* 创建或删除共享
+* 检索存储详细信息
+* 按名称检索存储详细信息
+* 创建、修改或删除存储
+* 发现存储集群上的资源
+* 检索存储集群上的资源
+
+
+
+
+== 共享
+
+您可以使用 API 来执行不同的操作。
+
+* 检索共享的详细信息
+* 检索所有股票的详细信息
+* 在存储上创建或删除共享
+* 按名称检索共享
+
+
+
+
+== 插件
+
+您可以使用 API 来执行不同的操作。
+
+* 列出主机的所有插件
+* 使用密钥检索 Microsoft SQL Server 资源
+* 使用密钥修改自定义资源
+* 使用密钥删除自定义资源
+* 使用密钥检索 SAP HANA 资源
+* 使用密钥修改 SAP HANA 资源
+* 使用密钥删除 SAP HANA 资源
+* 使用密钥检索 Oracle 资源
+* 使用密钥修改 Oracle 应用程序卷资源
+* 使用密钥删除 Oracle 应用程序卷资源
+* 使用 Microsoft SQL Server 插件和密钥备份 Microsoft SQL Server 资源
+* 使用 Oracle 数据库插件和密钥备份 Oracle 资源
+* 使用自定义应用程序插件和密钥备份自定义应用程序资源
+* 使用密钥配置 SAP HANA 数据库
+* 使用密钥配置 Oracle 数据库
+* 使用密钥恢复自定义应用程序备份
+* 创建 SAP HANA 资源
+* 创建 Oracle 应用程序卷资源
+* 使用自定义应用程序插件保护自定义资源
+* 使用 Microsoft SQL Server 插件保护 Microsoft SQL Server 资源
+* 修改受保护的 Microsoft SQL Server 资源
+* 删除对 Microsoft SQL Server 资源的保护
+* 使用 Oracle 数据库插件保护 Oracle 资源
+* 修改受保护的 Oracle 资源
+* 删除 Oracle 资源的保护
+* 使用自定义应用程序插件从备份中克隆资源
+* 使用 Oracle 数据库插件从备份克隆 Oracle 应用程序卷
+* 使用 Microsoft SQL Server 插件从备份克隆 Microsoft SQL Server 资源
+* 创建 Microsoft SQL Server 资源的克隆生命周期
+* 修改 Microsoft SQL Server 资源的克隆生命周期
+* 删除 Microsoft SQL Server 资源的克隆生命周期
+* 为 Oracle 数据库创建克隆规范文件
+* 启动 Oracle 资源的按需克隆生命周期
+* 使用克隆规范文件从备份克隆 Oracle 资源
+
+
+
+
+== 报告
+
+您可以使用 API 来执行不同的操作。
+
+* 检索各个插件的备份、恢复和克隆操作的报告
+* 添加、运行、删除或修改计划
+* 检索计划报告的数据
+
+
+
+
+== 警报
+
+您可以使用 API 来执行不同的操作。
+
+* 检索所有警报
+* 通过 ID 检索警报
+* 删除多个警报或按 ID 删除警报
+
+
+
+
+== RBAC
+
+您可以使用 API 来执行不同的操作。
+
+* 检索用户、组和角色的详细信息
+* 添加或删除用户
+* 将用户分配给角色
+* 取消分配用户的角色
+* 创建、修改或删除角色
+* 将组分配给角色
+* 取消分配组的角色
+* 添加或删除组
+* 创建现有角色的副本
+* 为用户或组分配或取消分配资源
+
+
+
+
+== 配置
+
+您可以使用 API 来执行不同的操作。
+
+* 查看配置设置
+* 修改配置设置
+
+
+
+
+== 证书设置
+
+您可以使用 API 来执行不同的操作。
+
+* 查看SnapCenter服务器或插件主机的证书状态
+* 修改SnapCenter服务器或插件主机的证书设置
+
+
+
+
+== 存储库
+
+您可以使用 API 来执行不同的操作。
+
+* 检索存储库备份
+* 查看存储库的配置信息
+* 保护和恢复SnapCenter存储库
+* 取消保护SnapCenter存储库
+* 重建和故障转移存储库
+
+
+
+
+== 版本
+
+您可以使用此 API 查看SnapCenter版本。

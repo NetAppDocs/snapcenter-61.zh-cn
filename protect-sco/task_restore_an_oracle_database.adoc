@@ -1,0 +1,244 @@
+---
+permalink: protect-sco/task_restore_an_oracle_database.html 
+sidebar: sidebar 
+keywords: restore, recover, Oracle 
+summary: 如果发生数据丢失，您可以使用SnapCenter将数据从一个或多个备份还原到活动文件系统，然后恢复数据库。 
+---
+= 还原和恢复 Oracle 数据库
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+如果发生数据丢失，您可以使用SnapCenter将数据从一个或多个备份还原到活动文件系统，然后恢复数据库。
+
+*开始之前*
+
+如果您以非 root 用户身份安装了该插件，则应手动为 prescript 和 postscript 目录分配执行权限。
+
+*关于此任务*
+
+* 恢复是使用配置的存档日志位置处可用的存档日志执行的。如果数据库在 ARCHIVELOG 模式下运行，Oracle 数据库会将已填充的重做日志文件组保存到一个或多个离线目标，统称为归档重做日志。 SnapCenter根据指定的 SCN、选定的日期和时间或所有日志选项识别并安装最佳数量的日志备份。如果恢复所需的存档日志在配置的位置不可用，则应挂载包含日志的快照并将路径指定为外部存档日志。
++
+如果将 ASM 数据库从 ASMLIB 迁移到 ASMFD，则使用 ASMLIB 创建的备份不能用于恢复数据库。您应该在 ASMFD 配置中创建备份并使用这些备份进行恢复。同样，如果 ASM 数据库从 ASMFD 迁移到 ASMLIB，则应在 ASMLIB 配置中创建备份以便恢复。
+
++
+还原数据库时，会在 Oracle 数据库主机的 _/var/opt/snapcenter/sco/lock_ 目录中创建一个操作锁文件 (.sm_lock_dbsid)，以避免在数据库上执行多个操作。数据库恢复后，操作锁文件将自动删除。
+
++
+
+NOTE: 不支持恢复 SPFILE 和密码文件。
+
+* 对于启用SnapLock的策略、对于ONTAP 9.12.1 及以下版本、如果指定 Snapshot 锁定期限、则作为恢复的一部分从防篡改快照创建的克隆将继承SnapLock到期时间。存储管理员应在SnapLock到期后手动清理克隆。
+
+
+*步骤*
+
+. 在左侧导航窗格中，单击“*资源*”，然后从列表中选择适当的插件。
+. 在资源页面中，从*视图*列表中选择*数据库*或*资源组*。
+. 从数据库详细信息视图或资源组详细信息视图中选择数据库。
++
+进入数据库拓扑页面。
+
+. 从“管理副本”视图中，从主存储系统或辅助（镜像或复制）存储系统中选择“*备份*”。
+. 从表中选择备份，然后单击*image:../media/restore_icon.gif["恢复图标"] *.
+. 在“还原范围”页面中，执行以下任务：
++
+.. 如果您选择了 Real Application Clusters (RAC) 环境中的数据库备份，请选择 RAC 节点。
+.. 当您选择镜像或保管数据时：
++
+*** 如果镜像或保险库中没有日志备份，则不会选择任何内容，并且定位器为空。
+*** 如果镜像或保管库中存在日志备份，则选择最新的日志备份并显示相应的定位器。
++
+
+NOTE: 如果选定的日志备份同时存在于镜像和保管库位置，则会显示两个定位器。
+
+
+
+.. 执行以下操作：
++
+|===
+| 如果您想恢复... | 操作 
+
+
+ a| 
+数据库的所有数据文件
+ a| 
+选择*所有数据文件*。
+
+仅恢复数据库的数据文件。控制文件、存档日志或重做日志文件未恢复。
+
+
+
+ a| 
+表空间
+ a| 
+选择*表空间*。
+
+您可以指定要恢复的表空间。
+
+
+
+ a| 
+控制文件
+ a| 
+选择*控制文件*。
+
+
+NOTE: 恢复控制文件时，请确保目录结构存在或应使用正确的用户和组所有权（如果有）创建，以允许恢复过程将文件复制到目标位置。如果该目录不存在，还原作业将失败。
+
+
+
+ a| 
+重做日志文件
+ a| 
+选择*重做日志文件*。
+
+此选项仅适用于 Data Guard 备用数据库或 Active Data Guard 备用数据库。
+
+
+NOTE: 非 Data Guard 数据库不会备份重做日志文件。对于非 Data Guard 数据库，使用存档日志执行恢复。
+
+
+
+ a| 
+可插拔数据库（PDB）
+ a| 
+选择*可插入数据库*，然后指定要恢复的 PDB。
+
+
+
+ a| 
+可插拔数据库 (PDB) 表空间
+ a| 
+选择*可插入数据库 (PDB) 表空间*，然后指定要恢复的 PDB 和该 PDB 的表空间。
+
+仅当您选择了要还原的 PDB 时，此选项才可用。
+
+|===
+.. 选择*如果需要还原和恢复则更改数据库状态*将数据库的状态更改为执行还原和恢复操作所需的状态。
++
+数据库的各种状态从高到低依次为open、mounted、started、shutdown。如果数据库处于较高状态，则必须选中此复选框，但必须将状态更改为较低状态才能执行还原操作。如果数据库处于较低状态，但必须将状态更改为较高状态才能执行还原操作，则即使您未选中该复选框，数据库状态也会自动更改。
+
++
+如果数据库处于打开状态，并且为了恢复数据库需要处于安装状态，则只有选中此复选框才会更改数据库状态。
+
+.. 如果要在备份后添加新数据文件或在 LVM 磁盘组中添加、删除或重新创建 LUN 的情况下执行就地还原，请选择“强制就地还原”。
+
+
+. 在“恢复范围”页面中，执行以下操作：
++
+|===
+| 条件 | 操作 
+
+
+ a| 
+想要恢复到最后一笔交易
+ a| 
+选择“*所有日志*”。
+
+
+
+ a| 
+想要恢复到特定的系统变更号 (SCN)
+ a| 
+选择*直到 SCN（系统变更号）*。
+
+
+
+ a| 
+想要恢复到特定的数据和时间
+ a| 
+选择*日期和时间*。
+
+您必须指定数据库主机时区的日期和时间。
+
+
+
+ a| 
+不想恢复
+ a| 
+选择*不恢复*。
+
+
+
+ a| 
+想要指定任何外部归档日志位置
+ a| 
+如果数据库在 ARCHIVELOG 模式下运行， SnapCenter会根据指定的 SCN、选定的日期和时间或所有日志选项识别并安装最佳数量的日志备份。
+
+如果您仍想指定外部存档日志文件的位置，请选择*指定外部存档日志位置*。
+
+如果存档日志作为备份的一部分被修剪，并且您已手动安装了所需的存档日志备份，则必须指定已安装的备份路径作为恢复的外部存档日志位置。
+
+
+NOTE: 在将挂载路径列为外部日志位置之前，您应该验证其路径和内容。
+
+** https://docs.netapp.com/us-en/ontap-apps-dbs/oracle/oracle-dp-overview.html["使用ONTAP进行 Oracle 数据保护"^]
+** https://kb.netapp.com/Advice_and_Troubleshooting/Data_Protection_and_Security/SnapCenter/ORA-00308%3A_cannot_open_archived_log_ORA_LOG_arch1_123_456789012.arc["操作失败，出现 ORA-00308 错误"^]
+
+
+|===
++
+如果存档日志卷未受保护但数据卷受到保护，则无法通过从辅助备份恢复来执行还原。您只能通过选择“不恢复”来恢复。
+
++
+如果您在选择打开数据库选项的情况下恢复 RAC 数据库，则只有启动恢复操作的 RAC 实例才会恢复到打开状态。
+
++
+
+NOTE: Data Guard 备用数据库和 Active Data Guard 备用数据库不支持恢复。
+
+. 在 PreOps 页面中，输入要在恢复操作之前运行的处方的路径和参数。
++
+您必须将处方存储在 _/var/opt/snapcenter/spl/scripts_ 路径或此路径内的任何文件夹中。默认情况下，填充 _/var/opt/snapcenter/spl/scripts_ 路径。如果您在此路径内创建了任何文件夹来存储脚本，则必须在路径中指定这些文件夹。
+
++
+您还可以指定脚本超时值。默认值是 60 秒。
+
++
+SnapCenter允许您在执行前脚本和后脚本时使用预定义的环境变量。link:../protect-sco/predefined-environment-variables-prescript-postscript-restore.html["了解更多"^]
+
+. 在 PostOps 页面中，执行以下步骤：
++
+.. 输入要在恢复操作后运行的后记的路径和参数。
++
+您必须将后记存储在 _/var/opt/snapcenter/spl/scripts_ 或此路径内的任何文件夹中。默认情况下，填充 _/var/opt/snapcenter/spl/scripts_ 路径。如果您在此路径内创建了任何文件夹来存储脚本，则必须在路径中指定这些文件夹。
+
++
+
+NOTE: 如果恢复操作失败，则不会执行后记，而是直接触发清理活动。
+
+.. 如果要在恢复后打开数据库，请选中该复选框。
++
+在恢复带有或不带有控制文件的容器数据库 (CDB) 后，或者在仅恢复 CDB 控制文件后，如果指定在恢复后打开数据库，则仅打开 CDB，而不是打开该 CDB 中的可插拔数据库 (PDB)。
+
++
+在 RAC 设置中，恢复后仅打开用于恢复的 RAC 实例。
+
++
+
+NOTE: 恢复带有控制文件的用户表空间、带有或不带有控制文件的系统表空间、带有或不带有控制文件的PDB后，只有与恢复操作相关的PDB的状态会变为原始状态。未用于恢复的其他 PDB 的状态不会更改为原始状态，因为这些 PDB 的状态未被保存。您必须手动更改未用于还原的 PDB 的状态。
+
+
+
+. 在通知页面中，从*电子邮件首选项*下拉列表中，选择您想要发送电子邮件通知的场景。
++
+您还必须指定发件人和收件人的电子邮件地址以及电子邮件的主题。如果您想附加执行的恢复操作的报告，您必须选择*附加作业报告*。
+
++
+
+NOTE: 对于电子邮件通知，您必须使用 GUI 或 PowerShell 命令 Set-SmSmtpServer 指定 SMTP 服务器详细信息。
+
+. 查看摘要，然后单击“*完成*”。
+. 通过单击“*监视*”>“*作业*”来监视操作进度。
+
+
+*更多信息*
+
+* https://kb.netapp.com/Advice_and_Troubleshooting/Data_Protection_and_Security/SnapCenter/Oracle_RAC_One_Node_database_is_skipped_for_performing_SnapCenter_operations["跳过 Oracle RAC One Node 数据库来执行SnapCenter操作"^]
+* https://kb.netapp.com/Advice_and_Troubleshooting/Data_Protection_and_Security/SnapCenter/Failed_to_restore_from_a_secondary_SnapMirror_or_SnapVault_location["无法从辅助SnapMirror或SnapVault位置还原"^]
+* https://kb.netapp.com/Advice_and_Troubleshooting/Data_Protection_and_Security/SnapCenter/Failed_to_restore_when_a_backup_of_an_orphan_incarnation_is_selected["无法从孤立化身的备份中恢复"^]
+* https://kb.netapp.com/Advice_and_Troubleshooting/Data_Protection_and_Security/SnapCenter/What_are_the_customizable_parameters_for_backup_restore_and_clone_operations_on_AIX_systems["AIX 系统上备份、恢复和克隆操作的可自定义参数"^]
+

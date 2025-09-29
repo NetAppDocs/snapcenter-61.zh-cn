@@ -1,0 +1,181 @@
+---
+permalink: protect-scw/task_create_backup_policies_for_windows_file_systems.html 
+sidebar: sidebar 
+keywords: backup policy 
+summary: 您可以在使用SnapCenter备份 Windows 文件系统之前为资源创建新的备份策略，也可以在创建资源组或备份资源时创建新的备份策略。 
+---
+= 为 Windows 文件系统创建备份策略
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您可以在使用SnapCenter备份 Windows 文件系统之前为资源创建新的备份策略，也可以在创建资源组或备份资源时创建新的备份策略。
+
+.开始之前
+* 您必须已经定义了您的备份策略。link:task_define_a_backup_strategy_for_windows_file_systems.html["了解更多"^]
+* 您必须做好数据保护的准备。
++
+为了准备数据保护，您必须完成安装SnapCenter、添加主机、发现资源和创建存储虚拟机 (SVM) 连接等任务。
+
+* 如果您要将快照复制到镜像或保管库二级存储， SnapCenter管理员必须已为您分配源卷和目标卷的 SVM。
+* 如果您想在前脚本和后脚本中运行 PowerShell 脚本，则应在 web.config 文件中将 usePowershellProcessforScripts 参数的值设置为 true。
++
+默认值为 false
+
+* 查看SnapMirror主动同步特定的先决条件和限制。欲了解详细信息，请参阅 https://docs.netapp.com/us-en/ontap/smbc/considerations-limits.html#volumes["SnapMirror主动同步的对象限制"]。
+
+
+.关于此任务
+* SCRIPTS_PATH 是使用插件主机的 SMCoreServiceHost.exe.Config 文件中的 PredefinedWindowsScriptsDirectory 键定义的。
++
+如果需要，您可以更改此路径并重新启动 SMcore 服务。为了安全起见，建议您使用默认路径。
+
++
+可以通过 API 从 Swagger 显示该键的值：API /4.7/configsettings
+
++
+您可以使用 GET API 来显示键的值。不支持 SET API。
+
+* SnapLock
++
+** 如果选择了“保留备份副本特定天数”选项，则SnapLock保留期必须小于或等于上述保留天数。
+** 指定快照锁定期可防止在保留期到期之前删除快照。这可能导致保留的快照数量超过策略中指定的数量。
+** 对于ONTAP 9.12.1 及以下版本、作为恢复的一部分从SnapLock Vault 快照创建的克隆将继承SnapLock Vault 到期时间。存储管理员应在SnapLock到期后手动清理克隆。
+
+
+
+
+.步骤
+. 在左侧导航窗格中，选择“*设置*”。
+. 在设置页面中，选择*策略*。
+. 选择“*新建*”。
+. 在名称页面中，输入策略名称和详细信息。
+. 在“备份和复制”页面中，执行以下任务：
++
+.. 选择备份设置。
++
+|===
+| 选项 | 描述 
+
+
+ a| 
+文件系统一致性备份
+ a| 
+如果您希望SnapCenter在备份操作开始之前使文件系统所在的磁盘驱动器处于静止状态，然后在备份操作结束后恢复磁盘驱动器，请选择此选项。
+
+
+
+ a| 
+文件系统崩溃一致性备份
+ a| 
+如果您不希望SnapCenter使文件系统所在的磁盘驱动器处于静止状态，请选择此选项。
+
+|===
+.. 选择计划频率（也称为策略类型）。
++
+该策略仅指定备份频率。备份的具体保护计划在资源组中定义。因此，两个或多个资源组可以共享相同的策略和备份频率，但具有不同的备份计划。
+
++
+
+NOTE: 如果您已安排在凌晨 2:00，则夏令时 (DST) 期间不会触发该计划。
+
+.. 选择一个策略标签。
++
+根据您选择的快照标签， ONTAP将应用与该标签匹配的辅助快照保留策略。
+
++
+
+NOTE: 如果您选择了*创建本地 Snapshot 副本后更新SnapMirror *，则可以选择指定辅助策略标签。但是，如果您选择了*创建本地 Snapshot 副本后更新SnapVault *，则应指定辅助策略标签。
+
+
+
+. 在“选择辅助复制选项”部分中，选择以下一个或两个辅助复制选项：
++
+|===
+| 对于这个领域... | 操作 
+
+
+ a| 
+创建本地 Snapshot 副本后更新SnapMirror
+ a| 
+选择此选项可在另一个卷上创建备份集的镜像副本（SnapMirror）。
+
+应为 SnapSnapMirror 主动同步启用此选项。
+
+在二次复制期间， SnapLock到期时间会加载主SnapLock到期时间。单击拓扑页面中的“*刷新*”按钮可刷新从ONTAP检索到的辅助和主SnapLock到期时间。
+
+看link:../protect-scw/task_view_related_backups_and_clones_in_the_topology_page.html["在拓扑页面中查看相关备份和克隆"] 。
+
+
+
+ a| 
+创建 Snapshot 副本后更新SnapVault
+ a| 
+选择此选项可执行磁盘到磁盘的备份复制。
+
+在二次复制期间， SnapLock到期时间会加载主SnapLock到期时间。单击拓扑页面中的刷新按钮可刷新从ONTAP检索到的辅助和主SnapLock到期时间。
+
+当仅在ONTAP的辅助节点（称为SnapLock Vault）上配置SnapLock时，单击“拓扑”页面中的“刷新”按钮将刷新从ONTAP检索到的辅助节点上的锁定期。
+
+有关SnapLock Vault 的更多信息，请参阅 https://docs.netapp.com/us-en/ontap/snaplock/commit-snapshot-copies-worm-concept.html["将 Snapshot 副本提交到保管库目标上的 WORM"]
+
+
+
+ a| 
+错误重试次数
+ a| 
+输入进程停止之前应发生的复制尝试次数。
+
+|===
++
+
+NOTE: 您应该在ONTAP中为二级存储配置SnapMirror保留策略，以避免达到二级存储上快照的最大限制。
+
+. 在“保留设置”页面中，指定按需备份和所选每个计划频率的保留设置。
++
+|===
+| 选项 | 描述 
+
+
+ a| 
+要保留的 Snapshot 副本总数
+ a| 
+如果您想在自动删除快照之前指定SnapCenter存储的快照数量，请选择此选项。
+
+
+
+ a| 
+保留 Snapshot 副本
+ a| 
+如果您想指定SnapCenter在删除备份副本之前保留该副本的天数，请选择此选项。
+
+
+
+ a| 
+快照副本锁定期
+ a| 
+选择快照锁定期限，并指定持续时间（天、月或年）。
+
+SnapLock保留期应少于 100 年。
+
+|===
++
+
+IMPORTANT: 您应该将保留计数设置为 2 或更高。保留计数的最小值为 2。
+
++
+
+NOTE: 最大保留值为 1018。如果保留设置的值高于ONTAP版本支持的值，则备份将失败。
+
+. 在脚本页面中，分别输入您希望SnapCenter服务器在备份操作之前或之后运行的前置脚本或后置脚本的路径，以及SnapCenter在超时之前等待脚本执行的时间限制。
++
+例如，您可以运行脚本来更新 SNMP 陷阱、自动发出警报和发送日志。
+
++
+
+NOTE: 前言或后记路径不应包含驱动器或共享。该路径应相对于 SCRIPTS_PATH。
+
+. 查看摘要，然后单击“*完成*”。
+

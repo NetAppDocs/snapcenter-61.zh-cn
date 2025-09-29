@@ -1,0 +1,112 @@
+---
+permalink: protect-scu/concept_overview_snapcenter_plug_in_for_UNIX_file_systems.html 
+sidebar: sidebar 
+keywords: overview, unix file system, plug-in for unix file system, backup, restore, clone 
+summary: Unix 文件系统插件支持 Unix 文件系统的备份、恢复和克隆。 
+---
+= 您可以使用适用于 Unix 文件系统的SnapCenter插件做什么
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+当您的环境中安装了适用于 Unix 文件系统的插件时，您可以使用SnapCenter备份、还原和克隆 Unix 文件系统。您还可以执行支持这些操作的任务。
+
+* 发现资源
+* 备份 Unix 文件系统
+* 安排备份操作
+* 恢复文件系统备份
+* 克隆文件系统备份
+* 监控备份、恢复和克隆操作
+
+
+
+
+== 支持的配置
+
+|===
+| 物品 | 支持的配置 
+
+
+ a| 
+环境
+ a| 
+* 物理服务器
+* 虚拟服务器
++
+NFS 和 SAN 上的 vVol 数据存储。vVol 数据存储只能使用适用于 VMware vSphere 的ONTAP Tools 进行配置。
+
+
+
+
+
+ a| 
+操作系统
+ a| 
+* Red Hat Enterprise Linux
+* Oracle Linux
+* SUSE Linux 企业服务器 (SLES)
+
+
+
+
+ a| 
+文件系统
+ a| 
+* SAN：
++
+** 基于 LVM 和非 LVM 的文件系统
+** VMDK ext3、ext4 和 xfs 上的 LVM
+
+
+* NFS：NFS v3、NFS v4.x
+
+
+
+
+ a| 
+协议
+ a| 
+* FC
+* FCoE
+* iSCSI
+* NFS
+
+
+
+
+ a| 
+多路径
+ a| 
+可以
+
+|===
+
+
+== 限制
+
+* 不支持在卷组中混合使用 RDM 和虚拟磁盘。
+* 不支持文件级恢复。
++
+但是，您可以通过克隆备份然后手动复制文件来手动执行文件级恢复。
+
+* 不支持混合来自 NFS 和 VMFS 数据存储的 VMDK 上的文件系统。
+* 不支持 NVMe。
+* 不支持配置。
+
+
+
+
+== 功能
+
+* 通过处理 Linux 或 AIX 系统上的底层主机存储堆栈，使 Oracle 数据库插件能够对 Oracle 数据库执行数据保护操作
+* 在运行ONTAP的存储系统上支持网络文件系统 (NFS) 和存储区域网络 (SAN) 协议。
+* 对于 Linux 系统，当您部署SnapCenter Plug-in for VMware vSphere并向SnapCenter注册该插件时，VMDK 和 RDM LUN 上的 Oracle 数据库受支持。
+* 支持 SAN 文件系统和 LVM 布局上的 AIX Mount Guard。
+* 仅支持增强型日志文件系统 (JFS2) 在 SAN 文件系统上进行内联日志记录以及针对 AIX 系统的 LVM 布局。
++
+支持 SAN 本机设备、文件系统以及在 SAN 设备上构建的 LVM 布局。
+
+* 自动执行SnapCenter环境中 UNIX 文件系统的应用程序感知备份、还原和克隆操作
+

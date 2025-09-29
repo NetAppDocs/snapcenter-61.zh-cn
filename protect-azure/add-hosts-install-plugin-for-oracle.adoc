@@ -1,0 +1,37 @@
+---
+permalink: protect-azure/add-hosts-install-plugin-for-oracle.html 
+sidebar: sidebar 
+keywords: add host, install, install plug-in, oracle, database 
+summary: 添加主机，然后安装插件包。 
+---
+= 添加主机并为 Oracle 数据库安装SnapCenter插件
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您可以使用“添加主机”页面添加主机，然后安装适用于 Linux 的SnapCenter插件包或适用于 AIX 的SnapCenter插件包。插件会自动安装在远程主机上。
+
+您可以为单个主机或集群添加主机并安装插件包。如果在集群（Oracle RAC）上安装该插件，则该插件将安装在集群的所有节点上。对于 Oracle RAC One Node，您应该在主动节点和被动节点上安装该插件。
+
+.步骤
+. 在左侧导航窗格中，单击“*主机*”。
+. 验证是否选择了“*托管主机*”选项卡。
+. 单击“*添加*”。
+. 在“主机”页面中，执行以下操作：
++
+.. 在主机类型字段中，选择主机类型。
+.. 在主机名字段中，输入主机的完全限定域名 (FQDN) 或 IP 地址。
+.. 在凭证字段中，输入您创建的凭证。
+
+
+. 在选择要安装的插件部分中，选择要安装的插件。
+. （可选）单击“更多选项”并指定详细信息。
+. 单击“*提交*”。
+. 验证指纹，然后单击*确认并提交*。
++
+在集群设置中，您应该验证集群中每个节点的指纹。
+
+. 监控安装进度。
+

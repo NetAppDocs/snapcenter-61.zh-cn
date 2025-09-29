@@ -1,0 +1,28 @@
+---
+permalink: protect-sco/task_delete_clone_of_a_pluggable_database.html 
+sidebar: sidebar 
+keywords: delete, PDB, clone PDB 
+summary: 如果不再需要可插拔数据库（PDB）的克隆，您可以删除它。 
+---
+= 删除可插入数据库的克隆
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+如果不再需要可插拔数据库 (PDB) 的克隆，您可以删除该克隆。
+
+如果您创建了克隆 PDB 的目标 CDB 的备份，则当您删除 PDB 克隆时，克隆的 PDB 也会从目标 CDB 的备份中删除。
+
+
+NOTE: PDB 克隆未显示在库存或资源视图中。
+
+*步骤*
+
+. 在左侧导航窗格中，单击“*资源*”，然后从列表中选择适当的插件。
+. 从资源或资源组视图中选择源容器数据库 (CDB)。
+. 从“管理副本”视图中，从主存储系统或辅助存储系统（镜像或复制）中选择“*克隆*”。
+. 选择 PDB 克隆（targetCDB：PDBClone），然后单击image:../media/delete_icon.gif["删除图标"]。
+. 单击“*确定*”。
+

@@ -1,0 +1,174 @@
+---
+permalink: protect-scw/task_add_hosts_and_install_snapcenter_plug_in_for_microsoft_windows.html 
+sidebar: sidebar 
+keywords: installing 
+summary: 您可以使用SnapCenter添加主机页面来添加 Windows 主机。适用于 Microsoft Windows 的SnapCenter插件会自动安装在指定主机上。这是安装插件的推荐方法。您可以添加主机并为单个主机或集群安装插件。 
+---
+= 添加主机并安装适用于 Microsoft Windows 的SnapCenter插件
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您可以使用SnapCenter添加主机页面来添加 Windows 主机。适用于 Microsoft Windows 的SnapCenter插件会自动安装在指定主机上。这是安装插件的推荐方法。您可以添加主机并为单个主机或集群安装插件。
+
+.开始之前
+* 如果SnapCenter Server 主机的操作系统是 Windows 2019，而插件主机的操作系统是 Windows 2022，则应执行以下操作：
++
+** 升级到 Windows Server 2019（操作系统内部版本 17763.5936）或更高版本
+** 升级到 Windows Server 2022（操作系统内部版本 20348.2402）或更高版本
+
+
+* 您必须是分配有插件安装和卸载权限的角色的用户，例如SnapCenter管理员角色。
+* 在 Windows 主机上安装插件时，如果指定非内置的凭据或用户属于本地工作组用户，则必须在主机上禁用 UAC。
+* 应将SnapCenter用户添加到 Windows Server 的“作为服务登录”角色。
+* 您应该确保消息队列服务处于运行状态。
+* 如果您使用组托管服务帐户 (gMSA)，则应使用管理权限配置 gMSA。
++
+link:task_configure_gMSA_on_windows_server_2012_or_later.html["在 Windows Server 2016 或更高版本上为 Windows 文件系统配置组托管服务帐户"]
+
+
+
+.关于此任务
+* 您不能将SnapCenter服务器作为插件主机添加到另一个SnapCenter服务器。
+* Windows 插件
++
+** Microsoft Windows
+** Microsoft Exchange Server
+** Microsoft SQL Server
+** SAP HANA
+
+
+* 在集群上安装插件
++
+如果在集群（WSFC、Oracle RAC 或 Exchange DAG）上安装插件，则它们将安装在集群的所有节点上。
+
+* E系列存储
++
+您无法在连接到 E 系列存储的 Windows 主机上安装适用于 Windows 的插件。
+
+
+
+
+NOTE: 如果主机已经是工作组的一部分并更改为另一个域或反之亦然，则SnapCenter不支持将同一主机（插件主机）添加到SnapCenter。如果要添加相同的主机，则应从SnapCenter中删除该主机，然后重新添加。
+
+.步骤
+. 在左侧导航窗格中，单击“*主机*”。
+. 确保在顶部选择了*托管主机*。
+. 单击“*添加*”。
+. 在“主机”页面中，执行以下操作：
++
+|===
+| 对于这个领域... | 操作 
+
+
+ a| 
+主机类型
+ a| 
+选择 *Windows* 类型的主机。
+
+SnapCenter Server 添加主机，然后安装适用于 Windows 的插件（如果主机上尚未安装）。
+
+
+
+ a| 
+主机名
+ a| 
+输入主机的完全限定域名 (FQDN) 或 IP 地址。
+
+SnapCenter依赖于 DNS 的正确配置。因此，最佳做法是输入完全限定域名 (FQDN)。
+
+您可以输入以下之一的 IP 地址或 FQDN：
+
+** 独立主机
+** Windows Server 故障转移群集 (WSFC)
++
+如果您使用SnapCenter添加主机并且它是子域的一部分，则必须提供 FQDN。
+
+
+
+
+
+ a| 
+凭据
+ a| 
+选择您创建的凭证名称或创建新的凭证。
+
+该凭证必须具有远程主机的管理权限。有关详细信息，请参阅有关创建凭证的信息。
+
+将光标放在您提供的凭证名称上即可显示有关凭证的详细信息，包括用户名、域和主机类型。
+
+
+NOTE: 身份验证模式由您在添加主机向导中指定的主机类型决定。
+
+|===
+. 在选择要安装的插件部分中，选择要安装的插件。
++
+对于新部署，没有列出插件包。
+
+. （可选）单击“更多选项”。
++
+|===
+| 对于这个领域... | 操作 
+
+
+ a| 
+端口
+ a| 
+保留默认端口号或指定端口号。
+
+默认端口号是 8145如果SnapCenter服务器安装在自定义端口上，则该端口号将显示为默认端口。
+
+
+NOTE: 如果您手动安装了插件并指定了自定义端口，则必须指定相同的端口。否则，操作失败。
+
+
+
+ a| 
+安装路径
+ a| 
+默认路径为 C:\Program Files\ NetApp\ SnapCenter。
+
+您可以选择自定义路径。对于适用于 Windows 的SnapCenter插件包，默认路径为 C:\Program Files\ NetApp\ SnapCenter。但是，如果您愿意，您可以自定义默认路径。
+
+
+
+ a| 
+添加集群中的所有主机
+ a| 
+选中此复选框可添加 WSFC 中的所有集群节点。
+
+
+
+ a| 
+跳过预安装检查
+ a| 
+如果您已经手动安装了插件并且不想验证主机是否满足安装插件的要求，请选中此复选框。
+
+
+
+ a| 
+使用组托管服务帐户 (gMSA) 运行插件服务
+ a| 
+如果要使用组托管服务帐户 (gMSA) 来运行插件服务，请选中此复选框。
+
+以以下格式提供 gMSA 名称：_domainName\accountName$_。
+
+
+NOTE: gMSA 将仅用作 Windows 服务的SnapCenter插件的登录服务帐户。
+
+|===
+. 单击“*提交*”。
++
+如果您未选中“跳过预检查”复选框，则会验证主机是否满足安装插件的要求。系统会根据最低要求验证磁盘空间、RAM、PowerShell 版本、.NET 版本和位置。如果不满足最低要求，则会显示相应的错误或警告消息。
+
++
+如果错误与磁盘空间或 RAM 有关，您可以更新位于 `C:\Program Files\NetApp\SnapCenter`WebApp 修改默认值。如果错误与其他参数有关，则必须修复该问题。
+
++
+
+NOTE: 在 HA 设置中，如果您要更新 web.config 文件，则必须在两个节点上更新该文件。
+
+. 监控安装进度。
+

@@ -1,0 +1,48 @@
+---
+permalink: protect-postgresql/snapcenter-plug-in-for-postgresql-features.html 
+sidebar: sidebar 
+keywords: SnapCenter Plug-in for postgresql 
+summary: SnapCenter与插件应用程序以及存储系统上的NetApp技术集成。要使用 postgresql 集群插件，您需要使用SnapCenter图形用户界面。 
+---
+= SnapCenter PostgreSQL 插件功能
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+SnapCenter与插件应用程序以及存储系统上的NetApp技术集成。要使用 PostgreSQL 集群插件，您需要使用SnapCenter图形用户界面。
+
+* *统一的图形用户界面*
++
+SnapCenter界面提供跨插件和环境的标准化和一致性。  SnapCenter界面使您能够跨插件完成一致的备份、恢复和克隆操作、使用集中式报告、使用一目了然的仪表板视图、设置基于角色的访问控制 (RBAC) 以及监控所有插件中的作业。
+
+* *自动化中央管理*
++
+您可以安排备份操作、配置基于策略的备份保留以及执行恢复操作。您还可以通过配置SnapCenter发送电子邮件警报来主动监控您的环境。
+
+* *无中断NetApp快照复制技术*
++
+SnapCenter使用NetApp快照技术和 PostgreSQL 集群插件来备份资源。
+
+
+
+使用 PostgreSQL 插件还可带来以下好处：
+
+* 支持备份、恢复和克隆工作流程
+* RBAC 支持的安全性和集中角色委派
++
+您还可以设置凭据，以便授权的SnapCenter用户拥有应用程序级别的权限。
+
+* 使用NetApp FlexClone技术创建节省空间的资源时间点副本，用于测试或数据提取
++
+您要创建克隆的存储系统上需要有FlexClone许可证。
+
+* 作为创建备份的一部分，支持ONTAP的一致性组 (CG) 快照功能。
+* 能够跨多个资源主机同时运行多个备份
++
+在单次操作中，当单个主机中的资源共享同一卷时，快照就会合并。
+
+* 能够使用外部命令创建快照。
+* 支持 XFS 文件系统上的 Linux LVM。
+

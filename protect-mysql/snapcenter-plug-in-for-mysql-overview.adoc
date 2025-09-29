@@ -1,0 +1,24 @@
+---
+permalink: protect-mysql/snapcenter-plug-in-for-mysql-overview.html 
+sidebar: sidebar 
+keywords: SnapCenter Plug-in for MySQL 
+summary: 适用于 MySQL 的SnapCenter插件是NetApp SnapCenter software的主机端组件，可实现 MySQL 数据库的应用程序感知数据保护管理。  MySQL 数据库插件可自动执行SnapCenter环境中 MySQL 数据库的备份、恢复和克隆。 
+---
+= 适用于 MySQL 的SnapCenter插件概述
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+适用于 MySQL 数据库的SnapCenter插件是NetApp SnapCenter software的主机端组件，可实现 MySQL 数据库的应用程序感知数据保护管理。  MySQL 数据库插件可自动执行SnapCenter环境中 MySQL 数据库的备份、恢复和克隆。
+
+SnapCenter支持单实例 MySQL 设置。您可以在 Linux 和 Windows 环境中使用 MySQL 数据库插件。在 Windows 环境中，MySQL 将作为手动资源得到支持。
+
+安装 MySQL 数据库插件后，您可以使用带有NetApp SnapMirror技术的SnapCenter在另一个卷上创建备份集的镜像副本。您还可以使用带有NetApp SnapVault技术的插件来执行磁盘到磁盘的备份复制，以符合标准。
+
+适用于 MySQL 的SnapCenter插件支持ONTAP和 Azure NetApp文件存储布局上的 NFS 和 SAN。
+
+支持VMDK、vVol、RDM虚拟存储布局。
+
+不支持符号链接。

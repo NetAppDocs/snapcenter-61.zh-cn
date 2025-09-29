@@ -1,0 +1,70 @@
+---
+permalink: upgrade/upgrade_workflow.html 
+sidebar: sidebar 
+keywords: upgrade, snapcenter server, plug-ins, workflow, upgrade path 
+summary: 描述如何升级SnapCenter服务器和插件以及支持的升级路径 
+---
+= 升级工作流程
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+SnapCenter的每个版本都包含更新的SnapCenter服务器和插件包。插件包更新随SnapCenter安装程序一起分发。您可以配置SnapCenter来检查可用的更新。
+
+工作流程显示了升级SnapCenter服务器和插件包所需的不同任务。
+
+image::../media/upgrade_workflow.gif[升级工作流程]
+
+
+
+== 支持的升级路径
+
+升级路径可帮助您了解可以从哪些早期版本的SnapCenter升级到最新版本的SnapCenter以及支持哪些版本的插件。
+
+|===
+| 如果您使用的是SnapCenter Server 版本... | 您可以直接将SnapCenter Server 升级到... | 支持的插件版本 
+
+
+.3+| 5.0 | 6.0  a| 
+* 5.0
+* 6.0
+
+
+
+
+| 6.0.1  a| 
+* 6.0.1
+
+
+
+
+| 6.1  a| 
+* 6.1
+
+
+
+
+.2+| 6.0  a| 
+6.0.1
+ a| 
+* 6.0
+* 6.0.1
+
+
+
+
+| 6.1  a| 
+* 6.1
+
+
+
+
+| 6.0.1 | 6.1  a| 
+* 6.0.1
+* 6.1
+
+
+|===
+有关升级适用SnapCenter Plug-in for VMware vSphere的信息，请参阅 https://docs.netapp.com/us-en/sc-plugin-vmware-vsphere/scpivs44_upgrade.html["升级SnapCenter Plug-in for VMware vSphere"^]。

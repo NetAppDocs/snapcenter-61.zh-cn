@@ -1,0 +1,23 @@
+---
+permalink: protect-postgresql/types_of_recovery_operations_supported_for_postgresql.html 
+sidebar: sidebar 
+keywords: recovery operations 
+summary: SnapCenter使您能够对 PostgreSQL 执行不同类型的恢复操作。 
+---
+= PostgreSQL 集群支持的恢复操作类型
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+SnapCenter使您能够对 PostgreSQL 集群执行不同类型的恢复操作。
+
+* 将集群恢复到最新状态
+* 将集群恢复到特定时间点
++
+您必须指定恢复的日期和时间。
+
+
+
+SnapCenter还为 PostgreSQL 集群提供了无恢复选项。

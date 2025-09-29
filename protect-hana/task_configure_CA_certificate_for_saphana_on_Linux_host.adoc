@@ -1,0 +1,116 @@
+---
+permalink: protect-hana/task_configure_CA_certificate_for_saphana_on_Linux_host.html 
+sidebar: sidebar 
+keywords: SnapCenter 
+summary: 为 Linux 主机上的SnapCenter SAP HANA 插件服务配置 CA 证书 
+---
+= 为 Linux 主机上的SnapCenter SAP HANA 插件服务配置 CA 证书
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您应该管理插件密钥库及其证书的密码，配置 CA 证书，将根证书或中间证书配置到插件信任库，并使用SnapCenter插件服务将 CA 签名密钥对配置到插件信任库以激活已安装的数字证书。
+
+插件使用位于 _/opt/ NetApp/snapcenter/scc/etc_ 的文件“keystore.jks”作为其信任库和密钥库。
+
+
+
+== 管理插件密钥库的密码以及正在使用的 CA 签名密钥对的别名
+
+.步骤
+. 您可以从插件代理属性文件中检索插件密钥库默认密码。
++
+它是与密钥“KEYSTORE_PASS”对应的值。
+
+. 更改密钥库密码：
++
+ keytool -storepasswd -keystore keystore.jks
+. 将密钥库中所有私钥条目别名的密码更改为与密钥库相同的密码：
++
+ keytool -keypasswd -alias "alias_name_in_cert" -keystore keystore.jks
++
+对 _agent.properties_ 文件中的密钥 KEYSTORE_PASS 进行相同的更新。
+
+. 修改密码后重启服务。
+
+
+
+NOTE: 插件密钥库的密码和私钥的所有相关别名的密码应该相同。
+
+
+
+== 配置根证书或中间证书以插入信任库
+
+您应该配置没有私钥的根证书或中间证书来插入信任库。
+
+.步骤
+. 导航到包含插件密钥库的文件夹：/opt/ NetApp/snapcenter/scc/etc。
+. 找到文件“keystore.jks”。
+. 列出密钥库中添加的证书：
++
+`keytool -list -v -keystore keystore.jks`
+
+. 添加根证书或中间证书：
++
+ keytool -import -trustcacerts -alias myRootCA -file /root/USERTrustRSA_Root.cer -keystore keystore.jks
+. 配置根证书或中间证书以插入信任库后重新启动服务。
+
+
+
+NOTE: 您应该添加根 CA 证书，然后添加中间 CA 证书。
+
+
+
+== 配置 CA 签名密钥对以插入信任库
+
+您应该将 CA 签名的密钥对配置到插件信任库。
+
+.步骤
+. 导航到包含插件密钥库 /opt/ NetApp/snapcenter/scc/etc 的文件夹。
+. 找到文件“keystore.jks”。
+. 列出密钥库中添加的证书：
++
+`keytool -list -v -keystore keystore.jks`
+
+. 添加具有私钥和公钥的 CA 证书。
++
+`keytool -importkeystore -srckeystore /root/snapcenter.ssl.test.netapp.com.pfx -srcstoretype pkcs12 -destkeystore keystore.jks -deststoretype JKS`
+
+. 列出密钥库中添加的证书。
++
+`keytool -list -v -keystore keystore.jks`
+
+. 验证密钥库是否包含与添加到密钥库的新 CA 证书相对应的别名。
+. 将添加的CA证书私钥密码更改为keystore密码。
++
+默认插件密钥库密码是 agent.properties 文件中密钥 KEYSTORE_PASS 的值。
+
++
+ keytool -keypasswd -alias "alias_name_in_CA_cert" -keystore keystore.jks
+. 如果CA证书中的别名较长，且包含空格或特殊字符（“*”，“，”），请将别名修改为简单名称：
++
+ keytool -changealias -alias "long_alias_name" -destalias "simple_alias" -keystore keystore.jks
+. 在 agent.properties 文件中配置来自 CA 证书的别名。
++
+根据键 SCC_CERTIFICATE_ALIAS 更新此值。
+
+. 配置 CA 签名密钥对以插入信任库后重新启动服务。
+
+
+
+
+== 为插件配置证书吊销列表 (CRL)
+
+.关于此任务
+* SnapCenter插件将在预配置的目录中搜索 CRL 文件。
+* SnapCenter插件的 CRL 文件的默认目录是“opt/ NetApp/snapcenter/scc/etc/crl”。
+
+
+.步骤
+. 您可以根据键 CRL_PATH 修改和更新 agent.properties 文件中的默认目录。
++
+您可以在此目录中放置多个 CRL 文件。将根据每个 CRL 验证传入的证书。
+
+

@@ -1,0 +1,33 @@
+---
+permalink: install/enable_two_way_ssl_linux.html 
+sidebar: sidebar 
+keywords: security,enable two-way ssL, windows host, one-way ssl 
+summary: 您可以启用 SSL 通信，以使用 PowerShell 命令保护 Linux 主机上的SnapCenter服务器与插件之间的相互通信。 
+---
+= 在 Linux 主机上启用 SSL 通信
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您可以启用双向 SSL 通信，以使用 PowerShell 命令保护 Linux 主机上的SnapCenter服务器与插件之间的相互通信。
+
+.步骤
+. 执行以下操作以启用单向 SSL 通信。
++
+.. 登录SnapCenter GUI。
+.. 单击“*设置*”>“*全局设置*”，然后选择“*在SnapCenter服务器上启用证书验证*”。
+.. 单击“*主机*”>“*托管主机*”，然后选择要启用单向 SSL 的插件主机。
+.. 点击image:../media/more_icon.gif["更多图标"]图标，然后单击*启用证书验证*。
+
+
+. 从SnapCenter Server Linux 主机启用双向 SSL 通信。
++
+** `Open-SmConnection`
+** `Set-SmConfigSettings -Agent -configSettings @{"EnableTwoWaySSL"="true"} -HostName <Plugin Host Name>`
+** `Set-SmConfigSettings -Agent -configSettings @{"EnableTwoWaySSL"="true"} -HostName localhost`
+** `Set-SmConfigSettings -Server -configSettings @{"EnableTwoWaySSL"="true"}`
+
+
+

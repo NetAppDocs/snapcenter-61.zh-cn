@@ -1,0 +1,16 @@
+---
+permalink: protect-nsp/number_of_backup_jobs_needed.html 
+sidebar: sidebar 
+keywords: backup jobs 
+summary: '决定所需备份作业数量的因素包括资源的大小、使用的卷数、资源的变化率以及服务水平协议 (SLA)。' 
+---
+= 所需备份作业的数量
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+决定所需备份作业数量的因素包括资源的大小、使用的卷数、资源的变化率以及服务水平协议 (SLA)。
+
+您选择的备份作业的数量通常取决于您放置资源的卷的数量。例如，如果您将一组小资源放在一个卷上，将一组大资源放在另一个卷上，则可以为小资源创建一个备份作业，为大资源创建一个备份作业。

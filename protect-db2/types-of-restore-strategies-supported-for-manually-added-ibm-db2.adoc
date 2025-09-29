@@ -1,0 +1,27 @@
+---
+permalink: protect-db2/types-of-restore-strategies-supported-for-manually-added-ibm-db2.html 
+sidebar: sidebar 
+keywords: SnapCenter 
+summary: 您必须先定义一个策略，然后才能使用SnapCenter成功执行还原操作。手动添加的 IBM Db2 资源有两种恢复策略。您无法恢复手动添加的 IBM Db2 资源。 
+---
+= 手动添加的 IBM Db2 资源支持的恢复策略类型
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您必须先定义一个策略，然后才能使用SnapCenter成功执行还原操作。手动添加的 IBM Db2 资源有两种恢复策略。
+
+
+NOTE: 您无法恢复手动添加的 IBM Db2 资源。
+
+
+
+== 完成资源恢复
+
+* 恢复资源的所有卷、qtree 和 LUN
+
+
+
+NOTE: 如果资源包含卷或 qtree，则在这些卷或 qtree 上选择还原的快照之后拍摄的快照将被删除，并且无法恢复。此外，如果任何其他资源托管在相同的卷或 qtree 上，则该资源也会被删除。

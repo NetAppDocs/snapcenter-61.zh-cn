@@ -1,0 +1,90 @@
+---
+permalink: protect-sco/reference_storage_types_supported_by_snapcenter_plug_in_for_oracle_database.html 
+sidebar: sidebar 
+keywords: storage types, iSCSI, NFS, RDM, VMDK, NFS, LVM, ASM, SAN filesystem 
+summary: SnapCenter支持物理机和虚拟机上的多种存储类型。在安装适用于 Linux 的SnapCenter插件包或适用于 AIX 的SnapCenter插件包之前，您必须验证对您的存储类型的支持。 
+---
+= Oracle Database 插件支持的存储类型
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+SnapCenter支持物理机和虚拟机上的多种存储类型。在安装适用于 Linux 的SnapCenter插件包或适用于 AIX 的SnapCenter插件包之前，您必须验证对您的存储类型的支持。
+
+SnapCenter不支持 Linux 和 AIX 的存储配置。
+
+
+
+== Linux 支持的存储类型
+
+下表列出了 Linux 上支持的存储类型。
+
+|===
+| 机器 | 存储类型 
+
+
+ a| 
+物理服务器
+ a| 
+* FC 连接的 LUN
+* iSCSI 连接的 LUN
+* NFS 连接卷
+* NVMe光纤通道
+* NVMe/TCP
+
+
+
+
+ a| 
+VMware ESXi
+ a| 
+* 通过 FC 或 iSCSI ESXi HBA 连接的 RDM LUN 主机总线适配器 (HBA) 扫描可能需要很长时间才能完成，因为SnapCenter会扫描主机中存在的所有主机总线适配器。
++
+您可以编辑位于 _/opt/ NetApp/snapcenter/spl/plugins/scu/scucore/modules/SCU/Config_ 的 *LinuxConfig.pm* 文件，将 *SCSI_HOSTS_OPTIMIZED_RESCAN* 参数的值设置为 1，以仅重新扫描 HBA_DRIVER_NAMES 中列出的那些 HBA。
+
+* iSCSI LUN 由 iSCSI 启动器直接连接到客户系统
+* NFS 数据存储上的 VMDK
+* 通过 NVMe/TCP 创建的 VMFS 上的 VMDK
++
+
+NOTE: ESX 8.0U2 支持 RAC，并支持共享 VMDK
+
+* NFS 卷直接连接到客户系统
+* NFS 和 SAN 上的 vVol 数据存储
++
+vVol 数据存储只能使用适用于 VMware vSphere 的ONTAP Tools 进行配置。
+
+
+
+|===
+
+
+== AIX 上支持的存储类型
+
+下表列出了 AIX 上支持的存储类型。
+
+|===
+| 机器 | 存储类型 
+
+
+ a| 
+物理服务器
+ a| 
+* FC 连接和 iSCSI 连接的 LUN。
++
+在 SAN 环境中，支持 ASM、LVM 和 SAN 文件系统。
+
++
+
+NOTE: 不支持 AIX 和文件系统上的 NFS。
+
+* 增强型日志文件系统 (JFS2)
++
+支持 SAN 文件系统和 LVM 布局上的内联日志记录。
+
+
+
+|===
+这 https://imt.netapp.com/matrix/imt.jsp?components=121071;&solution=1259&isHWU&src=IMT["NetApp 互操作性表工具"]包含有关受支持版本的最新信息。

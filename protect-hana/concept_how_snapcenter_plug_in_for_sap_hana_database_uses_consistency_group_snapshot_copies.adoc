@@ -1,0 +1,16 @@
+---
+permalink: protect-hana/concept_how_snapcenter_plug_in_for_sap_hana_database_uses_consistency_group_snapshot_copies.html 
+sidebar: sidebar 
+keywords: SnapCenter Plug-in for SAP HANA Database 
+summary: 您可以使用该插件为资源组创建一致性组快照。一致性组是一个可以容纳多个卷的容器，以便您可以将它们作为一个实体进行管理。一致性组是多个卷的同时快照，提供一组卷的一致副本。 
+---
+= SAP HANA 数据库的SnapCenter插件如何使用一致性组快照
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您可以使用该插件为资源组创建一致性组快照。一致性组是一个可以容纳多个卷的容器，以便您可以将它们作为一个实体进行管理。一致性组是多个卷的同时快照，提供一组卷的一致副本。
+
+您还可以指定存储控制器对快照进行一致分组的等待时间。可用的等待时间选项有*紧急*、*中等*和*宽松*。您还可以在一致的组快照操作期间启用或禁用随处写入文件布局 (WAFL) 同步。  WAFL同步提高了一致性组快照的性能。

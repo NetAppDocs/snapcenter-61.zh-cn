@@ -1,0 +1,57 @@
+---
+permalink: protect-postgresql/host-requirements-to-install-snapcenter-plug-in-package-for-linux.html 
+sidebar: sidebar 
+keywords: SnapCenter 
+summary: 在安装适用于 Linux 的SnapCenter插件包之前，您应该熟悉一些基本的主机系统空间和大小要求。 
+---
+= 安装适用于 Linux 的SnapCenter插件包的主机要求
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+在安装适用于 Linux 的SnapCenter插件包之前，您应该熟悉一些基本的主机系统空间和大小要求。
+
+|===
+| 物品 | 要求 
+
+
+ a| 
+操作系统
+ a| 
+* Red Hat Enterprise Linux
+* SUSE Linux 企业服务器 (SLES)
+
+
+有关受支持版本的最新信息，请参阅 https://imt.netapp.com/matrix/imt.jsp?components=121073;&solution=1257&isHWU&src=IMT["NetApp 互操作性表工具"]。
+
+
+
+ a| 
+主机上SnapCenter插件的最小 RAM
+ a| 
+1 GB
+
+
+
+ a| 
+主机上SnapCenter插件的最小安装和日志空间
+ a| 
+2 GB
+
+
+NOTE: 您应该分配足够的磁盘空间并监控日志文件夹的存储消耗。所需的日志空间有所不同，取决于要保护的实体的数量和数据保护操作的频率。如果没有足够的磁盘空间，则不会为最近运行的操作创建日志。
+
+
+
+ a| 
+所需的软件包
+ a| 
+Java 11 Oracle Java 和 OpenJDK
+
+如果您已将 JAVA 升级到最新版本，则必须确保位于 /var/opt/snapcenter/spl/etc/spl.properties 的 JAVA_HOME 选项设置为正确的 JAVA 版本和正确的路径。
+
+有关受支持版本的最新信息，请参阅 https://imt.netapp.com/matrix/imt.jsp?components=121073;&solution=1257&isHWU&src=IMT["NetApp 互操作性表工具"]。
+
+|===

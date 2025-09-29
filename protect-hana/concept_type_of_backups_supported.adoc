@@ -1,0 +1,26 @@
+---
+permalink: protect-hana/concept_type_of_backups_supported.html 
+sidebar: sidebar 
+keywords: SnapCenter Plug-in for SAP HANA Database 
+summary: 备份类型指定您要创建的备份类型。  SnapCenter支持 SAP HANA 数据库的基于文件的备份和基于快照副本的备份类型。 
+---
+= 支持的备份类型
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+备份类型指定您要创建的备份类型。  SnapCenter支持 SAP HANA 数据库的基于文件的备份和基于快照副本的备份类型。
+
+
+
+== 基于文件的备份
+
+基于文件的备份验证数据库的完整性。您可以安排基于文件的备份操作以特定的时间间隔进行。仅备份活跃租户。您无法从SnapCenter还原和克隆基于文件的备份。
+
+
+
+== 基于快照副本的备份
+
+基于快照副本的备份利用NetApp Snapshot 技术创建 SAP HANA 数据库所在卷的在线只读副本。

@@ -1,0 +1,38 @@
+---
+permalink: protect-hana/task_configure_hdb_user_store_key_and_hdbsql_os_user_for_the_sap_hana_database.html 
+sidebar: sidebar 
+keywords: HDB User Store Key, HDBSQL OS User, SAP HANA database 
+summary: 您必须配置 HDB User Store Key 和 HDBSQL OS User 才能对 SAP HANA 数据库执行数据保护操作。 
+---
+= 为 SAP HANA 数据库配置 HDB 用户存储密钥和 HDBSQL OS 用户
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您必须配置 HDB User Store Key 和 HDBSQL OS User 才能对 SAP HANA 数据库执行数据保护操作。
+
+.开始之前
+* 如果 SAP HANA 数据库未配置 HDB 安全用户存储密钥和 HDB SQL OS 用户，则只有自动发现的资源才会出现红色挂锁图标。如果在后续的发现操作中发现配置的 HDB 安全用户存储密钥不正确或未提供对数据库本身的访问权限，则红色挂锁图标将重新出现。
+* 您必须配置 HDB 安全用户存储密钥和 HDB SQL OS 用户才能保护数据库或将其添加到资源组以执行数据保护操作。
+* 您必须配置 HDB SQL OS 用户才能访问系统数据库。如果 HDB SQL OS 用户配置为仅访问租户数据库，则发现操作将失败。
+
+
+.步骤
+. 在左侧导航窗格中，单击“*资源*”，然后从列表中选择“适用于 SAP HANA 数据库的SnapCenter插件”。
+. 在资源页面中，从*查看*列表中选择资源类型。
+. （可选）点击image:../media/filter_icon.gif["筛选图标"]并选择主机名。
++
+然后您可以点击image:../media/filter_icon.gif["筛选图标"]关闭筛选器窗格。
+
+. 选择数据库，然后单击*配置数据库*。
+. 在配置数据库设置部分，输入 HDB 安全用户存储密钥。
++
+
+NOTE: 显示插件主机名，并且 HDB SQL OS 用户自动填充为 <sid>adm。
+
+. 单击“*确定*”。
+
+
+您可以从拓扑页面修改数据库配置。

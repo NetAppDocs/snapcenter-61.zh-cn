@@ -1,0 +1,50 @@
+---
+permalink: uninstall/task_uninstall_plug_ins_from_a_host_using_the_snapcenter_gui.html 
+sidebar: sidebar 
+keywords: uninstall, gui 
+summary: 当您决定不再需要单个插件或插件包时，您可以使用SnapCenter界面将其卸载。 
+---
+= 使用SnapCenter GUI 卸载插件
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+当您决定不再需要单个插件或插件包时，您可以使用SnapCenter界面将其卸载。
+
+.开始之前
+* 您应该已经删除了正在卸载的插件包的资源组。
+* 您应该已经分离了与要卸载的插件包的资源组关联的策略。
+
+
+.关于此任务
+您可以卸载单个插件。例如，您可能需要卸载适用于 Microsoft SQL Server 的SnapCenter插件，因为主机资源不足，而您想将该插件移动到功能更强大的主机。您还可以卸载整个插件包。例如，您可能需要卸载适用于 Linux 的SnapCenter插件包，其中包括适用于 Oracle 数据库的SnapCenter插件和适用于 UNIX 的SnapCenter插件。
+
+* 删除主机包括卸载所有插件。
++
+从SnapCenter中删除主机时， SnapCenter会在删除主机之前卸载主机上的所有插件包。
+
+* SnapCenter GUI 一次从一个主机中删除插件。
++
+使用SnapCenter GUI 时，您一次只能卸载一台主机上的插件。但是，您可以同时运行多个卸载操作。
+
++
+您还可以使用 _Uninstall-SmHostPackage_ cmdlet 和所需参数从多个主机卸载插件。可以通过运行_Get-Help command_name_来获取有关可与 cmdlet 一起使用的参数及其描述的信息。或者，您也可以参考 https://docs.netapp.com/us-en/snapcenter-cmdlets/index.html["SnapCenter软件 Cmdlet 参考指南"^]。
+
+
+
+
+IMPORTANT: 从安装了SnapCenter服务器的主机上卸载适用于 Windows 的SnapCenter插件包将损坏SnapCenter服务器安装。除非您确定不再需要SnapCenter服务器，否则请勿卸载适用于 Windows 的SnapCenter插件包。
+
+.步骤
+. 在左侧导航窗格中，单击“*主机*”。
+. 在“主机”页面中，单击“*托管主机*”。
+. 在“受管理主机”页面中，选择要从中卸载插件或插件包的主机。
+. 在您想要删除的插件旁边，单击*删除*>*提交*。
+
+
+.完成后
+您应该等待 5 分钟，然后再在该主机上重新安装插件。此时间段足以让SnapCenter GUI 刷新托管主机的状态。如果立即重新安装该插件，安装将会失败。
+
+如果您要卸载适用于 Linux 的SnapCenter插件包，则可以在以下位置找到卸载特定的日志文件：_/custom_location/snapcenter/log_。

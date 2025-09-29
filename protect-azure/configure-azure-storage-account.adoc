@@ -1,0 +1,26 @@
+---
+permalink: protect-azure/configure-azure-storage-account.html 
+sidebar: sidebar 
+keywords: snapcenter, azure, azure storage account, subscription ID, azure credential, azure netapp account 
+summary: 在SnapCenter中配置 Azure 存储帐户。 
+---
+= 配置 Azure 存储帐户
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您应该在SnapCenter中配置 Azure 存储帐户。
+
+Azure 存储帐户包含有关订阅 ID、Azure 凭据和 Azure NetApp帐户的详细信息。
+
+
+NOTE: Azure NetApp Files不需要标准许可证和基于容量的许可证。
+
+.步骤
+. 在左侧导航窗格中，单击“*存储系统*”。
+. 在“存储系统”页面中，选择“Azure NetApp Files”，然后单击“新建”。
+. 从相应的下拉列表中选择凭据、订阅 ID 和NetApp帐户。
+. 单击“*提交*”。
+

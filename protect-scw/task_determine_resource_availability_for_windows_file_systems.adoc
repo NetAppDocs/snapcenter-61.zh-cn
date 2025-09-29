@@ -1,0 +1,32 @@
+---
+permalink: protect-scw/task_determine_resource_availability_for_windows_file_systems.html 
+sidebar: sidebar 
+keywords: availability 
+summary: 资源是文件系统中的 LUN 和类似组件，由您安装的插件维护。您可以将这些资源添加到资源组中，以便可以在多个资源上执行数据保护作业，但首先您必须确定哪些资源可用。发现可用资源还可以验证插件安装是否已成功完成。 
+---
+= 确定 Windows 文件系统的资源可用性
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+资源是文件系统中的 LUN 和类似组件，由您安装的插件维护。您可以将这些资源添加到资源组中，以便可以在多个资源上执行数据保护作业，但首先您必须确定哪些资源可用。发现可用资源还可以验证插件安装是否已成功完成。
+
+.开始之前
+* 您必须已经完成安装SnapCenter Server、添加主机、创建存储虚拟机 (SVM) 连接和添加凭据等任务。
+* 如果文件驻留在 VMware RDM LUN 或 VMDK 上，则必须部署SnapCenter Plug-in for VMware vSphere并向SnapCenter注册该插件。有关更多信息，请参阅 https://docs.netapp.com/us-en/sc-plugin-vmware-vsphere/["SnapCenter Plug-in for VMware vSphere文档"^] 。
+
+
+.步骤
+. 在左侧导航窗格中，单击“*资源*”，然后从列表中选择适当的插件。
+. 在资源页面中，从列表中选择*文件系统*。
+. 选择主机来过滤资源列表，然后单击“刷新资源”。
++
+新添加、重命名或删除的文件系统将更新到SnapCenter服务器清单。
+
++
+
+IMPORTANT: 如果数据库在SnapCenter之外重命名，则必须刷新资源。
+
+

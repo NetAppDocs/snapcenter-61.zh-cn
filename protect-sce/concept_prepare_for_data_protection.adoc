@@ -1,0 +1,75 @@
+---
+permalink: protect-sce/concept_prepare_for_data_protection.html 
+sidebar: sidebar 
+keywords: SnapCenter Plug-in for Exchange Server 
+summary: 在执行任何数据保护操作（例如备份、克隆或恢复操作）之前，您必须定义策略并设置环境。您还可以设置SnapCenter服务器以使用SnapMirror和SnapVault技术。 
+---
+= 做好数据保护准备
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+在执行任何数据保护操作（例如备份、克隆或恢复操作）之前，您必须定义策略并设置环境。您还可以设置SnapCenter服务器以使用SnapMirror和SnapVault技术。
+
+要利用SnapVault和SnapMirror技术，您必须在存储设备上配置并初始化源卷和目标卷之间的数据保护关系。您可以使用 NetAppSystem Manager 或存储控制台命令行来执行这些任务。
+
+*查找更多信息*
+
+link:https://docs.netapp.com/us-en/ontap-automation/getting_started_with_the_rest_api.html["开始使用 REST API"]
+
+
+
+== 使用适用于 Microsoft Exchange Server 的SnapCenter插件的先决条件
+
+在使用 Exchange 插件之前， SnapCenter管理员必须安装和配置SnapCenter服务器并执行先决条件任务。
+
+* 安装并配置SnapCenter服务器。
+* 登录到SnapCenter。
+* 通过添加或分配存储系统连接并创建凭据来配置SnapCenter环境。
++
+
+NOTE: SnapCenter不支持不同集群上具有相同名称的多个 SVM。  SnapCenter支持的每个 SVM 都必须具有唯一的名称。
+
+* 添加主机，安装适用于 Microsoft Windows 的SnapCenter插件和适用于 Microsoft Exchange Server 的SnapCenter插件，并发现（刷新）资源。
+* 使用适用于 Microsoft Windows 的SnapCenter插件执行主机端存储配置。
+* 如果您使用SnapCenter Server 保护驻留在 VMware RDM LUN 上的 Exchange 数据库，则必须部署SnapCenter Plug-in for VMware vSphere并向SnapCenter注册该插件。  SnapCenter Plug-in for VMware vSphere文档包含更多信息。
++
+
+NOTE: 不支持 VMDK。
+
+* 使用 Microsoft Exchange 工具将现有的 Microsoft Exchange Server 数据库从本地磁盘移动到支持的存储。
+* 如果您想要备份复制，请设置SnapMirror和SnapVault关系。
+
+
+对于SnapCenter 4.1.1 用户，SnapCenter Plug-in for VMware vSphere包含有关保护虚拟化数据库和文件系统的信息。对于SnapCenter 4.2.x 用户， NetApp Data Broker 1.0 和 1.0.1 文档包含有关使用基于 Linux 的NetApp Data Broker 虚拟设备（开放虚拟设备格式）提供的适用SnapCenter Plug-in for VMware vSphere保护虚拟化数据库和文件系统的信息。对于SnapCenter 4.3.x 用户，SnapCenter Plug-in for VMware vSphere文档包含有关使用基于 Linux 的SnapCenter Plug-in for VMware vSphere保护虚拟化数据库和文件系统的信息。
+
+https://docs.netapp.com/us-en/sc-plugin-vmware-vsphere/["SnapCenter Plug-in for VMware vSphere文档"^]
+
+
+
+== 如何使用资源、资源组和策略来保护 Exchange Server
+
+在使用SnapCenter之前，了解与要执行的备份、还原和重新播种操作相关的基本概念会很有帮助。您与资源、资源组和策略进行交互以执行不同的操作。
+
+* 资源通常是使用SnapCenter备份的邮箱数据库或 Microsoft Exchange 数据库可用性组 (DAG)。
+* SnapCenter资源组是主机或 Exchange DAG 上的资源集合，资源组可以包含整个 DAG 或单个数据库。
++
+当您对资源组执行操作时，您将根据为资源组指定的计划对资源组中定义的资源执行该操作。
+
++
+您可以按需备份单个资源或资源组。您还可以对单个资源和资源组执行计划备份。
+
++
+资源组以前称为数据集。
+
+* 这些策略指定了备份频率、副本保留、脚本以及数据保护操作的其他特征。
++
+创建资源组时，您可以为该组选择一个或多个策略。您还可以在对单个资源执行按需备份时选择一个或多个策略。
+
+
+
+可以将资源组视为定义您想要保护的内容以及您想要在日期和时间方面保护的内容。把政策想象成定义你想如何保护它。例如，如果要备份主机的所有数据库，则可以创建一个包含主机中所有数据库的资源组。然后，您可以将两个策略附加到资源组：每日策略和每小时策略。创建资源组并附加策略时，您可以配置资源组以每天执行一次完整备份，并配置另一个每小时执行一次日志备份的计划。下图说明了数据库的资源、资源组和策略之间的关系：
+
+image::../media/sce_resourcegroup_policy.gif[资源组策略截图]

@@ -1,0 +1,65 @@
+---
+permalink: protect-azure/install-snapcenter-azure-virtual-machine.html 
+sidebar: sidebar 
+keywords: snapcenter server, azure virtual machine, install 
+summary: 在 Azure 虚拟机上下载并安装SnapCenter 。 
+---
+= 在 Azure 虚拟机上安装SnapCenter
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您可以从NetApp支持站点下载SnapCenter software并在 Azure 虚拟机上安装该软件。
+
+.开始之前
+* 确保 Azure Windows 虚拟机满足SnapCenter Server 安装的要求。有关信息，请参阅link:../install/requirements-to-install-snapcenter-server.html["安装SnapCenter服务器的要求"]。
+* 如果您是Azure NetApp Files 的新用户并且没有现有的NetApp帐户，请确保您已注册，以便可以访问SnapCenter软件。更多信息，请参阅link:../install/register_enable_software_access.html["注册以访问SnapCenter software"]。
+
+
+.步骤
+. 从以下位置下载SnapCenter Server 安装包 https://mysupport.netapp.com/site/products/all/details/snapcenter/downloads-tab["NetApp 支持站点"]。
+. 双击下载的 .exe 文件启动SnapCenter Server 安装。
++
+启动安装后，将执行所有预检查，如果不满足最低要求，则会显示相应的错误或警告消息。您可以忽略警告消息并继续安装；但是，错误应该得到修复。
+
+. 查看SnapCenter服务器安装所需的预填充值并根据需要进行修改。
++
+您不必指定 MySQL 服务器存储库数据库的密码。在SnapCenter Server 安装期间，密码会自动生成。
+
++
+
+NOTE: 存储库数据库的自定义路径不支持特殊字符“%”。如果路径中包含“%”，安装将失败。
+
+. 单击“立即安装”。
++
+如果您指定的任何值无效，则会显示相应的错误消息。您应该重新输入这些值，然后开始安装。
+
++
+
+NOTE: 如果点击*取消*按钮，正在执行的步骤将会完成，然后开始回滚操作。  SnapCenter服务器将从主机中完全删除。
+
++
+但是，如果在执行“SnapCenter Server 站点重新启动”或“等待SnapCenter Server 启动”操作时单击“*取消*”，则安装将继续进行而不会取消操作。
+
+
+
+
+
+== 注册产品以获得支持
+
+如果您是NetApp新用户并且没有现有的NetApp帐户，则应该注册该产品以获得支持。
+
+.步骤
+. 安装SnapCenter后，导航至 *帮助 > 关于*。
+. 在“关于 SnapCenter”对话框中，记下SnapCenter实例，这是一个以 971 开头的 20 位数字。
+. 点击 https://register.netapp.com[]。
+. 单击“*我不是注册的NetApp客户*”。
+. 指定您的详细信息以进行注册。
+. 将NetApp参考 SN 字段留空。
+. 从产品线下拉菜单中选择* SnapCenter*。
+. 选择计费提供商。
+. 输入 20 位SnapCenter实例 ID。
+. 单击“*提交*”。
+

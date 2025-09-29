@@ -1,0 +1,27 @@
+---
+permalink: install/task_configure_iis_application_pools_to_enable_active_directory_read_permissions.html 
+sidebar: sidebar 
+keywords: IIS application pool, active directory, enable 
+summary: '当您需要为SnapCenter启用 Active Directory 读取权限时，您可以在 Windows Server 上配置 Internet 信息服务 (IIS) 来创建自定义应用程序池帐户。' 
+---
+= 配置 IIS 应用程序池以启用 Active Directory 读取权限
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+当您需要为SnapCenter启用 Active Directory 读取权限时，您可以在 Windows Server 上配置 Internet 信息服务 (IIS) 来创建自定义应用程序池帐户。
+
+*步骤*
+
+. 在安装了SnapCenter的 Windows Server 上打开 IIS 管理器。
+. 在左侧导航窗格中，单击“*应用程序池*”。
+. 在应用程序池列表中选择SnapCenter ，然后单击操作窗格中的“高级设置”。
+. 选择“身份”，然后单击“*...*”以编辑SnapCenter应用程序池身份。
+. 在自定义帐户字段中，输入具有 Active Directory 读取权限的域用户或域管理员帐户名称。
+. 单击“OK”。
++
+自定义帐户取代了SnapCenter应用程序池的内置 ApplicationPoolIdentity 帐户。
+
+

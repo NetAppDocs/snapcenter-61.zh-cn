@@ -1,0 +1,16 @@
+---
+permalink: protect-hana/task_install_snapcenter_plug_in_for_sap_hana_database.html 
+sidebar: sidebar 
+keywords: installing 
+summary: 如果您想保护 SAP HANA 数据库，则应该安装并设置适用于 SAP HANA 数据库的SnapCenter插件。 
+---
+= SAP HANA 数据库的SnapCenter插件安装工作流程
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+如果您想保护 SAP HANA 数据库，则应该安装并设置适用于 SAP HANA 数据库的SnapCenter插件。
+
+image::../media/sap_hana_install_configure_workflow.gif[安装 sap hana 插件]

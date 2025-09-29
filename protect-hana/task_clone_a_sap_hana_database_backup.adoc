@@ -1,0 +1,200 @@
+---
+permalink: protect-hana/task_clone_a_sap_hana_database_backup.html 
+sidebar: sidebar 
+keywords: SnapCenter Plug-in for SAP HANA Database,run as 
+summary: 您可以使用SnapCenter克隆备份。您可以从主备份或辅助备份克隆。 
+---
+= 克隆 SAP HANA 数据库备份
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您可以使用SnapCenter克隆备份。您可以从主备份或辅助备份克隆。
+
+.开始之前
+* 您应该已经备份资源或资源组。
+* 您应确保托管卷的聚合位于存储虚拟机 (SVM) 的已分配聚合列表中。
+* 您无法克隆基于文件的备份。
+* 目标克隆服务器应具有与目标克隆 SID 字段中提供的相同的 SAP HANA 实例 SID。
+* 对于克隆前或克隆后命令，您应该从以下路径检查这些命令是否存在于插件主机上可用的命令列表中：
++
+** 对于 Windows：_C:\Program Files\ NetApp\ SnapCenter\Snapcenter Plug-in Creator\etc\allowed_commands.config_
+** 对于 Linux：_/opt/ NetApp/snapcenter/scc/etc/allowed_commands.config_
+
+
+
+
+
+NOTE: 如果命令列表中不存在该命令，则操作将失败。
+
+.关于此任务
+* 有关克隆拆分操作限制的信息，请参阅 http://docs.netapp.com/ontap-9/topic/com.netapp.doc.dot-cm-vsmg/home.html["ONTAP 9 逻辑存储管理指南"^]。
+* 对于ONTAP 9.12.1 及更早版本、作为恢复的一部分从SnapLock Vault 快照创建的克隆将继承SnapLock Vault 到期时间。存储管理员应在SnapLock到期后手动清理克隆。
+
+
+[role="tabbed-block"]
+====
+.SnapCenter UI
+--
+.步骤
+. 在左侧导航窗格中，单击“*资源*”，然后从列表中选择适当的插件。
+. 在资源页面中，根据资源类型从*查看*下拉列表中过滤资源。
++
+资源与类型、主机、相关资源组和策略以及状态等信息一起显示。
+
+. 选择资源或资源组。
++
+如果选择资源组，则必须选择资源。
+
++
+进入资源或资源组拓扑页面。
+
+. 从“管理副本”视图中，从主存储系统或辅助存储系统（镜像或保管）中选择“*备份*”。
+. 从表中选择数据备份，然后单击image:../media/clone_icon.gif["克隆图标"]。
+. 在位置页面中，执行以下操作：
++
+|===
+| 对于这个领域... | 操作 
+
+
+ a| 
+插件主机
+ a| 
+选择要挂载克隆并安装插件的主机。
+
+
+
+ a| 
+目标克隆 SID
+ a| 
+输入要从现有备份中克隆的 SAP HANA 实例 ID。
+
+
+
+ a| 
+NFS 导出 IP 地址
+ a| 
+输入将导出克隆卷的 IP 地址或主机名。
+
+
+
+ a| 
+iSCSI 发起程序
+ a| 
+输入 LUN 导出到的主机的 iSCSI 启动器名称。仅当您选择了 LUN 资源类型时，此选项才可用。
+
+
+
+ a| 
+协议
+ a| 
+输入 LUN 协议。仅当您选择了 LUN 资源类型时，此选项才可用。
+
+|===
++
+如果选择的资源是 LUN 并且您正在从辅助备份进行克隆，则会列出目标卷。单个源可以有多个目标卷。
+
++
+
+NOTE: 克隆之前，您必须确保 iSCSI 启动器或 FCP 存在并且已配置并登录到备用主机。
+
+. 在脚本页面中，执行以下步骤：
++
+
+NOTE: 脚本在插件主机上运行。
+
++
+.. 输入分别应在克隆操作之前或之后运行的预克隆或后克隆命令。
++
+*** 克隆前命令：删除现有的同名数据库
+*** 克隆后命令：验证数据库或启动数据库。
+
+
+.. 输入 mount 命令将文件系统挂载到主机。
++
+Linux 计算机上卷或 qtree 的挂载命令：
+
++
+NFS 示例： `mount VSERVER_DATA_IP:%VOLUME_NAME_Clone /mnt`
+
+
+
+. 在通知页面中，从*电子邮件首选项*下拉列表中，选择您想要发送电子邮件的场景。
++
+您还必须指定发件人和收件人的电子邮件地址以及电子邮件的主题。
+
+. 查看摘要，然后单击“*完成*”。
+. 通过单击“*监视*”>“*作业*”来监视操作进度。
+
+
+--
+.PowerShell cmdlet
+--
+.步骤
+. 使用 Open-SmConnection cmdlet 为指定用户启动与SnapCenter服务器的连接会话。
++
+[listing]
+----
+Open-SmConnection  -SMSbaseurl  https:\\snapctr.demo.netapp.com:8146/
+----
+. 使用 Get-SmBackup cmdlet 检索备份以执行克隆操作。
++
+此示例显示有两个备份可供克隆：
+
++
+[listing]
+----
+ C:\PS> Get-SmBackup
+
+        BackupId                      BackupName                    BackupTime                    BackupType
+        --------                      ----------                    ----------                    ----------
+         1                     Payroll Dataset_vise-f6_08... 8/4/2015 11:02:32 AM          Full Backup
+         2                     Payroll Dataset_vise-f6_08... 8/4/2015 11:23:17 AM
+----
+. 从现有备份启动克隆操作，并指定克隆卷导出到的 NFS 导出 IP 地址。
++
+此示例显示要克隆的备份具有 NFSExportIPs 地址 10.232.206.169：
+
++
+[listing]
+----
+New-SmClone -AppPluginCode hana -BackupName scsccore1_sccore_test_com_hana_H73_scsccore1_06-07-2017_02.54.29.3817 -Resources @{"Host"="scsccore1.sccore.test.com";"Uid"="H73"}  -CloneToInstance shivscc4.sccore.test.com -mountcommand 'mount 10.232.206.169:%hana73data_Clone /hana83data' -preclonecreatecommands '/home/scripts/scpre_clone.sh' -postclonecreatecommands '/home/scripts/scpost_clone.sh'
+----
++
+
+NOTE: 如果没有指定NFSExportIPs，则默认导出到克隆目标主机。
+
+. 使用 Get-SmCloneReport cmdlet 查看克隆作业详细信息，验证备份是否已成功克隆。
++
+您可以查看克隆 ID、开始日期和时间、结束日期和时间等详细信息。
+
++
+[listing]
+----
+PS C:\> Get-SmCloneReport -JobId 186
+
+    SmCloneId           : 1
+    SmJobId             : 186
+    StartDateTime       : 8/3/2015 2:43:02 PM
+    EndDateTime         : 8/3/2015 2:44:08 PM
+    Duration            : 00:01:06.6760000
+    Status              : Completed
+    ProtectionGroupName : Draper
+    SmProtectionGroupId : 4
+    PolicyName          : OnDemand_Clone
+    SmPolicyId          : 4
+    BackupPolicyName    : OnDemand_Full_Log
+    SmBackupPolicyId    : 1
+    CloneHostName       : SCSPR0054212005.mycompany.com
+    CloneHostId         : 4
+    CloneName           : Draper__clone__08-03-2015_14.43.53
+    SourceResources     : {Don, Betty, Bobby, Sally}
+    ClonedResources     : {Don_DRAPER, Betty_DRAPER, Bobby_DRAPER, Sally_DRAPER}
+    SmJobError          :
+----
+
+
+--
+====

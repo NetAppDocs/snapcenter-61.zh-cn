@@ -1,0 +1,50 @@
+---
+permalink: protect-scsql/task_cancel_sql_resources_restore_operations.html 
+sidebar: sidebar 
+keywords: cancel, restore 
+summary: 您可以取消排队的还原作业。 
+---
+= 取消SQL资源恢复操作
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您可以取消排队的还原作业。
+
+您应该以SnapCenter管理员或作业所有者的身份登录才能取消恢复操作。
+
+.关于此任务
+* 您可以从“*监视*”页面或“*活动*”窗格取消排队的恢复操作。
+* 您无法取消正在运行的恢复操作。
+* 您可以使用SnapCenter GUI、PowerShell cmdlet 或 CLI 命令取消排队的还原操作。
+* 对于无法取消的恢复操作，“*取消作业*”按钮将被禁用。
+* 如果您在创建角色时在“用户\组”页面中选择了“*此角色的所有成员都可以查看和操作其他成员的对象*”，则可以在使用该角色时取消其他成员的排队恢复操作。
+
+
+.步骤
+请执行以下操作之一：
+
+|===
+| 从... | 操作 
+
+
+ a| 
+监控页面
+ a| 
+. 在左侧导航窗格中，单击“*监控*”>“*作业*”。
+. 选择作业并单击“取消作业”。
+
+
+
+
+ a| 
+活动窗格
+ a| 
+. 启动恢复操作后，单击image:../media/activity_pane_icon.gif["活动窗格图标"]在活动窗格上查看最近的五项操作。
+. 选择操作。
+. 在“工作详情”页面中，单击“取消工作”。
+
+
+|===

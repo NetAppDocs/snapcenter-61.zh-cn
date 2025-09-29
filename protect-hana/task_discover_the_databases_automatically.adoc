@@ -1,0 +1,58 @@
+---
+permalink: protect-hana/task_discover_the_databases_automatically.html 
+sidebar: sidebar 
+keywords: credentials 
+summary: 资源是 Linux 主机上由SnapCenter管理的 SAP HANA 数据库和非数据卷。发现可用的 SAP HANA 数据库后，您可以将这些资源添加到资源组以执行数据保护操作。 
+---
+= 自动发现数据库
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+资源是 Linux 主机上由SnapCenter管理的 SAP HANA 数据库和非数据卷。发现可用的 SAP HANA 数据库后，您可以将这些资源添加到资源组以执行数据保护操作。
+
+.开始之前
+* 您必须已经完成安装SnapCenter服务器、添加 HDB 用户存储密钥、添加主机和设置存储系统连接等任务。
+* 您必须已在 Linux 主机上配置 HDB 安全用户存储密钥和 HDB SQL OS 用户。
++
+** 您必须使用 SID adm user 配置 HDB 用户存储密钥。例如，对于SID为A22的HANA系统，HDB User Store Key必须配置为a22adm。
+
+
+* SAP HANA 数据库的SnapCenter插件不支持自动发现驻留在 RDM/VMDK 虚拟环境中的资源。手动添加数据库时必须提供虚拟环境的存储信息。
+
+
+.关于此任务
+安装插件后，该Linux主机上的所有资源都会被自动发现并显示在资源页面上。
+
+自动发现的资源不能被修改或删除。
+
+.步骤
+. 在左侧导航窗格中，单击“资源”，然后从列表中选择“SAP HANA 数据库插件”。
+. 在资源页面中，从视图列表中选择资源类型。
+. （可选）点击*image:../media/filter_icon.gif["筛选图标"] *，然后选择主机名。
++
+然后您可以点击 *image:../media/filter_icon.gif["筛选图标"] * 关闭筛选窗格。
+
+. 单击“*刷新资源*”以发现主机上可用的资源。
++
+资源与资源类型、主机名、关联资源组、备份类型、策略和总体状态等信息一起显示。
+
++
+** 如果数据库位于NetApp存储上且未受保护，则“总体状态”列中显示“未受保护”。
+** 如果数据库位于NetApp存储系统上并受到保护，并且没有执行备份操作，则“总体状态”列中会显示“备份未运行”。否则，状态将根据上次备份状态更改为备份失败或备份成功。
+
+
+
+
+
+NOTE: 如果 SAP HANA 数据库未配置 HDB 安全用户存储密钥，则资源旁边会出现一个红色挂锁图标。如果在后续的发现操作中发现配置的 HDB 安全用户存储密钥不正确或未提供对数据库本身的访问权限，则红色挂锁图标将重新出现。
+
+
+IMPORTANT: 如果数据库在SnapCenter之外重命名，则必须刷新资源。
+
+.完成后
+您必须配置 HDB 安全用户存储密钥和 HDBSQL OS 用户才能保护数据库或将其添加到资源组以执行数据保护操作。
+
+link:task_configure_hdb_user_store_key_and_hdbsql_os_user_for_the_sap_hana_database.html["为 SAP HANA 数据库配置 HDB 用户存储密钥和 HDBSQL OS 用户"]

@@ -1,0 +1,41 @@
+---
+permalink: uninstall/task_uninstalling_the_snapcenter_server.html 
+sidebar: sidebar 
+keywords: uninstall, snapcenter server, windows 
+summary: 如果您不再希望使用SnapCenter Server 来管理数据保护作业，则可以使用SnapCenter Server 主机上的程序和功能控制面板卸载SnapCenter Server。卸载SnapCenter服务器将删除其所有组件。 
+---
+= 在 Windows 主机上卸载SnapCenter服务器
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+如果您不再希望使用SnapCenter Server 来管理数据保护作业，则可以使用SnapCenter Server 主机上的程序和功能控制面板卸载SnapCenter Server。卸载SnapCenter服务器将删除其所有组件。
+
+.开始之前
+* 确保安装SnapCenter服务器的驱动器上至少有 2 GB 的可用空间。
+* 确保安装SnapCenter服务器的域未被删除。
++
+如果删除安装了SnapCenter服务器的域，然后尝试卸载，则操作将失败。
+
+* 您应该备份存储库数据库，因为存储库数据库将被清理和卸载。
+
+
+.步骤
+. 在SnapCenter服务器主机上，导航到控制面板。
+. 确保您处于*类别*视图。
+. 在“程序”下，单击“卸载程序”。
++
+程序和功能窗口打开。
+
+. 选择NetApp SnapCenter Server，然后单击“卸载”。
++
+从SnapCenter 4.2 开始，当您卸载SnapCenter服务器时，其所有组件（包括 MySQL 服务器存储库数据库）都将被卸载。
+
++
+** 从 NLB 群集中删除 NLB 节点需要重新启动SnapCenter Server 主机。如果不重新启动主机，则尝试重新安装SnapCenter服务器时可能会遇到失败。
+** 您应该手动卸载卸载过程中未删除的 .NET Framework。
+
+
+

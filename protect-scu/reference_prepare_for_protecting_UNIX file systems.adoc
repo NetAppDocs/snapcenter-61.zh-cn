@@ -1,0 +1,30 @@
+---
+permalink: protect-scu/reference_prepare_for_protecting_UNIX file systems.html 
+sidebar: sidebar 
+keywords: unix file systems, preparation for protection, prerequisites 
+summary: 在执行任何数据保护操作（例如备份、克隆或恢复操作）之前，您应该设置您的环境。 
+---
+= 准备保护 Unix 文件系统
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+在执行任何数据保护操作（例如备份、克隆或恢复操作）之前，您应该设置您的环境。您还可以设置SnapCenter服务器以使用SnapMirror和SnapVault技术。
+
+要利用SnapVault和SnapMirror技术，您必须在存储设备上配置并初始化源卷和目标卷之间的数据保护关系。您可以使用 NetAppSystem Manager 或存储控制台命令行来执行这些任务。
+
+在使用适用于 Unix 文件系统的插件之前， SnapCenter管理员应安装和配置SnapCenter服务器并执行先决条件任务。
+
+* 安装并配置SnapCenter服务器。link:../install/task_install_the_snapcenter_server_using_the_install_wizard.html["了解更多"^]
+* 通过添加存储系统连接来配置SnapCenter环境。link:../install/task_add_storage_systems.html["了解更多"^]
++
+
+NOTE: SnapCenter不支持不同集群上具有相同名称的多个 SVM。使用 SVM 注册或集群注册向SnapCenter注册的每个 SVM 都必须是唯一的。
+
+* 添加主机、安装插件、发现资源。
+* 如果您使用SnapCenter Server 保护驻留在 VMware RDM LUN 或 VMDK 上的 Unix 文件系统，则必须部署SnapCenter Plug-in for VMware vSphere并向SnapCenter注册该插件。
+* 在您的 Linux 主机上安装 Java。
+* 如果您需要备份复制，请在ONTAP上配置SnapMirror和SnapVault 。
+

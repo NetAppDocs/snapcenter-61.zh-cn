@@ -1,0 +1,53 @@
+---
+permalink: protect-scw/concept_snapcenter_plug_in_for_windows_features.html 
+sidebar: sidebar 
+keywords: SnapCenter 
+summary: Windows 插件与存储系统上的NetApp Snapshot 技术集成。要使用适用于 Windows 的插件，您需要使用SnapCenter界面。 
+---
+= 适用于 Windows 的SnapCenter插件功能
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Windows 插件与存储系统上的NetApp Snapshot 技术集成。要使用适用于 Windows 的插件，您需要使用SnapCenter界面。
+
+Windows 插件包括以下主要功能：
+
+* *由SnapCenter提供支持的统一图形用户界面*
++
+SnapCenter界面为您提供跨插件和环境的标准化和一致性。  SnapCenter界面使您能够跨插件完成一致的备份和恢复过程、使用集中式报告、使用一目了然的仪表板视图、设置基于角色的访问控制 (RBAC) 以及监控所有插件中的作业。  SnapCenter还提供集中调度和策略管理以支持备份和克隆操作。
+
+* *自动化中央管理*
++
+您可以安排例行文件系统备份、配置基于策略的备份保留以及设置恢复操作。您还可以通过配置SnapCenter发送电子邮件警报来主动监控您的文件系统环境。
+
+* *无中断NetApp Snapshot 技术*
++
+Windows 插件使用NetApp Snapshot 技术。这使您能够在几秒钟内备份文件系统并快速恢复它们，而无需使主机脱机。快照占用的存储空间极小。
+
+
+
+除了这些主要功能外，Windows 插件还提供以下优点：
+
+* 备份、恢复和克隆工作流程支持
+* RBAC 支持的安全性和集中角色委派
+* 使用NetApp FlexClone技术创建生产文件系统的空间高效副本，用于测试或数据提取
++
+有关FlexClone许可信息，请参阅link:../get-started/concept_snapcenter_licenses.html["SnapCenter许可证"^]。
+
+* 能够在多个服务器上同时运行多个备份
+* 用于编写备份、还原和克隆操作脚本的 PowerShell cmdlet
+* 支持文件系统和虚拟机磁盘（VMDK）的备份
+* 支持物理和虚拟化基础设施
+* 支持 iSCSI、光纤通道、FCoE、原始设备映射 (RDM)、非对称 LUN 映射 (ALM)、NFS 和 VMFS 上的 VMDK 以及虚拟 FC
+* Windows Server 2022 支持非易失性内存快速 (NVMe)
++
+** 在 TCP/IP 上的 NVMe 上创建的 VMDK 布局的备份、恢复、克隆和验证工作流程。
+** 从 ESX 8.0 update 2 开始支持 NVMe 固件版本 1.3，并且需要虚拟硬件版本 21。
+** NVMe over TCP/IP 上的 VMDK 应用程序不支持 Windows Server 故障转移群集 (WSFC)。
+
+
+* 支持SnapMirror主动同步（最初作为SnapMirror业务连续性 [SM-BC] 发布），即使整个站点发生故障，也能使业务服务继续运行，支持应用程序使用辅助副本透明地进行故障转移。无需手动干预或额外的脚本即可通过SnapMirror主动同步触发故障转移。
+

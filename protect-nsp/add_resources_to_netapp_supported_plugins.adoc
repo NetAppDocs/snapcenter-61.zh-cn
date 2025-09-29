@@ -1,0 +1,202 @@
+---
+permalink: protect-nsp/add_resources_to_netapp_supported_plugins.html 
+sidebar: sidebar 
+keywords: NetApp supported plug-in, resources, NetApp supported plug-ins, MongoDB, ORASCPM, Oracle Applications, SAP ASE, SAP MaxDB, Storage plug-in 
+summary: 您必须添加想要备份或克隆的资源。根据您的环境，资源可能是您想要备份或克隆的数据库实例或集合。 
+---
+= 向NetApp支持的插件添加资源
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您必须添加想要备份或克隆的资源。根据您的环境，资源可能是您想要备份或克隆的数据库实例或集合。
+
+.开始之前
+* 您必须完成安装SnapCenter服务器、添加主机、创建存储系统连接和添加凭据等任务。
+* 您必须已将插件上传到SnapCenter服务器。
+
+
+.步骤
+. 在左侧导航窗格中，选择*资源*，然后从列表中选择适当的插件。
+. 在资源页面中，选择*添加资源*。
+. 在提供资源详细信息页面中，执行以下操作：
++
+|===
+| 对于这个领域... | 操作 
+
+
+ a| 
+名称
+ a| 
+输入资源的名称。
+
+
+
+ a| 
+主机名
+ a| 
+选择主机。
+
+
+
+ a| 
+类型
+ a| 
+选择类型。类型是用户根据插件描述文件定义的。例如数据库和实例。
+
+如果所选类型有父级，请输入父级的详细信息。例如，如果类型是数据库并且父级是实例，请输入实例的详细信息。
+
+
+
+ a| 
+凭证名称
+ a| 
+选择凭证或创建新凭证。
+
+
+
+ a| 
+挂载路径
+ a| 
+输入资源挂载的挂载路径。这仅适用于 Windows 主机。
+
+|===
+. 在“提供存储占用空间”页面中，选择一个存储系统并选择一个或多个卷、LUN 和 qtree，然后选择“*保存*”。
++
+可选：选择image:../media/add_policy_from_resourcegroup.gif["加号图标"]图标从其他存储系统添加更多卷、LUN 和 qtree。
+
++
+
+NOTE: NetApp支持的插件不支持资源的自动发现。物理和虚拟环境的存储细节也无法自动发现。创建资源时必须提供物理和虚拟环境的存储信息。
+
++
+image::../media/storage_footprint.png[存储占用空间]
+
+. 在资源设置页面中，为资源提供自定义键值对。
++
+
+NOTE: 确保自定义键名称是大写的。
+
++
+image::../media/resource_settings.gif[资源设置]
+
++
+有关各个插件参数，请参阅link:add_resources_to_netapp_supported_plugins.html#parameters-to-configure-the-resource["配置资源的参数"]
+
+. 查看摘要，然后选择*完成*。
+
+
+.结果
+资源与类型、主机或集群名称、相关资源组和策略以及总体状态等信息一起显示。
+
+
+IMPORTANT: 如果数据库在SnapCenter之外重命名，则必须刷新资源。
+
+.完成后
+如果您想向其他用户提供对资产的访问权限， SnapCenter管理员必须将资产分配给这些用户。这使用户能够对分配给他们的资产执行他们有权限执行的操作。
+
+添加资源后，您可以修改资源详情。如果NetApp支持的插件资源具有与其关联的备份，则无法修改以下字段：资源名称、资源类型和主机名。
+
+
+
+== 配置资源的参数
+
+如果您手动添加插件，则可以使用以下参数在资源设置页面中配置资源。
+
+
+
+=== MongoDB 插件
+
+资源设置：
+
+* MONGODB_APP_SERVER=（对于资源类型为分片集群）或 MONGODB_REPLICASET_SERVER=（对于资源类型为副本集）
+* OPLOG_PATH=（如果从 MongoDB.properties 文件提供，则为可选参数）
+* MONGODB_AUTHENTICATION_TYPE=（LDAP 身份验证为 PLAIN，其他身份验证为 None）
+
+
+您必须提供 MongoDB.properties 文件中需要提供的以下参数：
+
+* 禁用启动停止服务=
++
+** 如果启动/停止服务由插件执行，则为 N。
+** 如果启动/停止服务由用户执行，则为 Y。
+** 可选参数的默认值设置为 N。
+
+
+* OPLOG_PATH_=（如果它已经在SnapCenter中作为自定义键值对提供，则为可选参数）。
+
+
+
+
+=== MaxDB插件
+
+资源设置：
+
+* XUSER_ENABLE (Y|N) 启用或禁用 MaxDB 的 xuser 使用，这样数据库用户就不需要密码了。
+* HANDLE_LOGWRITER (Y|N) 执行暂停日志写入器 (N) 或恢复日志写入器 (Y) 操作。
+* DBMCLICMD（path_to_dbmcli_cmd）指定 MaxDB dbmcli 命令的路径。如果未设置，则使用搜索路径上的 dbmcli。
+
+
+
+NOTE: 对于 Windows 环境，路径必须在双引号内（“...”）。
+
+* SQLCLICMD (path_to_sqlcli_cmd) 指定 MaxDB sqlcli 命令的路径。如果未设置路径，则在搜索路径上使用 sqlcli。
+* MAXDB_UPDATE_HIST_LOG (Y|N) 指示 MaxDB 备份程序是否应更新 MaxDB 历史日志。
+* MAXDB_CHECK_SNAPSHOT_DIR：例如，SID1：directory[,directory...]; [SID2：directoary[,directory...] 检查 Snap Creator Snapshot 复制操作是否成功并确保创建了快照。
++
+这仅适用于 NFS。该目录必须指向包含 .snapshot 目录的位置。多个目录可以包含在以逗号分隔的列表中。
+
++
+在 MaxDB 7.8 及更高版本中，数据库备份请求在备份历史记录中标记为“失败”。
+
+* MAXDB_BACKUP_TEMPLATES：为每个数据库指定一个备份模板。
++
+该模板必须存在，并且是外部类型的备份模板。要为 MaxDB 7.8 及更高版本启用快照集成，您必须具有 MaxDB 后台服务器功能并且已配置 EXTERNAL 类型的 MaxDB 备份模板。
+
+* MAXDB_BG_SERVER_PREFIX：指定后台服务器名称的前缀。
++
+如果设置了 MAXDB_BACKUP_TEMPLATES 参数，则还必须设置 MAXDB_BG_SERVER_PREFIX 参数。如果不设置前缀，则使用默认值na_bg_。
+
+
+
+
+
+=== SAP ASE 插件
+
+资源设置：
+
+* SYBASE_SERVER (data_server_name) 指定 Sybase 数据服务器名称（isql 命令上的 -S 选项）。例如，p_test。
+* 如果使用“ALL”构造，SYBASE_DATABASES_EXCLUDE（db_name）允许排除数据库。
++
+您可以使用分号分隔的列表指定多个数据库。例如：pubs2;test_db1。
+
+* SYBASE_USER：user_name 指定可以运行 isql 命令的操作系统用户。
++
+UNIX 必需。如果运行 Snap Creator Agent 启动和停止命令的用户（通常是 root 用户）与运行 isql 命令的用户不同，则需要此参数。
+
+* SYBASE_TRAN_DUMP db_name:directory_path 使您能够在创建快照后执行 Sybase 事务转储。例如，pubs2:/sybasedumps/pubs2
++
+您必须指定每个需要事务转储的数据库。
+
+* SYBASE_TRAN_DUMP_COMPRESS (Y|N) 启用或禁用本机 Sybase 事务转储压缩。
+* SYBASE_ISQL_CMD（例如，/opt/sybase/OCS-15_0/bin/isql）定义 isql 命令的路径。
+* SYBASE_EXCLUDE_TEMPDB (Y|N) 允许您自动排除用户创建的临时数据库。
+
+
+
+
+=== Oracle 应用程序插件 (ORASCPM)
+
+资源设置：
+
+* SQLPLUS_CMD 指定 SQLplus 的路径。
+* ORACLE_DATABASES 列出了要备份的 Oracle 数据库和相应的用户（数据库：用户）。
+* CNTL_FILE_BACKUP_DIR 指定控制文件备份的目录。
+* ORA_TEMP 指定临时文件的目录。
+* ORACLE_HOME 指定 Oracle 软件的安装目录。
+* ARCHIVE_LOG_ONLY 指定是否备份存档日志。
+* ORACLE_BACKUPMODE 指定是否执行在线或离线备份。
+* ORACLE_EXPORT_PARAMETERS 指定在运行 _/bin/su <user running sqlplus> -c sqlplus /nolog <cmd>_ 时是否应重新导出上面定义的环境变量。通常情况下，当运行 sqlplus 的用户尚未设置使用 _connect / as sysdba_ 连接到数据库所需的所有环境变量时，就会出现这种情况。
+

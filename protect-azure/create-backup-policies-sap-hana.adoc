@@ -1,0 +1,36 @@
+---
+permalink: protect-azure/create-backup-policies-sap-hana.html 
+sidebar: sidebar 
+keywords: create policies, SAP HANA, backup policies 
+summary: 为要备份的资源或资源组创建备份策略。 
+---
+= 为 SAP HANA 数据库创建备份策略
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+在使用SnapCenter备份 SAP HANA 数据库资源之前，您必须为要备份的资源或资源组创建备份策略。
+
+.步骤
+. 在左侧导航窗格中，单击“*设置*”。
+. 在“设置”页面中，单击“*策略*”。
+. 单击“*新建*”。
+. 在名称页面中，输入策略名称和描述。
+. 在“策略类型”页面中，执行以下步骤：
++
+.. 选择“Azure NetApp Files”作为存储类型。
+.. 如果要执行数据库的完整性检查，请选择“基于文件”。
+.. 如果您想使用快照技术创建备份，请选择*基于快照*。
+
+
+. 在快照和备份页面中，执行以下步骤：
++
+.. 选择计划备份的频率。
+.. 指定保留设置。
+.. 如果要启用Azure NetApp Files备份，请选择“启用备份”并指定保留设置。
+
+
+. 查看摘要并单击“完成”。
+

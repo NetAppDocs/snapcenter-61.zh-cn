@@ -1,0 +1,16 @@
+---
+permalink: protect-postgresql/types-of-restore-strategies-supported-for-auto-discovered-postgresql.html 
+sidebar: sidebar 
+keywords: SnapCenter Plug-in for postgresql 
+summary: 您必须先定义一个策略，然后才能使用SnapCenter成功执行还原操作。自动发现的 PostgreSQL 集群有两种恢复策略。 
+---
+= 自动发现的 PostgreSQL 支持的恢复策略类型
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您必须先定义一个策略，然后才能使用SnapCenter成功执行还原操作。
+
+完整资源恢复是自动发现的 PostgreSQL 集群支持的恢复策略。这将恢复资源的所有卷、qtree 和 LUN。

@@ -1,0 +1,82 @@
+---
+permalink: protect-sco/predefined-environment-variables-prescript-postscript-restore.html 
+sidebar: sidebar 
+keywords: environment variable, predefined, prescript, postscript, restore 
+summary: SnapCenter允许您在还原数据库时执行前脚本和后脚本时使用预定义的环境变量。 
+---
+= 用于恢复特定处方和后记的预定义环境变量
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+SnapCenter允许您在还原数据库时执行前脚本和后脚本时使用预定义的环境变量。
+
+*支持用于恢复数据库的预定义环境变量*
+
+* *SC_JOB_ID* 指定操作的作业 ID。
++
+例如：257
+
+* *SC_ORACLE_SID* 指定数据库的系统标识符。
++
+如果操作涉及多个数据库，这将包含以管道分隔的数据库名称。
+
++
+例如：NFSB31
+
+* *SC_HOST* 指定数据库的主机名。
++
+此参数将填充应用程序卷。
+
++
+示例：scsmohost2.gdl.englabe.netapp.com
+
+* *SC_OS_USER* 指定数据库的操作系统所有者。
++
+示例：oracle
+
+* *SC_OS_GROUP* 指定数据库的操作系统组。
++
+示例：oinstall
+
+* *SC_BACKUP_NAME* 指定备份的名称。
++
+此参数将填充应用程序卷。
+
++
+例子：
+
++
+** 如果数据库未以 ARCHIVELOG 模式运行：DATA@RG2_scspr2417819002_07-20-2021_12.16.48.9267_0|LOG@RG2_scspr2417819002_07-20-2021_12.16.48.9267_1
+** 如果数据库以 ARCHIVELOG 模式运行：DATA@RG2_scspr2417819002_07-20-2021_12.16.48.9267_0|LOG@RG2_scspr2417819002_07-20-2021_12.16.48.9267_1,RG2_scspr2417819002_07-21-2021_12.16.48.9267_1,RG2_scspr2417819002_07-22-2021_12.16.48.9267_1
+
+
+* *SC_BACKUP_ID* 指定备份的 ID。
++
+此参数将填充应用程序卷。
+
++
+例子：
+
++
+** 如果数据库未以 ARCHIVELOG 模式运行：DATA@203|LOG@205
+** 如果数据库以 ARCHIVELOG 模式运行：DATA@203|LOG@205,206,207
+
+
+* *SC_RESOURCE_GROUP_NAME* 指定资源组的名称。
++
+例如：RG1
+
+* *SC_ORACLE_HOME* 指定 Oracle 主目录的路径。
++
+示例：/ora01/app/oracle/product/18.1.0/db_1
+
+* *SC_RECOVERY_TYPE* 指定要恢复的文件以及恢复范围。
++
+示例：RESTORESCOPE:usingBackupControlfile=false|RECOVERYSCOPE:allLogs=true,noLogs=false,untiltime=false,untilscn=false。
+
+
+
+有关分隔符的信息，请参阅link:../protect-sco/predefined-environment-variables-prescript-postscript-backup.html#supported-delimiters["支持的分隔符"^]。

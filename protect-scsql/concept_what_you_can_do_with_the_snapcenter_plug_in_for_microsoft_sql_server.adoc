@@ -1,0 +1,42 @@
+---
+permalink: protect-scsql/concept_what_you_can_do_with_the_snapcenter_plug_in_for_microsoft_sql_server.html 
+sidebar: sidebar 
+keywords: SnapCenter Plug-in for Microsoft SQL Server 
+summary: 当您的环境中安装了适用于 Microsoft SQL Server 的SnapCenter插件后，您可以使用SnapCenter备份、还原和克隆 SQL Server 数据库。 
+---
+= 您可以使用适用于 Microsoft SQL Server 的SnapCenter插件执行哪些操作
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+当您的环境中安装了适用于 Microsoft SQL Server 的SnapCenter插件后，您可以使用SnapCenter备份、还原和克隆 SQL Server 数据库。
+
+您可以执行以下支持 SQL Server 数据库和数据库资源的备份操作、还原操作和克隆操作的任务：
+
+* 备份 SQL Server 数据库和相关事务日志
++
+您不能为 master 和 msdb 系统数据库创建日志备份。但是，您可以为模型系统数据库创建日志备份。
+
+* 恢复数据库资源
++
+** 您可以还原主系统数据库、msdb 系统数据库和模型系统数据库。
+** 您无法还原多个数据库、实例和可用性组。
+** 您无法将系统数据库还原到备用路径。
+
+
+* 创建生产数据库的时间点克隆
++
+您无法对 tempdb 系统数据库执行备份、还原、克隆和克隆生命周期操作。
+
+* 立即验证备份操作或推迟验证
++
+不支持验证 SQL Server 系统数据库。  SnapCenter克隆数据库以执行验证操作。  SnapCenter无法克隆 SQL Server 系统数据库，因此不支持验证这些数据库。
+
+* 安排备份操作和克隆操作
+* 监控备份操作、恢复操作和克隆操作
+
+
+
+NOTE: SQL Server 插件不支持在 SMB 共享上备份和恢复 SQL Server 数据库。

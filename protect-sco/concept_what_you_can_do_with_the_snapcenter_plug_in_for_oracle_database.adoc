@@ -1,0 +1,39 @@
+---
+permalink: protect-sco/concept_what_you_can_do_with_the_snapcenter_plug_in_for_oracle_database.html 
+sidebar: sidebar 
+keywords: backup, restore, clone, oracle database 
+summary: '您可以使用 Oracle 数据库插件来备份、验证、还原、恢复、挂载、卸载和克隆 Oracle 数据库及其资源。您还可以使用 Oracle Recovery Manager (RMAN) 对数据库备份进行编目或取消编目。' 
+---
+= 您可以使用 Oracle 数据库插件做什么
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Oracle 数据库的SnapCenter插件是NetApp SnapCenter软件的主机端组件，可实现 Oracle 数据库的应用程序感知数据保护管理。
+
+Oracle 数据库插件可使用 Oracle Recovery Manager (RMAN) 自动执行备份、编目和取消编目，以及在SnapCenter环境中验证、挂载、卸载、还原、恢复和克隆 Oracle 数据库。  Oracle 数据库插件安装适用于 UNIX 的SnapCenter插件来执行所有数据保护操作。
+
+您可以使用 Oracle 数据库插件来管理运行 SAP 应用程序的 Oracle 数据库的备份。但是，不支持 SAP BR*Tools 集成。
+
+* 备份数据文件、控制文件和存档日志文件。
++
+仅在容器数据库（CDB）级别支持备份。
+
+* 数据库、CDB 和可插拔数据库 (PDB) 的还原和恢复。
++
+不支持 PDB 的不完全恢复。
+
+* 创建某个时间点的生产数据库克隆。
++
+仅 CDB 级别支持克隆。
+
+* 立即验证备份。
+* 为恢复操作挂载和卸载数据和日志备份。
+* 安排备份和验证操作。
+* 监控所有操作。
+* 查看备份、恢复和克隆操作的报告。
+* 自动执行SnapCenter环境中 Oracle 数据库的应用程序感知备份、还原、恢复、验证、挂载、卸载和克隆操作
+* 支持 SAP 的 Oracle 数据库，但不提供 SAP BR*Tools 集成
+

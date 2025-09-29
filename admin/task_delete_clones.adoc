@@ -1,0 +1,50 @@
+---
+permalink: admin/task_delete_clones.html 
+sidebar: sidebar 
+keywords: Delete clones 
+summary: 如果您发现克隆不再需要，您可以删除它们。 
+---
+= 删除克隆
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+如果您发现克隆不再需要，您可以删除它们。
+
+*关于此任务*
+
+您不能删除充当其他克隆源的克隆。
+
+例如，如果生产数据库是 db1，则数据库 clone1 是从 db1 的备份克隆的，并且随后 clone1 受到保护。数据库 clone2 是从 clone1 的备份克隆而来的。如果您决定删除 clone1，则必须先删除 clone2，然后再删除 clone1。
+
+*步骤*
+
+. 在左侧导航窗格中，单击“*资源*”，然后从列表中选择适当的插件。
+. 在资源页面中，从*查看*下拉列表中选择资源或资源组。
+. 从列表中选择资源或资源组。
++
+进入资源或资源组拓扑页面。
+
+. 从“管理副本”视图中，从主存储系统或辅助存储系统（镜像或复制）中选择“*克隆*”。
+. 选择克隆，然后单击image:../media/delete_icon.gif["删除图标"]。
++
+如果要删除 SAP HANA 数据库克隆，请在“删除克隆”页面中执行以下操作：
+
++
+.. 在*Pre clone delete*字段中，输入在删除克隆之前应运行的命令。
+.. 在 *Unmount* 字段中，输入删除克隆之前卸载克隆的命令。
+
+
+. 单击“*确定*”。
+
+
+*完成后*
+
+有时文件系统不会被删除。您必须通过运行以下命令来增加 CLONE_DELETE_DELAY 参数的值：``./sccli Set-SmConfigSettings``
+
+
+NOTE: CLONE_DELETE_DELAY 参数指定完成应用程序克隆删除后，开始删除文件系统之前等待的秒数。
+
+修改参数值后，重新启动SnapCenter插件Loader(SPL) 服务。

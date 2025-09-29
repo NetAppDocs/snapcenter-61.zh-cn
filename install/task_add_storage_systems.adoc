@@ -1,0 +1,140 @@
+---
+permalink: install/task_add_storage_systems.html 
+sidebar: sidebar 
+keywords: add, storage system, SVM, ASA r2 systems 
+summary: 您应该设置存储系统，使SnapCenter能够访问ONTAP存储来执行数据保护和配置操作。您可以添加独立的 SVM 或由多个 SVM 组成的集群。 
+---
+= 添加存储系统
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您应该设置存储系统，使SnapCenter能够访问ONTAP存储、 ASA r2 系统或Amazon FSx for NetApp ONTAP来执行数据保护和配置操作。
+
+您可以添加独立的 SVM 或由多个 SVM 组成的集群。如果您使用的是Amazon FSx for NetApp ONTAP，则可以使用 fsxadmin 帐户添加由多个 SVM 组成的 FSx 管理 LIF，或者在SnapCenter中添加 FSx SVM。
+
+.开始之前
+* 您应该拥有基础设施管理员角色所需的权限来创建存储连接。
+* 您应该确保插件安装没有正在进行中。
++
+添加存储系统连接时，不得进行主机插件安装，因为主机缓存可能不会更新，并且数据库状态可能会在SnapCenter GUI 中显示为“不可用于备份”或“不在NetApp存储上”。
+
+* 存储系统名称应该是唯一的。
++
+SnapCenter不支持不同集群上具有相同名称的多个存储系统。  SnapCenter支持的每个存储系统都应具有唯一的名称和唯一的数据 LIF IP 地址。
+
+
+
+*关于此任务*
+
+* 配置存储系统时，您还可以启用事件管理系统 (EMS) 和AutoSupport功能。  AutoSupport工具收集有关系统健康状况的数据，并自动将数据发送给NetApp技术支持，使他们能够排除系统故障。
++
+如果启用这些功能，当资源受到保护、还原或克隆操作成功完成或操作失败时， SnapCenter会将AutoSupport信息发送到存储系统，并将 EMS 消息发送到存储系统系统日志。
+
+* 如果您计划将快照复制到SnapMirror目标或SnapVault目标，则必须为目标 SVM 或集群以及源 SVM 或集群设置存储系统连接。
+
+
+
+NOTE: 如果更改存储系统密码，计划作业、按需备份和恢复操作可能会失败。更改存储系统密码后，您可以通过单击“存储”选项卡中的“修改”来更新密码。
+
+*步骤*
+
+. 在左侧导航窗格中，单击“*存储系统*”。
+. 在存储系统页面中，单击*新建*。
+. 在添加存储系统页面中，提供以下信息：
++
+|===
+| 对于这个领域... | 操作 
+
+
+ a| 
+存储系统
+ a| 
+输入存储系统名称或IP地址。
+
+
+NOTE: 存储系统名称（不包括域名）必须包含 15 个或更少的字符，并且名称必须可解析。要创建名称超过 15 个字符的存储系统连接，可以使用 Add-SmStorageConnectionPowerShell cmdlet。
+
+
+NOTE: 对于具有MetroCluster配置 (MCC) 的存储系统，建议同时注册本地集群和对等集群，以实现无中断操作。
+
+SnapCenter不支持不同集群上具有相同名称的多个 SVM。  SnapCenter支持的每个 SVM 都必须具有唯一的名称。
+
+
+NOTE: 将存储连接添加到SnapCenter后，不应使用ONTAP重命名 SVM 或集群。
+
+
+NOTE: 如果使用短名称或 FQDN 添加了 SVM，则它必须能够从SnapCenter和插件主机解析。
+
+
+
+ a| 
+用户名/密码
+ a| 
+输入具有访问存储系统所需权限的存储用户的凭据。
+
+
+
+ a| 
+事件管理系统 (EMS) 和AutoSupport设置
+ a| 
+如果您想要将 EMS 消息发送到存储系统 syslog，或者想要将AutoSupport消息发送到存储系统以应用保护、完成还原操作或失败操作，请选中相应的复选框。
+
+当您选中 *向存储系统发送失败操作的AutoSupport通知* 复选框时，也会选中 *将SnapCenter服务器事件记录到 syslog* 复选框，因为启用AutoSupport通知需要 EMS 消息传递。
+
+|===
+. 如果要修改分配给平台、协议、端口和超时的默认值，请单击“*更多选项*”。
++
+.. 在平台中，从下拉列表中选择一个选项。
++
+如果 SVM 是备份关系中的辅助存储系统，请选中 *辅助* 复选框。当选择“*Secondary*”选项时， SnapCenter不会立即执行许可证检查。
+
++
+如果您已在SnapCenter中添加了 SVM，则用户需要从下拉列表中手动选择平台类型。
+
+.. 在协议中，选择在 SVM 或集群设置期间配置的协议，通常是 HTTPS。
+.. 输入存储系统接受的端口。
++
+默认端口 443 通常有效。
+
+.. 输入停止通信尝试之前应经过的时间（以秒为单位）。
++
+默认值是 60 秒。
+
+.. 如果 SVM 有多个管理接口，请选中“*首选 IP*”复选框，然后输入 SVM 连接的首选 IP 地址。
+.. 单击“保存”。
+
+
+. 单击“*提交*”。
+
+
+*结果*
+
+在存储系统页面中，从*类型*下拉菜单中执行以下操作之一：
+
+* 如果要查看已添加的所有 SVM，请选择 * ONTAP SVM *。
++
+如果您已添加 FSx SVM，则 FSx SVM 将在此处列出。
+
+* 如果要查看所有已添加的集群，请选择* ONTAP集群*。
++
+如果您已使用 fsxadmin 添加了 FSx 集群，则 FSx 集群将在此处列出。
+
++
+单击集群名称时，集群中的所有 SVM 都会显示在存储虚拟机部分。
+
++
+如果使用ONTAP GUI 将新的 SVM 添加到ONTAP集群，请单击 *重新发现* 以查看新添加的 SVM。
+
+
+
+*完成后*
+
+集群管理员必须在每个存储系统节点上启用AutoSupport ，以便从SnapCenter有权访问的所有存储系统发送电子邮件通知，方法是从存储系统命令行运行以下命令：
+
+`autosupport trigger modify -node nodename -autosupport-message client.app.info -to enable -noteto enable`
+
+
+NOTE: 存储虚拟机 (SVM) 管理员无权访问AutoSupport。

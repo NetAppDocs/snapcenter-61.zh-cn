@@ -1,0 +1,164 @@
+---
+permalink: admin/concept_manage_the_snapcenter_server_repository.html 
+sidebar: sidebar 
+keywords: SnapCenter Server 
+summary: 与从SnapCenter执行的各种操作相关的信息存储在SnapCenter Server 数据库存储库中。您必须创建存储库的备份以保护SnapCenter服务器免于数据丢失。 
+---
+= 管理SnapCenter服务器存储库
+:allow-uri-read: 
+
+
+[role="lead"]
+与从SnapCenter执行的各种操作相关的信息存储在SnapCenter Server 数据库存储库中。您必须创建存储库的备份以保护SnapCenter服务器免于数据丢失。
+
+SnapCenter Server 存储库有时被称为 NSM 数据库。
+
+
+
+== 保护SnapCenter存储库的先决条件
+
+您的环境应满足某些先决条件才能保护SnapCenter存储库。
+
+* 管理存储虚拟机 (SVM) 连接
++
+您应该配置存储凭证。
+
+* 预配主机
++
+SnapCenter存储库主机上应至少存在一个NetApp存储磁盘。如果SnapCenter存储库主机上没有NetApp磁盘，则必须创建一个。
+
++
+有关添加主机、设置 SVM 连接和配置主机的详细信息，请参阅安装说明。
+
+* 配置 iSCSI LUN 或 VMDK
++
+对于高可用性 (HA) 配置，您可以在其中一个SnapCenter服务器中配置 iSCSI LUN 或 VMDK。
+
+
+
+
+
+== 备份SnapCenter存储库
+
+备份SnapCenter Server 存储库有助于防止数据丢失。您可以通过运行_Protect-SmRepository_ cmdlet 来备份存储库。
+
+*关于此任务*
+
+_Protect-SmRepository_ cmdlet 完成以下任务：
+
+* 创建资源组和策略
+* 为SnapCenter存储库创建备份计划
+
+
+*步骤*
+
+. 启动 PowerShell。
+. 在SnapCenter Server 主机上，使用 _Open-SmConnection_ cmdlet 建立会话，然后输入您的凭据。
+. 使用 _Protect-SmRepository_ cmdlet 和所需参数备份存储库。
+
+
+
+
+== 查看SnapCenter存储库的备份
+
+您可以通过运行 _Get-SmRepositoryBackups_ cmdlet 显示SnapCenter Server 数据库存储库备份的列表。
+
+存储库备份是根据 _Protect-SmRepository_ cmdlet 中指定的计划创建的。
+
+*步骤*
+
+. 启动 PowerShell。
+. 在命令提示符下，输入以下 cmdlet，然后提供凭据以连接到SnapCenter服务器：_Open-SMConnection_
+. 使用 _Get-SmRepositoryBackups_ cmdlet 列出所有可用的SnapCenter数据库备份。
+
+
+
+
+== 还原SnapCenter数据库存储库
+
+您可以通过运行 _Restore-SmRepositoryBackup_ cmdlet 来恢复SnapCenter存储库。
+
+还原SnapCenter存储库时，正在运行的其他SnapCenter操作将受到影响，因为在还原操作期间存储库数据库不可访问。
+
+*步骤*
+
+. 启动 PowerShell。
+. 在命令提示符下，输入以下 cmdlet，然后提供凭据以连接到SnapCenter服务器：_Open-SMConnection_
+. 使用 _Restore-SmRepositoryBackup_ cmdlet 恢复存储库备份。
++
+以下 cmdlet 从 iSCSI LUN 或 VMDK 上现有的备份还原SnapCenter MySQL 数据库存储库：
+
++
+[listing]
+----
+C:\PS>Restore-SmRepositoryBackup -BackupName MYSQL_DS_SC_Repository_mva-x3550-s09_09-15-2016_10.32.00.4445
+----
++
+当 iSCSI LUN 中的备份文件被意外删除时，以下 cmdlet 会还原SnapCenter MySQL 数据库。对于 VMDK，请从ONTAP快照手动恢复备份。
+
++
+[listing]
+----
+C:\PS>Restore-SmRepositoryBackup -BackupName MYSQL_DS_SC_Repository_mva-x3550-s09_09-15-2016_10.32.00.4445 -RestoreFileSystem
+----
+
+
+
+NOTE: 执行恢复操作后检索存储库备份时，将不会列出用于执行存储库恢复操作的备份。
+
+
+
+== 迁移SnapCenter存储库
+
+您可以将SnapCenter Server 数据库存储库从默认位置迁移到另一个磁盘。当您想要将存储库重新定位到具有更多空间的磁盘时，您可能会迁移存储库。
+
+*步骤*
+
+. 在 Windows 中停止 MYSQL57 服务。
+. 找到 MySQL 数据目录。
++
+通常可以在 C:\ProgramData\MySQL\MySQL Server 5.7\Data 找到数据目录。
+
+. 将 MySQL 数据目录复制到新位置，例如 E:\Data\nsm。
+. 右键单击新目录，然后选择*属性*>*安全*将网络服务本地服务器帐户添加到新目录，然后为该帐户分配完全控制权。
+. 重命名原始数据库目录，例如 nsm_copy。
+. 在 Windows 命令提示符下，使用 _mklink_ 命令创建符号目录链接。
++
+`"mklink /d "C:\ProgramData\MySQL\MySQL Server 5.7\Data\nsm" "E:\Data\nsm" "`
+
+. 在Windows中启动MYSQL57服务。
+. 通过登录SnapCenter并检查存储库条目，或登录 MySQL 实用程序并连接到新存储库来验证数据库位置更改是否成功。
+. 删除原始的、重命名的数据库存储库目录（nsm_copy）。
+
+
+
+
+== 重置SnapCenter存储库密码
+
+MySQL Server 存储库数据库密码是在SnapCenter 4.2 安装SnapCenter Server 期间自动生成的。 SnapCenter用户在任何时候都不知道这个自动生成的密码。如果您想访问存储库数据库，您应该重置密码。
+
+.开始之前
+您应该具有SnapCenter管理员权限才能重置密码。
+
+*步骤*
+
+. 启动 PowerShell。
+. 在命令提示符下，输入以下命令，然后提供连接到SnapCenter服务器的凭据：_Open-SMConnection_
+. 重置存储库密码：_Set-SmRepositoryPassword_
++
+以下命令重置存储库密码：
+
++
+[listing]
+----
+
+Set-SmRepositoryPassword at command pipeline position 1
+Supply values for the following parameters:
+NewPassword: ********
+ConfirmPassword: ********
+Successfully updated the MySQL server password.
+----
+
+
+.相关信息
+可以通过运行_Get-Help command_name_来获取有关可与 cmdlet 一起使用的参数及其描述的信息。或者，您也可以参考 https://docs.netapp.com/us-en/snapcenter-cmdlets/index.html["SnapCenter软件 Cmdlet 参考指南"^]。

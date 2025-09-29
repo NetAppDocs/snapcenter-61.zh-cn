@@ -1,0 +1,20 @@
+---
+permalink: protect-mysql/type-of-backups-supported.html 
+sidebar: sidebar 
+keywords: SnapCenter Plug-in for mysql 
+summary: 备份类型指定您要创建的备份类型。  SnapCenter支持基于快照复制的 MySQL 数据库备份类型。 
+---
+= 支持的备份类型
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+备份类型指定您要创建的备份类型。  SnapCenter支持基于快照复制的 MySQL 数据库备份类型。
+
+
+
+== 基于快照副本的备份
+
+基于快照副本的备份利用NetApp快照技术来创建 MySQL 数据库所在卷的在线只读副本。

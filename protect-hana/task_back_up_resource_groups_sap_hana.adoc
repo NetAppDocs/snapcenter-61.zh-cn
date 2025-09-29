@@ -1,0 +1,41 @@
+---
+permalink: protect-hana/task_back_up_resource_groups_sap_hana.html 
+sidebar: sidebar 
+keywords: SnapCenter Plug-in for SAP HANA Database 
+summary: 资源组是主机上的资源的集合。资源组上的备份操作针对资源组中定义的所有资源执行。 
+---
+= 备份资源组
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+资源组是主机上的资源的集合。资源组上的备份操作针对资源组中定义的所有资源执行。
+
+.开始之前
+* 您必须已创建附加有策略的资源组。
+* 如果要备份与二级存储具有SnapMirror关系的资源，则分配给存储用户的ONTAP角色应包括“`snapmirror all`”权限。但是，如果您使用“vsadmin”角色，则不需要“snapmirror all”权限。
+
+
+.关于此任务
+您可以从资源页面按需备份资源组。如果资源组附加了策略并配置了计划，则备份将根据计划自动进行。
+
+.步骤
+. 在左侧导航窗格中，选择*资源*，然后从列表中选择适当的插件。
+. 在资源页面中，从*视图*列表中选择*资源组*。
++
+您可以通过在搜索框中输入资源组名称或选择image:../media/filter_icon.gif["筛选图标"]，然后选择标签。然后您可以选择image:../media/filter_icon.gif["筛选图标"]关闭筛选器窗格。
+
+. 在资源组页面中，选择要备份的资源组，然后选择*立即备份*。
+. 在备份页面中，执行以下步骤：
++
+.. 如果您将多个策略与资源组关联，请从“*策略*”下拉列表中选择要用于备份的策略。
++
+如果为按需备份选择的策略与备份计划相关联，则按需备份将根据为计划类型指定的保留设置进行保留。
+
+.. 选择*备份*。
+
+
+. 通过选择 *Monitor* > *Jobs* 来监控操作进度。
+

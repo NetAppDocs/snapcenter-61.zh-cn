@@ -1,0 +1,20 @@
+---
+permalink: protect-sce/reference_restore_exchange_resources.html 
+sidebar: sidebar 
+keywords: SnapCenter Plug-in for Microsoft Exchange Server 
+summary: 您可以使用SnapCenter通过将一个或多个备份还原到活动文件系统来还原 Exchange 数据库。 
+---
+= 恢复工作流程
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您可以使用SnapCenter通过将一个或多个备份还原到活动文件系统来还原 Exchange 数据库。
+
+以下工作流程显示了执行 Exchange 数据库还原操作必须遵循的顺序：
+
+image:../media/all_plug_ins_restore_workflow.gif["恢复工作流程"]
+
+您还可以手动或在脚本中使用 PowerShell cmdlet 来执行备份和恢复操作。有关 PowerShell cmdlet 的详细信息，请使用SnapCenter cmdlet 帮助或参阅 https://docs.netapp.com/us-en/snapcenter-cmdlets/index.html["SnapCenter软件 Cmdlet 参考指南"^]。

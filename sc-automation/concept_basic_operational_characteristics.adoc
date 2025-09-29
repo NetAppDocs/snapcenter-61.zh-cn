@@ -1,0 +1,93 @@
+---
+sidebar: sidebar 
+permalink: sc-automation/concept_basic_operational_characteristics.html 
+keywords: request and response, object identifiers, synchronous, asynchronous 
+summary: 虽然 REST 确立了一套通用的技术和最佳实践，但每个 API 的细节可能会因设计选择而异。 
+---
+= 基本运行特性
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+虽然 REST 确立了一套通用的技术和最佳实践，但每个 API 的细节可能会因设计选择而异。
+
+
+
+== 请求和响应 API 事务
+
+每个 REST API 调用都作为对SnapCenter服务器系统的 HTTP 请求执行，该系统会生成与客户端相关的响应。该请求和响应对被视为 API 事务。
+
+在使用 API 之前，您应该熟悉可用于控制请求的输入变量和响应输出的内容。
+
+
+
+== 支持 CRUD 操作
+
+通过SnapCenter REST API 可用的每个资源都是基于 CRUD 模型访问的：
+
+* 创建
+* 读取
+* 更新
+* 删除
+
+
+对于某些资源，仅支持部分操作。
+
+
+
+== 对象标识符
+
+每个资源实例或对象在创建时都会分配一个唯一标识符。大多数情况下，该标识符是 128 位 UUID。这些标识符在特定的SnapCenter服务器内是全局唯一的。
+
+发出创建新对象实例的 API 调用后，带有关联 ID 的 URL 将在 HTTP 响应的位置标头中返回给调用者。您可以提取标识符，并在后续调用中引用资源实例时使用它。
+
+
+IMPORTANT: 对象标识符的内容和内部结构可能随时更改。在引用关联对象时，应仅在适用的 API 调用中根据需要使用这些标识符。
+
+
+
+== 对象实例和集合
+
+根据资源路径和 HTTP 方法，API 调用可以应用于特定的对象实例或对象集合。
+
+
+
+== 同步和异步操作
+
+SnapCenter以同步或异步方式执行从客户端接收的 HTTP 请求。
+
+
+
+=== 同步处理
+
+SnapCenter立即执行请求，如果成功则以 HTTP 状态代码 200 或 201 进行响应。
+
+每个使用 GET 方法的请求始终同步执行。此外，如果预计使用 POST 的请求将在两秒内完成，则这些请求将被设计为同步运行。
+
+
+
+=== 异步处理
+
+如果异步请求有效， SnapCenter会创建一个后台任务来处理该请求，并创建一个作业对象来锚定该任务。 HTTP 状态代码 202 与作业对象一起返回给调用者。您应该检索作业的状态以确定成功或失败。
+
+如果预计使用 POST 和 DELETE 方法的请求需要两秒以上的时间才能完成，则这些请求将被设计为异步运行。
+
+
+
+== 安全性
+
+REST API 提供的安全性主要基于SnapCenter提供的现有安全功能。  API 使用以下安全性：
+
+
+
+=== 传输层安全性
+
+根据SnapCenter配置设置， SnapCenter服务器和客户端之间通过网络发送的所有流量通常使用 TLS 加密。
+
+
+
+=== HTTP 身份验证
+
+在 HTTP 级别，基本身份验证用于 API 事务。每个请求都会添加一个 HTTP 标头，其中包含 base64 字符串中的用户名和密码。

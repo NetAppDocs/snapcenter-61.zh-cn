@@ -1,0 +1,29 @@
+---
+permalink: protect-scw/task_install_on_multiple_remote_hosts_using_powershell_cmdlets.html 
+sidebar: sidebar 
+keywords: install, snapcenter 
+summary: 如果要一次在多个主机上安装适用于 Microsoft Windows 的SnapCenter插件，可以使用 Install-SmHostPackage PowerShell cmdlet 来执行此操作。 
+---
+= 使用 PowerShell cmdlet 在多个远程主机上安装适用于 Microsoft Windows 的SnapCenter插件
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+如果要同时在多个主机上安装适用于 Microsoft Windows 的SnapCenter插件，可以使用 `Install-SmHostPackage`PowerShell 命令。
+
+您必须以域用户身份登录到SnapCenter ，并在要安装插件的每个主机上拥有本地管理员权限。
+
+.步骤
+. 启动 PowerShell。
+. 在SnapCenter服务器主机上，使用 `Open-SmConnection`cmdlet，然后输入您的凭据。
+. SnapCenter `Add-SmHost`cmdlet 和所需的参数。
++
+可以通过运行_Get-Help command_name_来获取有关可与 cmdlet 一起使用的参数及其描述的信息。或者，您也可以参考 https://docs.netapp.com/us-en/snapcenter-cmdlets/index.html["SnapCenter软件 Cmdlet 参考指南"^]。
+
+. 使用 `Install-SmHostPackage`cmdlet 和所需的参数。
++
+您可以使用 `-skipprecheck`当您手动安装了插件并且不想验证主机是否满足安装插件的要求时，可以选择此选项。
+
+

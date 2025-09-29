@@ -1,0 +1,20 @@
+---
+permalink: protect-db2/type-of-backups-supported.html 
+sidebar: sidebar 
+keywords: SnapCenter Plug-in for IBM Db2 
+summary: 备份类型指定您要创建的备份类型。  SnapCenter支持 IBM Db2 数据库的基于快照复制的备份类型。 
+---
+= 支持的备份类型
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+备份类型指定您要创建的备份类型。  SnapCenter支持 IBM Db2 数据库的基于快照复制的备份类型。
+
+
+
+== 基于快照副本的备份
+
+基于快照副本的备份利用NetApp快照技术来创建 IBM Db2 数据库所在卷的在线只读副本。

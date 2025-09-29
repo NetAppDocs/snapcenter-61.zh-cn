@@ -1,0 +1,47 @@
+---
+permalink: protect-sce/task_back_up_exchange_resources_groups.html 
+sidebar: sidebar 
+keywords: SnapCenter plug-in for Exchange Server 
+summary: 资源组是主机或 Exchange DAG 上的资源集合，资源组可以包括整个 DAG 或单个数据库。您可以从资源页面备份资源组。 
+---
+= 备份 Exchange 资源组
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+资源组是主机或 Exchange DAG 上的资源集合，资源组可以包括整个 DAG 或单个数据库。您可以从资源页面备份资源组。
+
+.开始之前
+* 您必须已创建附加有策略的资源组。
+* 您必须已将备份操作正在使用的聚合分配给数据库使用的存储虚拟机 (SVM)。
+* 如果要备份与二级存储具有SnapMirror关系的资源，则分配给存储用户的角色应包括“`snapmirror all`”权限。但是，如果您使用“vsadmin”角色，则不需要“snapmirror all”权限。
+* 如果资源组有来自不同主机的多个数据库，则由于网络问题，某些主机上的备份操作可能会延迟启动。您应该配置 `MaxRetryForUninitializedHosts`在 `web.config`通过使用 `Set-SmConfigSettings`PowerShell 命令。
+* 在资源组中，如果您包含一个在NetApp和非NetApp存储上具有主动/被动数据库副本的数据库或数据库可用性组，并且您在策略中选择了 *备份主动副本* 或 *备份在备份作业创建时要选择的服务器上的副本* 选项，则备份作业将进入警告状态。
++
+对于NetApp存储上的主动/被动数据库副本，备份将会成功；对于非NetApp存储上的主动/被动数据库副本，备份将会失败。
+
+
+
+.关于此任务
+您可以从资源页面按需备份资源组。如果资源组附加了策略并配置了计划，则备份将根据计划自动进行。
+
+.步骤
+. 在左侧导航窗格中，单击“*资源*”，然后从列表中选择“*Microsoft Exchange Server 插件*”。
+. 在资源页面中，从*视图*列表中选择*资源组*。
++
+您可以通过在搜索框中输入资源组名称或单击 * 来搜索资源组image:../media/filter_icon.gif["筛选图标"]*，然后选择标签。然后您可以点击 *image:../media/filter_icon.gif["筛选图标"] * 关闭筛选窗格。
+
+. 在资源组页面中，选择要备份的资源组，然后单击“立即备份”。
+. 在备份页面中，执行以下步骤：
++
+.. 如果您已将多个策略与资源组关联，请从“*策略*”下拉列表中选择要用于备份的策略。
++
+如果为按需备份选择的策略与备份计划相关联，则按需备份将根据为计划类型指定的保留设置进行保留。
+
+.. 单击“*备份*”。
+
+
+. 通过双击页面底部“活动”窗格中的作业来显示“作业详细信息”页面，以监控备份的进度。
+

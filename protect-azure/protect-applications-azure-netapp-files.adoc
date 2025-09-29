@@ -1,0 +1,30 @@
+---
+permalink: protect-azure/protect-applications-azure-netapp-files.html 
+sidebar: sidebar 
+keywords: azure netapp files, ANF, back up, restore, clone, ANF backup, Azure Blob storage 
+summary: 您可以备份、还原和克隆在Azure NetApp Files上运行的应用程序。 
+---
+= 保护在Azure NetApp Files上运行的应用程序
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+SnapCenter支持保护驻留在Azure NetApp Files上的应用程序，例如 Oracle、SQL 和 SAP HANA。从 6.0.1 版本开始， SnapCenter支持Azure NetApp Files备份功能，该功能通过为长期恢复、存档和合规性提供完全托管的备份解决方案来扩展Azure NetApp Files的数据保护功能。
+
+Azure NetApp Files是一种高级存储解决方案，长期备份保留的成本可能较高。为了优化成本，您可以将备份从Azure NetApp Files存储移动到 Azure 对象存储。从SnapCenter 6.0.1 开始，您可以将驻留在Azure NetApp Files上的应用程序备份并克隆到 Azure Blob 存储（对象存储）。您可以保留数据的两个副本， Azure NetApp Files存储上的卷快照副本用于短期恢复，Azure Blob 存储上的另一个副本用于长期恢复。
+
+当启用具有Azure NetApp Files备份的策略并将其与资源关联时， SnapCenter会处理卷快照的创建并将其备份到 Azure Blob 存储。 SnapCenter创建备份库并为卷启用备份。如果您已启用卷的备份， SnapCenter将利用现有的保管库。
+
+
+
+== 限制
+
+* 不支持FAS、 ASA或AFF ONTAP以及Amazon FSx for NetApp ONTAP存储系统的对象存储功能。
+* Oracle 和 SAP HANA 挂载和目录工作流不支持对象存储备份，但支持快照。
+* Oracle PDB 克隆不支持对象存储备份，但支持快照。
+* 不支持来自对象存储的备份验证、REST API 支持、来自对象存储的克隆生命周期管理以及对象存储备份的报告功能。
+* 不支持从 Azure Blob 存储上的备份还原到Azure NetApp Files。您也可以使用克隆选项。
+* 不支持克隆拆分。
+

@@ -1,0 +1,139 @@
+---
+permalink: install/concept_provision_storage_in_vmware_environments.html 
+sidebar: sidebar 
+keywords: guest OS, VMware ESXi server, limitations, RDM, Microsoft cluster 
+summary: 您可以在 VMware 环境中使用适用于 Microsoft Windows 的SnapCenter插件来创建和管理 LUN 以及管理 Snapshot 备份副本。 
+---
+= 在 VMware 环境中配置存储
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您可以在 VMware 环境中使用适用于 Microsoft Windows 的SnapCenter插件来创建和管理 LUN 以及管理快照。
+
+
+
+== 支持的 VMware 客户操作系统平台
+
+* 支持的 Windows Server 版本
+* Microsoft 群集配置
++
+使用 Microsoft iSCSI Software Initiator 时，VMware 上最多支持 16 个节点，使用 FC 时最多支持两个节点
+
+* RDM LUN
++
+对于普通 RDMS，最多支持 56 个 RDM LUN，配备四个 LSI Logic SCSI 控制器；对于 Windows 配置，VMware VM MSCS 盒对盒插件最多支持 42 个 RDM LUN，配备三个 LSI Logic SCSI 控制器
+
++
+支持 VMware ParaVirtual SCSI 控制器。  RDM 磁盘上可支持 256 个磁盘。
+
+
+
+有关受支持版本的最新信息，请参阅 https://imt.netapp.com/matrix/imt.jsp?components=121034;&solution=1517&isHWU&src=IMT["NetApp 互操作性表工具"^]。
+
+
+
+=== VMware ESXi 服务器相关限制
+
+* 不支持使用 ESXi 凭据在虚拟机上的 Microsoft 群集上安装适用于 Windows 的插件。
++
+在集群虚拟机上安装适用于 Windows 的插件时，您应该使用 vCenter 凭据。
+
+* 所有集群节点必须对同一个集群磁盘使用相同的目标 ID（在虚拟 SCSI 适配器上）。
+* 当您在适用于 Windows 的插件之外创建 RDM LUN 时，必须重新启动插件服务以使其能够识别新创建的磁盘。
+* 您不能在 VMware 客户操作系统上同时使用 iSCSI 和 FC 启动器。
+
+
+
+
+=== SnapCenter RDM 操作所需的最低 vCenter 权限
+
+您应该在主机上拥有以下 vCenter 权限才能在来宾操作系统中执行 RDM 操作：
+
+* 数据存储：删除文件
+* 主机：配置 > 存储分区配置
+* 虚拟机：配置
+
+
+您必须将这些权限分配给 Virtual Center Server 级别的角色。您分配了这些权限的角色不能分配给没有 root 权限的任何用户。
+
+分配这些权限后，您可以在来宾操作系统上安装适用于 Windows 的插件。
+
+
+
+== 管理 Microsoft 集群中的 FC RDM LUN
+
+您可以使用适用于 Windows 的插件来管理使用 FC RDM LUN 的 Microsoft 群集，但必须首先在插件外部创建共享 RDM 仲裁和共享存储，然后将磁盘添加到群集中的虚拟机。
+
+从 ESXi 5.5 开始，您还可以使用 ESX iSCSI 和 FCoE 硬件来管理 Microsoft 集群。  Windows 插件包括对 Microsoft 集群的开箱即用支持。
+
+
+
+=== 要求
+
+当您满足特定的配置要求时，适用于 Windows 的插件可为 Microsoft 群集提供支持，这些群集使用属于两个不同 ESX 或 ESXi 服务器的两个不同虚拟机上的 FC RDM LUN，也称为跨箱群集。
+
+* 虚拟机 (VM) 必须运行相同的 Windows Server 版本。
+* 每个 VMware 父主机的 ESX 或 ESXi 服务器版本必须相同。
+* 每个父主机必须至少有两个网络适配器。
+* 两个 ESX 或 ESXi 服务器之间必须共享至少一个 VMware 虚拟机文件系统 (VMFS) 数据存储。
+* VMware 建议在 FC SAN 上创建共享数据存储。
++
+如果需要，还可以通过 iSCSI 创建共享数据存储。
+
+* 共享 RDM LUN 必须处于物理兼容模式。
+* 必须在 Windows 插件之外手动创建共享 RDM LUN。
++
+您不能将虚拟磁盘用于共享存储。
+
+* 必须在物理兼容模式下在群集中的每个虚拟机上配置 SCSI 控制器：
++
+Windows Server 2008 R2 要求您在每个虚拟机上配置 LSI Logic SAS SCSI 控制器。如果仅存在一个同类型的控制器并且该控制器已连接到 C: 驱动器，则共享 LUN 无法使用现有的 LSI Logic SAS 控制器。
+
++
+VMware Microsoft 集群不支持半虚拟化类型的 SCSI 控制器。
+
++
+
+NOTE: 当您在物理兼容模式下将 SCSI 控制器添加到虚拟机上的共享 LUN 时，您必须在 VMware Infrastructure Client 中选择 *原始设备映射* (RDM) 选项，而不是 *创建新磁盘* 选项。
+
+* Microsoft 虚拟机集群不能成为 VMware 集群的一部分。
+* 在属于 Microsoft 群集的虚拟机上安装适用于 Windows 的插件时，必须使用 vCenter 凭据，而不是 ESX 或 ESXi 凭据。
+* Windows 插件无法使用来自多个主机的启动器创建单个 igroup。
++
+在创建将用作共享集群磁盘的 RDM LUN 之前，必须在存储控制器上创建包含所有 ESXi 主机的启动器的 igroup。
+
+* 确保使用 FC 启动器在 ESXi 5.0 上创建 RDM LUN。
++
+创建 RDM LUN 时，将使用 ALUA 创建启动器组。
+
+
+
+
+
+=== 限制
+
+Windows 插件支持在属于不同 ESX 或 ESXi 服务器的不同虚拟机上使用 FC/iSCSI RDM LUN 的 Microsoft 群集。
+
+
+NOTE: ESX 5.5i 之前的版本不支持此功能。
+
+* Windows 插件不支持 ESX iSCSI 和 NFS 数据存储上的群集。
+* Windows 插件不支持集群环境中的混合启动器。
++
+启动器必须是 FC 或 Microsoft iSCSI，但不能同时是两者。
+
+* Microsoft 群集中的共享磁盘不支持 ESX iSCSI 启动器和 HBA。
+* 如果虚拟机是 Microsoft 群集的一部分，则适用于 Windows 的插件不支持使用 vMotion 进行虚拟机迁移。
+* Windows 插件不支持 Microsoft 群集中虚拟机上的 MPIO。
+
+
+
+
+=== 创建共享 FC RDM LUN
+
+在使用 FC RDM LUN 在 Microsoft 群集中的节点之间共享存储之前，您必须首先创建共享仲裁磁盘和共享存储磁盘，然后将它们添加到群集中的两个虚拟机。
+
+共享磁盘不是使用 Windows 插件创建的。您应该创建共享 LUN，然后将其添加到群集中的每个虚拟机。有关信息，请参阅 https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/6-7/setup-for-failover-clustering-and-microsoft-cluster-service.html["跨物理主机集群虚拟机"^]。

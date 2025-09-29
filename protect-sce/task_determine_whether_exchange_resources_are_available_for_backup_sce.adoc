@@ -1,0 +1,68 @@
+---
+permalink: protect-sce/task_determine_whether_exchange_resources_are_available_for_backup_sce.html 
+sidebar: sidebar 
+keywords: credentials 
+summary: 资源是由您安装的插件维护的数据库、Exchange 数据库可用性组。您可以将这些资源添加到资源组中，以便执行数据保护作业，但首先必须确定您有哪些可用资源。确定可用资源还可以验证插件安装是否已成功完成。 
+---
+= 确定 Exchange 资源是否可用于备份
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+资源是由您安装的插件维护的数据库、Exchange 数据库可用性组。您可以将这些资源添加到资源组中，以便执行数据保护作业，但首先必须确定您有哪些可用资源。确定可用资源还可以验证插件安装是否已成功完成。
+
+.开始之前
+* 您必须已经完成安装SnapCenter Server、添加主机、创建存储系统连接、添加凭据和安装 Exchange 插件等任务。
+* 要利用单个邮箱恢复软件的功能，您必须将活动数据库定位在安装了单个邮箱恢复软件的 Exchange Server 上。
+* 如果数据库驻留在 VMware RDM LUN 上，则必须部署SnapCenter Plug-in for VMware vSphere并向SnapCenter注册该插件。这 https://docs.netapp.com/us-en/sc-plugin-vmware-vsphere/scpivs44_get_started_overview.html["SnapCenter Plug-in for VMware vSphere文档"]有更多信息。
+
+
+.关于此任务
+* 当“详细信息”页面中的“*总体状态*”选项设置为“不可用于备份”时，您无法备份数据库。当以下任一情况为真时，“*总体状态*”选项将设置为“不可用于备份”：
++
+** 数据库不在NetApp LUN 上。
+** 数据库状态不正常。
++
+当数据库处于安装、卸载、重新播种或恢复挂起状态时，它们不处于正常状态。
+
+
+
+* 如果您有数据库可用性组 (DAG)，则可以通过从 DAG 运行备份作业来备份组中的所有数据库。
+
+
+.步骤
+. 在左侧导航窗格中，单击“*资源*”，然后从位于“资源”页面左上角的插件下拉列表中选择“*Microsoft Exchange Server*”。
+. 在资源页面中，从*视图*下拉列表中选择*数据库*、*数据库可用性组*或*资源组*。
++
+所有数据库和 DAG 都以 FQDN 格式显示其 DAG 或主机名，因此您可以区分多个数据库。
+
++
+点击image:../media/filter_icon.gif["筛选图标"]并选择主机名和Exchange Server来过滤资源。然后您可以点击image:../media/filter_icon.gif["筛选图标"]关闭筛选器窗格。
+
+. 单击“刷新资源”。
++
+新添加、重命名或删除的资源将更新到SnapCenter服务器清单。
+
++
+
+IMPORTANT: 如果数据库在SnapCenter之外重命名，则必须刷新资源。
+
++
+资源与资源名称、数据库可用性组名称、数据库当前处于活动状态的服务器、具有副本的服务器、上次备份的时间以及总体状态等信息一起显示。
+
++
+** 如果数据库位于非NetApp存储上，则“总体状态”列中将显示“不可用于备份”。
++
+在 DAG 中，如果主动数据库副本位于非NetApp存储上，并且至少有一个被动数据库副本位于NetApp存储上，则“*整体状态*”列中将显示“未受保护”。
+
++
+您无法对非NetApp存储类型的数据库执行数据保护操作。
+
+** 如果数据库位于NetApp存储上且未受到保护，则“*总体状态*”列中将显示“未受保护”。
+** 如果数据库位于NetApp存储系统上且受到保护，则用户界面会在 *Overall Status* 列中显示 Backup not run 消息。
+** 如果数据库位于NetApp存储系统上并且受到保护，并且如果触发了数据库的备份，则用户界面会在 *Overall Status* 列中显示备份成功消息。
+
+
+

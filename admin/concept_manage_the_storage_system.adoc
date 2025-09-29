@@ -1,0 +1,138 @@
+---
+permalink: admin/concept_manage_the_storage_system.html 
+sidebar: sidebar 
+keywords: Manage storage system 
+summary: 添加存储系统后，您可以修改存储系统配置和连接，或删除存储系统。 
+---
+= 管理存储系统
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+添加存储系统后，您可以修改存储系统配置和连接，或删除存储系统。
+
+
+
+== 修改存储系统配置
+
+如果您想更改用户名、密码、平台、端口、协议、超时期限、首选 IP 地址或消息选项，则可以使用SnapCenter修改存储系统配置。
+
+*关于此任务*
+
+您可以修改单个用户或组的存储连接。如果您属于一个或多个具有同一存储系统权限的组，则存储连接名称将在存储连接列表中显示多次，每个具有该存储系统权限的组显示一次。
+
+*步骤*
+
+. 在左侧导航窗格中，单击“*存储系统*”。
+. 在存储系统页面中，从*类型*下拉菜单中执行以下操作之一：
++
+|===
+| 选择... | 步骤... 
+
+
+ a| 
+ONTAP SVM
+ a| 
+查看所有已添加的存储虚拟机 (SVM)，并修改所需的 SVM 配置。
+
+.. 在“存储连接”页面中，单击相应的 SVM 名称。
+.. 请执行以下操作之一：
++
+*** 如果 SVM 不属于任何集群，请在修改存储系统页面中修改配置，例如用户名、密码、EMS 和AutoSupport设置、平台、协议、端口、超时和首选 IP。
+*** 如果 SVM 是集群的一部分，则在“修改存储系统”页面中，选择*独立管理 SVM*，并修改配置，例如用户名、密码、EMS 和AutoSupport设置、平台、协议、端口、超时和首选 IP。
++
+将 SVM 修改为独立管理后，如果决定通过集群进行管理，则应删除该 SVM，然后单击 *重新发现*。  SVM 将添加到ONTAP集群。
+
++
+
+NOTE: 当在SnapCenter GUI 上更新存储系统密码时，您应该重新启动相应插件或服务器主机的 SMCore 服务，因为更新后的密码不会反映在 SMCore 中，并且备份作业将因凭据错误而失败。
+
+
+
+
+
+
+
+ a| 
+ONTAP集群
+ a| 
+查看所有已添加的集群并修改所需的集群配置。
+
+.. 在存储连接页面中，单击集群名称。
+.. 在修改存储系统页面，点击用户名旁边的编辑图标，修改用户名和密码。
+.. 选择或清除 EMS 和AutoSupport设置。
+.. 单击*更多选项*并修改其他配置，例如平台、协议、端口、超时和首选 IP。
+
+
+|===
+. 单击“*提交*”。
+
+
+
+
+== 删除存储系统
+
+您可以使用SnapCenter删除任何未使用的存储系统。
+
+*关于此任务*
+
+您可以删除单个用户或组的存储连接。如果您属于一个或多个具有同一存储系统权限的组，则存储系统名称将在存储连接列表中显示多次，每个具有该存储系统权限的组显示一次。
+
+
+IMPORTANT: 删除存储系统时，在该存储系统上执行的所有操作都将失败。
+
+*步骤*
+
+. 在左侧导航窗格中，单击“*存储系统*”。
+. 在存储系统页面中，从 *类型* 下拉菜单中选择 * ONTAP SVM* 或 * ONTAP集群*。
+. 在“存储连接”页面中，选中要删除的 SVM 或集群旁边的复选框。
++
+
+NOTE: 您不能选择属于集群的 SVM。
+
+. 单击“*删除*”。
+. 在“删除存储系统连接设置”页面中，单击“确定”。
++
+
+NOTE: 如果使用ONTAP GUI 从ONTAP集群中删除 SVM，请在SnapCenter GUI 中单击 *重新发现* 以更新 SVM 列表。
+
+
+
+
+
+== REST API 支持
+
+默认情况下，所有ASA、 AFF或FAS系统与ONTAP的连接都将通过 ZAPI。可以为特定ONTAP版本启用 REST API。
+
+SnapCenter利用 REST API 在ASA r2 系统上执行所有操作，而 ASA r2 系统不支持 ZAPI。
+
+您可以修改以下配置文件中的配置键：
+
+* IsRestEnabledForStorageConnection
++
+默认值为 false。
+
+* MinOntapVersionToUseREST
++
+默认值为 9.13.1。
+
+
+
+.通过 REST API 启用连接
+. 将 IsRestEnabledForStorageConnection 设置为 true。
+. 在服务器和 Windows 插件主机上的 SMCoreServiceHost.dll.config 和 SnapDriveService.dll.config 中添加密钥。
++
+_<添加键="IsRestEnabledForStorageConnection" 值="true" />_
+
+
+
+.将通过 REST API 的连接限制为特定版本的ONTAP
+. 将配置参数 MinOntapVersionToUseREST 设置为 true。
+. 在服务器和 Windows 插件主机上的 SMCoreServiceHost.dll.config 和 SnapDriveService.dll.config 中添加密钥。
++
+_<添加键="MinOntapVersionToUseREST" 值="9.13.1" />_
+
+. 重新启动服务器上的 SmCore 服务以及插件机上的插件和SnapDrive服务。
+

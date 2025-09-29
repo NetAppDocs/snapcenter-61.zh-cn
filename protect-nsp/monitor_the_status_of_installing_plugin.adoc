@@ -1,0 +1,40 @@
+---
+permalink: protect-nsp/monitor_the_status_of_installing_plugin.html 
+sidebar: sidebar 
+keywords: monitor, NetApp supported plug-in 
+summary: 您可以使用“作业”页面监控SnapCenter插件包的安装进度。您可能需要检查安装进度以确定安装何时完成或是否存在问题。 
+---
+= 监控NetApp支持的插件的安装状态
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您可以使用“作业”页面监控SnapCenter插件包的安装进度。您可能需要检查安装进度以确定安装何时完成或是否存在问题。
+
+.关于此任务
+以下图标出现在“作业”页面上并指示操作的状态：
+
+* image:../media/progress_icon.gif["正在进行图标"]进行中
+* image:../media/success_icon.gif["完成的图标"]成功完成
+* image:../media/failed_icon.gif["失败图标"]失败的
+* image:../media/warning_icon.gif["已完成，带有警告图标"]已完成但有警告，或由于警告而无法启动
+* image:../media/verification_job_in_queue.gif["验证作业已排队"]排队
+
+
+.步骤
+. 在左侧导航窗格中，单击“*监控*”。
+. 在“*监控*”页面中，单击“*作业*”。
+. 在 *Jobs* 页面中，要过滤列表以便仅列出插件安装操作，请执行以下操作：
++
+.. 单击“*过滤器*”。
+.. 可选：指定开始日期和结束日期。
+.. 从类型下拉菜单中，选择*插件安装*。
+.. 从状态下拉菜单中，选择安装状态。
+.. 单击“*应用*”。
+
+
+. 选择安装作业并单击*详细信息*以查看作业详细信息。
+. 在“作业详情”页面中，单击“查看日志”。
+

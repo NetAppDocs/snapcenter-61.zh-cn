@@ -1,0 +1,67 @@
+---
+permalink: protect-scu/task_restore_unix_file_systems.html 
+sidebar: sidebar 
+keywords: restore, recover, Unix file systems 
+summary: 如果发生数据丢失，您可以使用SnapCenter来恢复数据。 
+---
+= 恢复 Unix 文件系统
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+如果发生数据丢失，您可以使用SnapCenter恢复 Unix 文件系统。
+
+*关于此任务*
+
+* 您应该执行以下命令来与SnapCenter服务器建立连接，列出备份并检索其信息，以及恢复备份。
++
+可以通过运行 Get-Help _command_name_ 来获取有关可与命令一起使用的参数及其描述的信息。或者，您也可以参考 https://library.netapp.com/ecm/ecm_download_file/ECMLP3337666["SnapCenter软件命令参考指南"^]。
+
+* 对于SnapMirror活动同步恢复操作，您必须从主位置选择备份。
+
+
+.步骤
+. 在左侧导航窗格中，单击“*资源*”，然后从列表中选择适当的插件。
+. 在资源页面中，从*视图*列表中选择*路径*或*资源组*。
+. 从详细信息视图或资源组详细信息视图中选择文件系统。
++
+进入拓扑页面。
+
+. 从“管理副本”视图中，从主存储系统或辅助（镜像或复制）存储系统中选择“*备份*”。
+. 从表中选择备份，然后单击*image:../media/restore_icon.gif["恢复图标"] *.
+. 在“还原范围”页面中：
++
+** 对于 NFS 文件系统，默认情况下选择“连接和复制”恢复。您还可以选择*卷恢复*或*快速恢复*。
+** 对于非 NFS 文件系统，恢复范围是根据布局选择的。
++
+根据文件系统类型和布局，备份后创建的新文件在恢复后可能不可用。
+
+
+
+. 在 PreOps 页面中，输入执行恢复作业之前要运行的预恢复命令。
+. 在 PostOps 页面中，输入执行还原作业后要运行的还原后命令。
++
+
+NOTE: 您应该检查这些命令是否存在于插件主机上位于 _/opt/ NetApp/snapcenter/scc/etc/allowed_commands.config_path 位置的命令列表中。
+
+. 在通知页面中，从*电子邮件首选项*下拉列表中，选择您想要发送电子邮件通知的场景。
++
+您还必须指定发件人和收件人的电子邮件地址以及电子邮件的主题。如果您想附加执行的恢复操作的报告，您必须选择*附加作业报告*。
+
++
+
+NOTE: 对于电子邮件通知，您必须使用 GUI 或 PowerShell 命令 Set-SmSmtpServer 指定 SMTP 服务器详细信息。
+
+. 查看摘要，然后单击“*完成*”。
++
+
+IMPORTANT: 如果恢复操作失败，则不支持回滚。
+
++
+
+NOTE: 如果恢复位于卷组上的文件系统，则不会删除文件系统上的旧内容。只有克隆文件系统的内容才会被复制到源文件系统。当卷组上有多个文件系统并且默认 NFS 文件系统恢复时，这适用。
+
+. 通过单击“*监视*”>“*作业*”来监视操作进度。
+

@@ -1,0 +1,40 @@
+---
+permalink: protect-scsql/concept_prerequisites_for_using_snapcenter_plug_in_for_microsoft_sql_server.html 
+sidebar: sidebar 
+keywords: credential 
+summary: 在开始使用 SQL Server 插件之前， SnapCenter管理员必须安装和配置SnapCenter Server 并执行先决条件任务。 
+---
+= 使用适用于 Microsoft SQL Server 的SnapCenter插件的先决条件
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+在开始使用 SQL Server 插件之前， SnapCenter管理员必须安装和配置SnapCenter Server 并执行先决条件任务。
+
+* 安装并配置SnapCenter服务器。
+* 登录到SnapCenter。
+* 通过添加或分配存储系统连接并创建凭据来配置SnapCenter环境。
++
+
+NOTE: SnapCenter不支持不同集群上具有相同名称的多个 SVM。  SnapCenter支持的每个 SVM 都必须具有唯一的名称。
+
+* 添加主机、安装插件、发现（刷新）资源、配置插件。
+* 通过运行 Invoke-SmConfigureResources 将现有的 Microsoft SQL Server 数据库从本地磁盘移动到NetApp LUN 或反之亦然。
++
+有关运行 cmdlet 的信息，请参阅 https://docs.netapp.com/us-en/snapcenter-cmdlets/index.html["SnapCenter软件 Cmdlet 参考指南"]
+
+* 如果您使用SnapCenter Server 保护驻留在 VMware RDM LUN 或 VMDK 上的 SQL 数据库，则必须部署SnapCenter Plug-in for VMware vSphere并向SnapCenter注册该插件。  SnapCenter Plug-in for VMware vSphere文档包含更多信息。
++
+https://docs.netapp.com/us-en/sc-plugin-vmware-vsphere/["SnapCenter Plug-in for VMware vSphere文档"]
+
+* 使用适用于 Microsoft Windows 的SnapCenter插件执行主机端存储配置。
+* 如果您想要备份复制，请设置SnapMirror和SnapVault关系。
+
+
+有关详细信息，请参阅SnapCenter安装信息。
+
+对于SnapCenter 4.1.1 用户，SnapCenter Plug-in for VMware vSphere包含有关保护虚拟化数据库和文件系统的信息。对于SnapCenter 4.2.x 用户， NetApp Data Broker 1.0 和 1.0.1 文档包含有关使用基于 Linux 的NetApp Data Broker 虚拟设备（开放虚拟设备格式）提供的适用SnapCenter Plug-in for VMware vSphere保护虚拟化数据库和文件系统的信息。对于SnapCenter 4.3.x 用户，SnapCenter Plug-in for VMware vSphere文档包含有关使用基于 Linux 的SnapCenter Plug-in for VMware vSphere保护虚拟化数据库和文件系统的信息。
+
+https://docs.netapp.com/us-en/sc-plugin-vmware-vsphere/["SnapCenter Plug-in for VMware vSphere文档"]

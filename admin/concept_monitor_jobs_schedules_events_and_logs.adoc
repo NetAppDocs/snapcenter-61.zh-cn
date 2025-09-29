@@ -1,0 +1,170 @@
+---
+permalink: admin/concept_monitor_jobs_schedules_events_and_logs.html 
+sidebar: sidebar 
+keywords: Monitor jobs, schedules, events, logs 
+summary: 您可以从“监视”页面监视作业的进度、获取有关计划作业的信息以及查看事件和日志。 
+---
+= 监控作业、计划、事件和日志
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您可以从“监视”页面监视作业的进度、获取有关计划作业的信息以及查看事件和日志。
+
+
+
+== 监控作业
+
+您可以查看有关SnapCenter备份、克隆、还原和验证作业的信息。您可以根据开始和结束日期、作业类型、资源组、策略或SnapCenter插件来筛选此视图。您还可以获取指定作业的其他详细信息和日志文件。
+
+您还可以监控与SnapMirror和SnapVault操作相关的作业。
+
+
+NOTE: 除非您被分配了SnapCenter管理员或其他超级用户角色，否则您只能监控您创建的与您相关的作业。
+
+您可以执行以下与监控作业相关的任务：
+
+* 监控备份、克隆、恢复和验证操作。
+* 查看作业详细信息和报告。
+* 停止预定的作业。
+
+
+
+
+=== 管理计划的备份作业
+
+从SnapCenter 6.0.1 版本开始，引入了一个新参数 *JobConcurrencyThreshold*，它为可在任何给定时间运行的计划作业数量设置阈值。这使您可以根据系统硬件配置控制要运行的备份次数。
+
+分配给 *JobConcurrencyThreshold* 的默认值为 0，即禁用。如果您在计划的备份窗口期间观察到性能下降，则可以通过分配一个值来启用。
+
+
+NOTE: 如果您启用 *JobConcurrencyThreshold* 来管理并发作业， SnapCenter将不允许您控制备份的顺序，并且备份可能不会在计划中指定的时间同时触发。
+
+.步骤
+. 设置位于 _C:\Program Files\ NetApp\ SnapCenter WebApp\ SnapManager.Web.UI.dll.config_ 的 _JobConcurrencyThreshold_ 参数的值。
+. 通过单击 IIS > 应用程序池 > SnapCenter > 重新启动来回收SnapCenter应用程序池。
+. 单击 IIS > 站点 > SnapCenter > 重新启动，重新启动SnapCenter Web 服务。
+
+
+
+
+=== 管理过时的作业
+
+陈旧的作业是由于SnapCenter中断或不正确的作业更新而创建的。从SnapCenter 6.0.1 版本开始，引入了预定义的计划来清理这些停滞超过 72 小时的陈旧作业。您可以通过编辑可配置参数 *CleanUpStaleJobsIntervalHours* 来更改计划频率。
+
+您可以通过从 *Monitor* > *Schedules* > *SnapCenter_StaleJobCleanUp* 运行计划来按需触发清理。
+
+.步骤
+. 设置位于 _C:\Program Files\ NetApp\ SnapCenter WebApp\ SnapManager.Web.UI.dll.config_ 的 _CleanUpStaleJobsIntervalHours_ 参数的值。
+. 通过单击 IIS > 应用程序池 > SnapCenter > 重新启动来回收SnapCenter应用程序池。
+. 单击 IIS > 站点 > SnapCenter > 重新启动，重新启动SnapCenter Web 服务。
+
+
+
+
+== 监控时间表
+
+您可能想要查看当前计划以确定操作何时开始、上次运行的时间以及下次运行的时间。您还可以确定运行该操作的主机，以及该操作的资源组和策略信息。
+
+*步骤*
+
+. 在左侧导航窗格中，单击“*监控*”。
+. 在监控页面中，单击*计划*。
+. 选择资源组和计划类型。
+. 查看已安排的操作列表。
+
+
+
+
+== 监视事件
+
+您可以查看系统中的SnapCenter事件列表，例如用户创建资源组时或系统启动活动时（例如创建计划备份）。您可能想要查看事件以确定备份或还原操作等操作当前是否正在进行中。
+
+*关于此任务*
+
+所有工作信息都会显示在“事件”页面中。例如，当备份作业开始时，就会出现“备份开始”事件。当备份完成时，会出现“备份完成”事件。
+
+*步骤*
+
+. 在左侧导航窗格中，单击“*监控*”。
+. 在“监控”页面中，单击“*事件*”。
+. （可选）在过滤器框中，输入开始或结束日期、事件类别（例如备份、资源组或策略）和严重性级别，然后单击*应用*。或者，在搜索框中输入字符。
+. 查看事件列表。
+
+
+
+
+== 监控日志
+
+您可以查看和下载SnapCenter服务器日志、 SnapCenter主机代理日志和插件日志。您可能希望查看日志以帮助进行故障排除。
+
+*关于此任务*
+
+您可以过滤日志以仅显示特定的日志严重性级别：
+
+* 调试
+* 信息
+* 警告
+* 错误
+* 致命的
+
+
+您还可以获取作业级别日志，例如帮助您排除备份作业失败原因的日志。对于作业级别日志，请使用 *Monitor* > *Jobs* 选项。
+
+*步骤*
+
+. 在左侧导航窗格中，单击“*监控*”。
+. 在“作业”页面中，选择一个作业并单击“下载日志”。
++
+下载的压缩文件夹包含作业日志和公共日志。压缩文件夹名称包含所选的作业 ID 和作业类型。
+
+. 在“监控”页面中，单击“*日志*”。
+. 选择日志类型、主机和实例。
++
+如果将日志类型选择为“*插件*”，则可以选择主机或SnapCenter插件。如果日志类型为“服务器*”，则无法执行此操作。
+
+. 要按特定来源、消息或日志级别过滤日志，请单击列标题顶部的过滤器图标。
++
+要显示所有日志，请选择*大于或等于*作为 `Debug`等级。
+
+. 单击“*刷新*”。
+. 查看日志列表。
+. 单击“*下载*”下载日志。
++
+下载的压缩文件夹包含作业日志和公共日志。压缩文件夹名称包含所选的作业 ID 和作业类型。
+
+
+
+在大型配置中，为了获得最佳性能，您应该使用 PowerShell cmdlet 将SnapCenter的日志设置设置为最低级别。
+
+`Set-SmLogSettings -LogLevel All -MaxFileSize 10MB -MaxSizeRollBackups 10 -JobLogsMaxFileSize 10MB -Server`
+
+
+NOTE: 要在故障转移作业完成后访问运行状况或配置信息，请运行 cmdlet `Get-SmRepositoryConfig` 。
+
+
+
+== 从SnapCenter中删除作业和日志
+
+您可以从SnapCenter中删除备份、还原、克隆和验证作业和日志。 SnapCenter会无限期地存储成功和失败的作业日志，除非您将其删除。您可能想要移除它们以补充存储空间。
+
+*关于此任务*
+
+当前一定没有正在运行的作业。您可以通过提供作业 ID 来删除特定作业，也可以在指定时间段内删除作业。
+
+您不需要将主机置于维护模式来删除作业。
+
+*步骤*
+
+. 启动 PowerShell。
+. 在命令提示符下输入： `Open-SMConnection`
+. 在命令提示符下输入： `Remove-SmJobs`
+. 在左侧导航窗格中，单击“*监控*”。
+. 在“监控”页面中，单击“作业”。
+. 在“作业”页面中，查看作业的状态。
+
+
+.相关信息
+可以通过运行_Get-Help command_name_来获取有关可与 cmdlet 一起使用的参数及其描述的信息。或者，您也可以参考 https://docs.netapp.com/us-en/snapcenter-cmdlets/index.html["SnapCenter软件 Cmdlet 参考指南"^]。

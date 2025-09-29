@@ -1,0 +1,99 @@
+---
+permalink: protect-scsql/task_migrate_resources_to_netapp_storage.html 
+sidebar: sidebar 
+keywords: migrate resources 
+summary: '使用适用于 Microsoft Windows 的SnapCenter插件配置NetApp存储系统后，您可以使用SnapCenter图形用户界面 (GUI) 或使用 PowerShell cmdlet 将资源迁移到NetApp存储系统或从一个NetApp LUN 迁移到另一个NetApp LUN。' 
+---
+= 将资源迁移到NetApp存储系统
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+使用适用于 Microsoft Windows 的SnapCenter插件配置NetApp存储系统后，您可以使用SnapCenter图形用户界面 (GUI) 或使用 PowerShell cmdlet 将资源迁移到NetApp存储系统或从一个NetApp LUN 迁移到另一个NetApp LUN。
+
+.开始之前
+* 您必须已将存储系统添加到SnapCenter Server。
+* 您必须刷新（发现）SQL Server 资源。
+
+
+这些向导页面上的大多数字段都是不言自明的。以下信息描述了您可能需要指导的一些字段。
+
+.步骤
+. 在左侧导航窗格中，单击“*资源*”，然后从列表中选择适当的插件。
+. 在资源页面中，从*视图*下拉列表中选择*数据库*或*实例*。
+. 从列表中选择数据库或实例，然后单击*迁移*。
+. 在资源页面中，执行以下操作：
++
+|===
+| 对于这个领域... | 操作 
+
+
+ a| 
+*数据库名称*（可选）
+ a| 
+如果您已选择要迁移的实例，则必须从*数据库*下拉列表中选择该实例的数据库。
+
+
+
+ a| 
+*选择目的地*
+ a| 
+选择数据和日志文件的目标位置。
+
+数据和日志文件分别移动到所选NetApp驱动器下的数据和日志文件夹。如果文件夹结构中不存在任何文件夹，则创建一个文件夹并迁移资源。
+
+
+
+ a| 
+*显示数据库文件详细信息*（可选）
+ a| 
+当您想要迁移单个数据库的多个文件时，请选择此选项。
+
+
+NOTE: 当您选择*实例*资源时，不会显示此选项。
+
+
+
+ a| 
+*选项*
+ a| 
+选择“删除原始位置的迁移数据库副本”以从源中删除数据库副本。
+
+可选：*分离数据库之前在表上运行更新统计信息*。
+
+|===
+. 在验证页面中执行以下操作：
++
+|===
+| 对于这个领域... | 操作 
+
+
+ a| 
+*数据库一致性检查选项*
+ a| 
+选择*运行前*以在迁移之前检查数据库的完整性。选择*运行后*来检查迁移后数据库的完整性。
+
+
+
+ a| 
+DBCC CHECKDB 选项
+ a| 
+** 选择 *PHYSICAL_ONLY* 选项将完整性检查限制在数据库的物理结构内，并检测影响数据库的页面撕裂、校验和失败以及常见硬件故障。
+** 选择 *NO_INFOMSGS* 选项来抑制所有信息消息。
+** 选择 *ALL_ERRORMSGS* 选项来显示每个对象报告的所有错误。
+** 如果您不想检查非聚集索引，请选择 *NOINDEX* 选项。
++
+SQL Server 数据库使用 Microsoft SQL Server 数据库一致性检查器 (DBCC) 来检查数据库中对象的逻辑和物理完整性。
+
++
+
+NOTE: 您可能希望选择此选项来减少执行时间。
+
+** 选择**TABLOCK**选项来限制检查并获取锁，而不是使用内部数据库快照。
+
+
+|===
+. 查看摘要，然后单击**完成**。
+

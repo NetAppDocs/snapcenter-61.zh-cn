@@ -1,0 +1,23 @@
+---
+permalink: sc-automation/overview_rest_apis.html 
+sidebar: sidebar 
+keywords: REST APIs, swagger 
+summary: 描述如何使用 REST API 执行多个SnapCenter管理操作。  REST API 通过 Swagger 网页公开。 
+---
+= 使用 REST API 实现SnapCenter自动化
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您可以使用 REST API 执行多项SnapCenter管理操作。 REST API 通过 Swagger 网页公开。您可以访问 _\https://<SnapCenter_IP_address_or_name>:<SnapCenter_port>/swagger/_ 上的 Swagger 网页来显示 REST API 文档，以及手动发出 API 调用。
+
+支持 REST API 的插件有：
+
+* Microsoft SQL Server 插件
+* SAP HANA 数据库插件
+* 适用于 Oracle 数据库的插件
+
+
+有关适用于SnapCenter Plug-in for VMware vSphere的信息，请参阅 https://docs.netapp.com/us-en/sc-plugin-vmware-vsphere/scpivs44_rest_apis_overview.html["SnapCenter Plug-in for VMware vSphere"^]

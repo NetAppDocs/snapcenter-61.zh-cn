@@ -1,0 +1,41 @@
+---
+permalink: install/task_enable_ca_certificates_for_snapcenter.html 
+sidebar: sidebar 
+keywords: SnapCenter, enable CA, certificate 
+summary: 您应该配置 CA 证书并为SnapCenter服务器启用 CA 证书验证。 
+---
+= 为SnapCenter启用 CA 证书
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您应该配置 CA 证书并为SnapCenter服务器启用 CA 证书验证。
+
+.开始之前
+* 您可以使用 Set-SmCertificateSettings cmdlet 启用或禁用 CA 证书。
+* 您可以使用 Get-SmCertificateSettings cmdlet 显示SnapCenter服务器的证书状态。
+
+
+可以通过运行_Get-Help command_name_来获取有关可与 cmdlet 一起使用的参数及其描述的信息。或者，您可以参考 https://docs.netapp.com/us-en/snapcenter-cmdlets/index.html["SnapCenter软件 Cmdlet 参考指南"^]。
+
+*步骤*
+
+. 在“设置”页面中，导航至“*设置*”>“*全局设置*”>“*CA 证书设置*”。
+. 选择*启用证书验证*。
+. 单击“*应用*”。
+
+
+*完成后*
+
+托管主机选项卡主机显示一个挂锁，挂锁的颜色表示SnapCenter服务器和插件主机之间的连接状态。
+
+* *image:../media/enable_ca_issues_icon.png["问题图标"] * 表示没有启用或分配给插件主机的 CA 证书。
+* *image:../media/enable_ca_good_icon.png["好图标"] * 表示 CA 证书验证成功。
+* *image:../media/enable_ca_failed_icon.png["失败图标"] * 表示无法验证 CA 证书。
+* *image:../media/enable_ca_undefined_icon.png["未定义图标"] * 表示无法检索连接信息。
+
+
+
+NOTE: 当状态为黄色或绿色时，表示数据保护操作成功完成。

@@ -1,0 +1,23 @@
+---
+permalink: protect-sco/retention-backups.html 
+sidebar: sidebar 
+keywords: oracle databases discover 
+summary: 备份保留选项。 
+---
+= 备份保留选项
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您可以选择保留备份副本的天数，或者指定要保留的备份副本数量， ONTAP最多可保留 255 份。例如，您的组织可能要求您保留 10 天的备份副本或 130 份备份副本。
+
+创建策略时，您可以指定备份类型和计划类型的保留选项。
+
+如果您设置了SnapMirror复制，则保留策略将在目标卷上镜像。
+
+SnapCenter会删除具有与计划类型匹配的保留标签的保留备份。如果资源或资源组的计划类型发生更改，则具有旧计划类型标签的备份可能仍保留在系统中。
+
+
+NOTE: 为了长期保留备份副本，您应该使用SnapVault备份。

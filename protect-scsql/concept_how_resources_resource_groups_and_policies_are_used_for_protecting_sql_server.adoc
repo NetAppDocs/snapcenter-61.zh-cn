@@ -1,0 +1,34 @@
+---
+permalink: protect-scsql/concept_how_resources_resource_groups_and_policies_are_used_for_protecting_sql_server.html 
+sidebar: sidebar 
+keywords: SnapCenter Plug-in for SQL Server 
+summary: 在使用SnapCenter之前，了解与要执行的备份、克隆和还原操作相关的基本概念会很有帮助。您与资源、资源组和策略进行交互以执行不同的操作。 
+---
+= 如何使用资源、资源组和策略来保护 SQL Server
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+在使用SnapCenter之前，了解与要执行的备份、克隆和还原操作相关的基本概念会很有帮助。您与资源、资源组和策略进行交互以执行不同的操作。
+
+* 资源通常是使用SnapCenter备份或克隆的数据库、数据库实例或 Microsoft SQL Server 可用性组。
+* SnapCenter资源组是主机或集群上的资源集合。
++
+当您对资源组执行操作时，您将根据为资源组指定的计划对资源组中定义的资源执行该操作。
+
++
+您可以按需备份单个资源或资源组。您还可以对单个资源和资源组执行计划备份。
+
+* 这些策略指定了备份频率、副本保留、复制、脚本以及数据保护操作的其他特征。
++
+创建资源组时，您可以为该组选择一个或多个策略。您还可以在对单个资源执行按需备份时选择策略。
+
+
+
+可以将资源组视为定义您想要保护的内容以及您想要在日期和时间方面保护的内容。把政策看作是定义你想如何保护它。例如，如果要备份主机的所有数据库或所有文件系统，则可以创建一个包含主机中的所有数据库或所有文件系统的资源组。然后，您可以将两个策略附加到资源组：每日策略和每小时策略。创建资源组并附加策略时，您可以配置资源组以每天执行一次完整备份，并配置另一个每小时执行一次日志备份的计划。
+
+下图说明了数据库的资源、资源组和策略之间的关系：
+
+image::../media/scsql_resourcegroup_policy.gif[资源组策略]

@@ -1,0 +1,17 @@
+= 
+:allow-uri-read: 
+
+
+您可以生成证书签名请求 (CSR) 并导入可使用生成的 CSR 从证书颁发机构 (CA) 获取的证书。该证书将有一个与之关联的私钥。
+
+CSR 是一段编码文本，提供给授权证书供应商以获取签名的 CA 证书。
+
+
+NOTE: CA 证书 RSA 密钥长度必须至少为 3072 位。
+
+有关生成 CSR 的信息，请参阅 https://kb.netapp.com/Advice_and_Troubleshooting/Data_Protection_and_Security/SnapCenter/How_to_generate_CA_Certificate_CSR_file["如何生成CA证书CSR文件"^]。
+
+
+NOTE: 如果您拥有您的域（*.domain.company.com）或您的系统（machine1.domain.company.com）的 CA 证书，您可以跳过生成 CA 证书 CSR 文件。您可以使用SnapCenter部署现有的 CA 证书。
+
+对于集群配置，CA 证书中应提及集群名称（虚拟集群 FQDN）和相应的主机名。在获取证书之前，可以通过填写主题备用名称 (SAN) 字段来更新证书。对于通配符证书（*.domain.company.com），该证书将隐式包含域的所有主机名。

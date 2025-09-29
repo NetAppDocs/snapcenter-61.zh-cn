@@ -1,0 +1,21 @@
+---
+permalink: protect-nsp/restore_netapp_supported_plugins_resources.html 
+sidebar: sidebar 
+keywords:  
+summary: 还原和恢复工作流程包括规划、执行还原操作和监控操作。 
+---
+= 恢复NetApp支持的插件资源
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+还原和恢复工作流程包括规划、执行还原操作和监控操作。
+
+.关于此任务
+以下工作流程显示了执行还原操作必须遵循的顺序：
+
+image::../media/all_plug_ins_restore_workflow.gif[恢复工作流程]
+
+您还可以手动或在脚本中使用 PowerShell cmdlet 来执行备份、还原和克隆操作。有关 PowerShell cmdlet 的信息，请使用SnapCenter cmdlet 帮助或参阅 https://docs.netapp.com/us-en/snapcenter-cmdlets/index.html["SnapCenter软件 Cmdlet 参考指南"]。

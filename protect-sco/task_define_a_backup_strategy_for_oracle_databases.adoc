@@ -1,0 +1,304 @@
+---
+permalink: protect-sco/task_define_a_backup_strategy_for_oracle_databases.html 
+sidebar: sidebar 
+keywords: backup type, preferred nodes, catalog backups, schedules, backup name format, retention, verification 
+summary: 定义备份策略可确保您能够成功恢复或克隆数据库。 
+---
+= 定义 Oracle 数据库的备份策略
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+定义备份策略以确保您有办法成功恢复或克隆数据库。
+
+您的服务级别协议 (SLA)、恢复时间目标 (RTO) 和恢复点目标 (RPO) 在很大程度上决定了您的备份策略。
+
+* SLA 定义了预期的服务级别并解决了与服务相关的问题，例如服务的可用性和性能。
+* RTO 定义了服务中断后必须恢复业务流程的时间。
+* RPO 定义了必须从备份存储中恢复的文件的年龄，以便在故障后恢复常规操作。
+
+
+
+
+== 支持的 Oracle 数据库备份配置
+
+SnapCenter支持不同 Oracle 数据库配置的备份。
+
+* Oracle 独立版
+* Oracle 真正应用集群 (RAC)
+* Oracle 独立旧版
+* Oracle 独立容器数据库 (CDB)
+* Oracle Data Guard 备用
++
+您只能创建 Data Guard 备用数据库的离线安装备份。不支持脱机关闭备份、仅存档日志备份和完整备份。
+
+* Oracle Active Data Guard 备用
++
+您只能创建 Active Data Guard 备用数据库的在线备份。不支持仅存档日志备份和完整备份。
+
++
+
+NOTE: 在创建 Data Guard 备用数据库或 Active Data Guard 备用数据库的备份之前，托管恢复过程 (MRP) 将停止，一旦创建备份，MRP 就会启动。
+
+* 自动存储管理 (ASM)
++
+** 虚拟机磁盘 (VMDK) 上的 ASM 独立和 ASM RAC
++
+
+NOTE: 在 Oracle 数据库支持的所有还原方法中，您只能在 VMDK 上执行 ASM RAC 数据库的连接和复制还原。
+
+** ASM 独立版和原始设备映射 (RDM) 上的 ASM RAC 您可以在 ASM 上对 Oracle 数据库执行备份、恢复和克隆操作，无论是否使用 ASMLib。
+** Oracle ASM 过滤驱动程序 (ASMFD)
++
+
+NOTE: 不支持 PDB 迁移和 PDB 克隆操作。
+
+** Oracle Flex ASM
+
+
+
+
+有关受支持的 Oracle 版本的最新信息，请参阅 https://imt.netapp.com/matrix/imt.jsp?components=121071;&solution=1259&isHWU&src=IMT["NetApp 互操作性表工具"^]。
+
+
+
+== Oracle 数据库支持的备份类型
+
+备份类型指定您要创建的备份类型。  SnapCenter支持 Oracle 数据库的在线和离线备份类型。
+
+
+
+=== 在线备份
+
+当数据库处于在线状态时创建的备份称为在线备份。在线备份也称为热备份，它使您无需关闭数据库即可创建数据库的备份。
+
+作为在线备份的一部分，您可以创建以下文件的备份：
+
+* 仅限数据文件和控制文件
+* 仅存档日志文件（在这种情况下数据库不会进入备份模式）
+* 包含数据文件、控制文件和存档日志文件的完整数据库
+
+
+
+
+=== 离线备份
+
+当数据库处于安装或关闭状态时创建的备份称为离线备份。离线备份也称为冷备份。您只能在离线备份中包含数据文件和控制文件。您可以创建离线安装或离线关机备份。
+
+* 创建离线挂载备份时，必须确保数据库处于挂载状态。
++
+如果数据库处于任何其他状态，则备份操作失败。
+
+* 创建脱机关闭备份时，数据库可以处于任何状态。
++
+数据库状态更改为创建备份所需的状态。创建备份后，数据库状态将恢复到原始状态。
+
+
+
+
+
+== SnapCenter如何发现 Oracle 数据库
+
+“资源”是主机上由SnapCenter维护的 Oracle 数据库。发现可用的数据库后，您可以将这些数据库添加到资源组以执行数据保护操作。您应该了解SnapCenter发现不同类型和版本的 Oracle 数据库所遵循的过程。
+
+|===
+| 对于 Oracle 版本 11__g__ 至 12__c__R1 | 对于 Oracle 版本 12__c__R2 至 18__c__ 
+
+
+ a| 
+*RAC 数据库*：仅根据 /etc/oratab 条目才能发现 RAC 数据库。
+
+您应该在 /etc/oratab 文件中拥有数据库条目。
+ a| 
+*RAC 数据库*：使用 srvctl config 命令发现 RAC 数据库。
+
+
+
+ a| 
+*独立*：仅根据 /etc/oratab 条目才能发现独立数据库。
+
+您应该在 /etc/oratab 文件中拥有数据库条目。
+ a| 
+*独立*：独立数据库是根据 /etc/oratab 文件中的条目和 srvctl config 命令的输出发现的。
+
+
+
+ a| 
+*ASM*：ASM 实例条目应该在 /etc/oratab 文件中可用。
+ a| 
+*ASM*：ASM 实例条目不需要位于 /etc/oratab 文件中。
+
+
+
+ a| 
+*RAC One Node*：RAC One Node 数据库仅根据 /etc/oratab 条目发现。
+
+数据库应该处于_nomount_、_mount_或_open_状态。您应该在 /etc/oratab 文件中拥有数据库条目。
+
+如果数据库已被发现并且备份与数据库相关联，则 RAC One Node 数据库状态将被标记为重命名或删除。
+
+如果数据库被重新定位，则应执行以下步骤：
+
+. 在故障转移 RAC 节点上的 /etc/oratab 文件中手动添加重定位的数据库条目。
+. 手动刷新资源。
+. 从资源页面中选择 RAC One Node 数据库，然后单击“数据库设置”。
+. 配置数据库以将首选集群节点设置为当前托管数据库的 RAC 节点。
+. 执行SnapCenter操作。
+
+
+
+NOTE: 如果您已将数据库从一个节点重新定位到另一个节点，并且如果先前节点中的 oratab 条目未被删除，则您应该手动删除 oratab 条目以避免同一个数据库显示两次。
+ a| 
+*RAC One Node*：仅使用 srvctl config 命令即可发现 RAC One Node 数据库。
+
+数据库应该处于_nomount_、_mount_或_open_状态。如果数据库已被发现并且备份与数据库相关联，则 RAC One Node 数据库状态将被标记为重命名或删除。
+
+如果数据库被重新定位，则应执行以下步骤：
+
+. 手动刷新资源。
+. 从资源页面中选择 RAC One Node 数据库，然后单击**数据库设置**。
+. 配置数据库以将首选集群节点设置为当前托管数据库的 RAC 节点。
+. 执行SnapCenter操作。
+
+
+|===
+
+NOTE: 如果 /etc/oratab 文件中有任何 Oracle 12__c__R2 和 18__c__ 数据库条目，并且使用 srvctl config 命令注册了相同的数据库，则SnapCenter将消除重复的数据库条目。如果存在过时的数据库条目，则会发现该数据库，但该数据库将无法访问并且状态将为离线。
+
+
+
+== RAC 设置中的首选节点
+
+在 Oracle Real Application Clusters (RAC) 设置中，您可以指定执行备份操作的首选节点。如果您未指定首选节点， SnapCenter会自动分配一个节点作为首选节点，并在该节点上创建备份。
+
+首选节点可能是 RAC 数据库实例所在的集群节点之一或所有集群节点。备份操作将仅在这些优先节点上按照优先顺序触发。
+
+示例：RAC 数据库 cdbrac 有三个实例：节点 1 上的 cdbrac1、节点 2 上的 cdbrac2 和节点 3 上的 cdbrac3。 node1 和 node2 实例被配置为首选节点，其中 node2 为第一首选，node1 为第二首选。执行备份操作时，首先在 node2 上尝试执行该操作，因为它是第一个首选节点。如果 node2 未处于备份状态，这可能是由于多种原因造成的，例如插件代理未在主机上运行、主机上的数据库实例未处于指定备份类型所需的状态，或者 FlexASM 配置中 node2 上的数据库实例未由本地 ASM 实例提供服务；然后将在 node1 上尝试执行该操作。由于 node3 不在首选节点列表中，因此不会用于备份。
+
+在 Flex ASM 设置中，如果基数小于 RAC 集群中的节点数，则叶节点将不会被列为首选节点。如果 Flex ASM 集群节点角色有任何变化，您应该手动发现以便刷新首选节点。
+
+
+
+=== 所需的数据库状态
+
+首选节点上的 RAC 数据库实例必须处于所需状态才能成功完成备份：
+
+* 配置的首选节点中的一个 RAC 数据库实例必须处于打开状态才能创建在线备份。
+* 配置的首选节点中的一个 RAC 数据库实例必须处于挂载状态，并且所有其他实例（包括其他首选节点）必须处于挂载状态或更低状态才能创建脱机挂载备份。
+* RAC 数据库实例可以处于任何状态，但必须指定首选节点来创建离线关闭备份。
+
+
+
+
+== 如何使用 Oracle Recovery Manager 对备份进行编目
+
+可以使用 Oracle Recovery Manager (RMAN) 对 Oracle 数据库的备份进行编目，以将备份信息存储在 Oracle RMAN 存储库中。
+
+编目备份稍后可用于块级恢复或表空间时间点恢复操作。当您不需要这些编目备份时，您可以删除目录信息。
+
+数据库必须处于已安装或更高状态才能进行编目。您可以对数据备份、存档日志备份和完整备份执行编目。如果对具有多个数据库的资源组的备份启用了编目，则会对每个数据库执行编目。对于 Oracle RAC 数据库，将在数据库至少处于安装状态的首选节点上执行编目。
+
+
+NOTE: 如果要对 RAC 数据库的备份进行编目，请确保没有针对该数据库运行其他作业。如果另一个作业正在运行，则编目操作将失败而不是排队。
+
+默认情况下，使用目标数据库控制文件进行编目。如果要添加外部目录数据库，可以使用SnapCenter图形用户界面 (GUI) 中的数据库设置向导指定外部目录的凭据和透明网络底层 (TNS) 名称来配置它。您还可以通过运行带有 -OracleRmanCatalogCredentialName 和 -OracleRmanCatalogTnsName 选项的 Configure-SmOracleDatabase 命令从 CLI 配置外部目录数据库。
+
+如果在从SnapCenter GUI 创建 Oracle 备份策略时启用了编目选项，则备份将使用 Oracle RMAN 作为备份操作的一部分进行编目。您还可以通过运行 Catalog-SmBackupWithOracleRMAN 命令执行备份的延迟编目。对备份进行编目后，您可以运行 Get-SmBackupDetails 命令来获取编目备份信息，例如编目数据文件的标签、控制文件编目路径和编目存档日志位置。
+
+如果 ASM 磁盘组名称大于或等于 16 个字符，从SnapCenter 3.0 开始，备份使用的命名格式为 SC_HASHCODEofDISKGROUP_DBSID_BACKUPID。但是，如果磁盘组名称少于 16 个字符，则备份使用的命名格式为 DISKGROUPNAME_DBSID_BACKUPID，这与SnapCenter 2.0 中使用的格式相同。
+
+
+NOTE: HASHCODEofDISKGROUP 是自动生成的每个 ASM 磁盘组独有的数字（2 到 10 位数字）。
+
+您可以执行交叉检查来更新有关存储库记录与其物理状态不匹配的备份的过时 RMAN 存储库信息。例如，如果用户使用操作系统命令从磁盘中删除存档日志，则控制文件仍指示日志在磁盘上，而实际上并不在。交叉检查操作使您能够使用信息更新控制文件。您可以通过运行 Set-SmConfigSettings 命令并将值 TRUE 分配给 ENABLE_CROSSCHECK 参数来启用交叉检查。默认值设置为 FALSE。
+
+`sccli Set-SmConfigSettings-ConfigSettingsTypePlugin-PluginCodeSCO-ConfigSettings "KEY=ENABLE_CROSSCHECK, VALUE=TRUE"`
+
+您可以通过运行 Uncatalog-SmBackupWithOracleRMAN 命令来删除目录信息。您无法使用SnapCenter GUI 删除目录信息。但是，在删除备份或删除与该编目备份关联的保留和资源组时，编目备份的信息将被删除。
+
+
+NOTE: 当您强制删除SnapCenter主机时，与该主机关联的编目备份的信息不会被删除。在强制删除主机之前，您必须删除该主机的所有编目备份的信息。
+
+如果由于操作时间超出了 ORACLE_PLUGIN_RMAN_CATALOG_TIMEOUT 参数指定的超时值而导致编目和取消编目失败，则应通过运行以下命令来修改该参数的值：
+
+`/opt/Netapp/snapcenter/spl/bin/sccli Set-SmConfigSettings-ConfigSettingsType Plugin -PluginCode SCO-ConfigSettings "KEY=ORACLE_PLUGIN_RMAN_CATALOG_TIMEOUT,VALUE=user_defined_value"`
+
+修改参数值后，通过运行以下命令重新启动SnapCenter插件Loader(SPL) 服务：
+
+`/opt/NetApp/snapcenter/spl/bin/spl restart`
+
+可以通过运行 Get-Help command_name 获取有关可与命令一起使用的参数及其描述的信息。或者，您也可以参考 https://library.netapp.com/ecm/ecm_download_file/ECMLP3337666["SnapCenter软件命令参考指南"^]。
+
+
+
+== 备份计划
+
+备份频率（计划类型）在策略中指定；备份计划在资源组配置中指定。确定备份频率或计划的最关键因素是资源的变化率和数据的重要性。您可能每小时备份一次使用频繁的资源，而可能每天备份一次很少使用的资源。其他因素包括资源对您的组织的重要性、您的服务水平协议 (SLA) 和您的恢复点目标 (RPO)。
+
+SLA 定义了预期的服务级别并解决了许多与服务相关的问题，包括服务的可用性和性能。  RPO 定义了必须从备份存储中恢复的文件的年龄策略，以便在故障后恢复常规操作。  SLA 和 RPO 有助于数据保护策略。
+
+即使对于使用频繁的资源，也不需要每天运行一次或两次以上的完整备份。例如，定期的事务日志备份可能足以确保您拥有所需的备份。备份数据库的频率越高， SnapCenter在恢复时需要使用的事务日志就越少，从而可以加快恢复操作的速度。
+
+备份计划分为两部分，如下所示：
+
+* 备份频率
++
+备份频率（执行备份的频率），对于某些插件来说称为_计划类型_，是策略配置的一部分。您可以选择每小时、每天、每周或每月作为策略的备份频率。如果您未选择任何频率，则创建的策略是仅按需策略。您可以通过单击“*设置*”>“*策略*”来访问策略。
+
+* 备份计划
++
+备份计划（确切地指定执行备份的时间）是资源组配置的一部分。例如，如果您有一个资源组，该资源组的策略配置为每周备份，则可以将计划配置为每周四晚上 10:00 进行备份。您可以通过单击“*资源*”>“*资源组*”来访问资源组计划。
+
+
+
+
+
+== 备份命名约定
+
+您可以使用默认快照命名约定，也可以使用自定义命名约定。默认备份命名约定会在快照名称中添加时间戳，以帮助您识别副本的创建时间。
+
+快照使用以下默认命名约定：
+
+`resourcegroupname_hostname_timestamp`
+
+您应该对备份资源组进行逻辑命名，如下例所示：
+
+[listing]
+----
+dts1_mach1x88_03-12-2015_23.17.26
+----
+在这个例子中，语法元素具有以下含义：
+
+* _dts1_ 是资源组名称。
+* _mach1x88_ 是主机名。
+* _03-12-2015_23.17.26_ 是日期和时间戳。
+
+
+或者，您可以在保护资源或资源组时通过选择“使用自定义名称格式进行 Snapshot 复制”来指定 Snapshot 名称格式。例如，customtext_resourcegroup_policy_hostname 或 resourcegroup_hostname。默认情况下，时间戳后缀会添加到快照名称中。
+
+
+
+== 备份保留选项
+
+您可以选择保留备份副本的天数，或者指定要保留的备份副本数量， ONTAP最多可保留 255 份。例如，您的组织可能要求您保留 10 天的备份副本或 130 份备份副本。
+
+创建策略时，您可以指定备份类型和计划类型的保留选项。
+
+如果您设置了SnapMirror复制，则保留策略将在目标卷上镜像。
+
+SnapCenter会删除具有与计划类型匹配的保留标签的保留备份。如果资源或资源组的计划类型发生更改，则具有旧计划类型标签的备份可能仍保留在系统中。
+
+
+NOTE: 为了长期保留备份副本，您应该使用SnapVault备份。
+
+
+
+== 使用主存储卷或辅助存储卷验证备份副本
+
+您可以验证主存储卷或SnapMirror或SnapVault二级存储卷上的备份副本。使用辅助存储卷进行验证可减少主存储卷的负载。
+
+当您验证主存储卷或辅助存储卷上的备份时，所有主快照和辅助快照都会被标记为已验证。
+
+需要SnapRestore许可证来验证SnapMirror和SnapVault二级存储卷上的备份副本。

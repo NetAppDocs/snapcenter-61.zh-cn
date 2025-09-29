@@ -1,0 +1,240 @@
+---
+permalink: protect-postgresql/back-up-postgresql.html 
+sidebar: sidebar 
+keywords: SnapCenter Plug-in for PostgreSQL 
+summary: 如果资源尚未属于任何资源组，您可以从资源页面备份该资源。 
+---
+= 备份 PostgreSQL
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+如果资源尚未属于任何资源组，您可以从资源页面备份该资源。
+
+.开始之前
+* 您必须已经创建了备份策略。
+* 如果要备份与二级存储具有SnapMirror关系的资源，则分配给存储用户的ONTAP角色应包括“`snapmirror all`”权限。但是，如果您使用“vsadmin”角色，则不需要“snapmirror all”权限。
+* 对于基于 Snapshot 副本的备份操作，请确保所有租户集群均有效且处于活动状态。
+* 对于静默、快照和取消静默操作的预命令和后命令，您应该检查这些命令是否存在于插件主机上可用的命令列表中，路径如下：
++
+** Windows 主机上的默认位置：_C:\Program Files\ NetApp\ SnapCenter\Snapcenter Plug-in Creator\etc\allowed_commands.config_
+** Linux 主机上的默认位置：_/opt/ NetApp/snapcenter/scc/etc/allowed_commands.config_
+
+
+
+
+
+NOTE: 如果命令列表中不存在该命令，则操作将失败。
+
+[role="tabbed-block"]
+====
+.SnapCenter UI
+--
+.步骤
+. 在左侧导航窗格中，选择*资源*，然后从列表中选择适当的插件。
+. 在资源页面中，根据资源类型从*查看*下拉列表中过滤资源。
++
+选择 *image:../media/filter_icon.gif["筛选图标"] *，然后选择主机名和资源类型来过滤资源。然后您可以选择image:../media/filter_icon.gif["筛选图标"]关闭筛选器窗格。
+
+. 选择要备份的资源。
+. 在资源页面中，选择*使用自定义名称格式作为 Snapshot 副本*，然后输入要用于 Snapshot 名称的自定义名称格式。
++
+例如，_customtext_policy_hostname_ 或 _resource_hostname_。默认情况下，时间戳会附加到快照名称。
+
+. 在应用程序设置页面中，执行以下操作：
++
+** 选择“*备份*”箭头来设置其他备份选项：
++
+如果需要，启用一致性组备份并执行以下任务：
+
++
+|===
+| 对于这个领域... | 操作 
+
+
+ a| 
+留出时间等待“一致性组快照”操作完成
+ a| 
+选择“*紧急*”、“*中*”或“*宽松*”来指定等待快照操作完成的时间。紧急 = 5 秒，中等 = 7 秒，轻松 = 20 秒。
+
+
+
+ a| 
+禁用WAFL同步
+ a| 
+选择此项以避免强制使用WAFL一致点。
+
+|===
+** 选择“*脚本*”箭头来运行静默、快照和取消静默操作的前置和后置命令。
++
+您还可以在退出备份操作之前运行预命令。前言和后记在SnapCenter服务器中运行。
+
+** 选择**自定义配置**箭头，然后输入使用此资源的所有作业所需的自定义值对。
+** 选择*Snapshot Copy Tool*箭头来选择创建快照的工具：
++
+|===
+| 如果你想... | 操作 
+
+
+ a| 
+SnapCenter创建存储级别快照
+ a| 
+选择“* 不具有文件系统一致性的SnapCenter *”。
+
+
+
+ a| 
+SnapCenter使用适用于 Windows 的插件将文件系统置于一致状态，然后创建快照
+ a| 
+选择*具有文件系统一致性的SnapCenter *。
+
+
+
+ a| 
+输入创建快照的命令
+ a| 
+选择*其他*，然后输入创建快照的命令。
+
+|===
++
+image:../media/application_settings.gif["应用程序设置"]
+
+
+
+. 在“策略”页面中，执行以下步骤：
++
+.. 从下拉列表中选择一个或多个策略。
++
+
+NOTE: 您还可以通过单击 * 来创建策略image:../media/add_policy_from_resourcegroup.gif["从资源组添加策略"]*.
+
++
+在“为选定策略配置计划”部分中，列出了选定的策略。
+
+.. 选择 *image:../media/add_policy_from_resourcegroup.gif["从资源组添加策略"] * 在您想要配置计划的策略的配置计划列中。
+.. 在为策略_policy_name_添加计划对话框中，配置计划，然后选择*确定*。
++
+_policy_name_ 是您选择的策略的名称。
+
++
+配置的计划列在“已应用的计划”列中。
+
+
+
+. 在通知页面中，从*电子邮件首选项*下拉列表中，选择您想要发送电子邮件的场景。
++
+您还必须指定发件人和收件人的电子邮件地址以及电子邮件的主题。还必须在*设置* > *全局设置*中配置 SMTP。
+
+. 查看摘要，然后选择*完成*。
++
+进入资源拓扑页面。
+
+. 选择*立即备份*。
+. 在备份页面中，执行以下步骤：
++
+.. 如果您对资源应用了多个策略，请从“*策略*”下拉列表中选择要用于备份的策略。
++
+如果为按需备份选择的策略与备份计划相关联，则按需备份将根据为计划类型指定的保留设置进行保留。
+
+.. 选择*备份*。
+
+
+. 通过单击“*监视*”>“*作业*”来监视操作进度。
++
+** 在MetroCluster配置中， SnapCenter可能无法在故障转移后检测到保护关系。
++
+有关信息，请参阅： https://kb.netapp.com/Advice_and_Troubleshooting/Data_Protection_and_Security/SnapCenter/Unable_to_detect_SnapMirror_or_SnapVault_relationship_after_MetroCluster_failover["MetroCluster故障转移后无法检测SnapMirror或SnapVault关系"^]
+
+** 如果您正在备份 VMDK 上的应用程序数据，并且SnapCenter Plug-in for VMware vSphere的Java 堆大小不够大，则备份可能会失败。
++
+要增加 Java 堆大小，请找到脚本文件 _/opt/netapp/init_scripts/scvservice_。在该脚本中，_do_start method_ 命令启动SnapCenter VMware 插件服务。将该命令更新为以下内容：_Java -jar -Xmx8192M -Xms4096M_
+
+
+
+
+
+--
+.PowerShell cmdlet
+--
+.步骤
+. 使用 Open-SmConnection cmdlet 为指定用户启动与SnapCenter服务器的连接会话。
++
+[listing]
+----
+PS C:\> Open-SmConnection
+----
++
+显示用户名和密码提示。
+
+. 使用 Add-SmResources cmdlet 添加手动资源。
++
+此示例显示如何添加 PostgreSQL 实例：
+
++
+[listing]
+----
+PS C:\> Add-SmResource -HostName 10.32.212.13 -PluginCode PostgreSQL -ResourceType Instance -ResourceName postgresqlinst1 -StorageFootPrint (@{"VolumeName"="winpostgresql01_data01";"LUNName"="winpostgresql01_data01";"StorageSystem"="scsnfssvm"}) -MountPoints "D:\"
+----
+. 使用 Add-SmPolicy cmdlet 创建备份策略。
+. 使用 Add-SmResourceGroup cmdlet 保护资源或向SnapCenter添加新资源组。
+. 使用 New-SmBackup cmdlet 启动新的备份作业。
++
+此示例显示如何备份资源组：
+
++
+[listing]
+----
+C:\PS> New-SMBackup -ResourceGroupName 'ResourceGroup_wback-up-clusters-using-powershell-cmdlets-postgresql.adocith_Resources'  -Policy postgresql_policy1
+----
++
+此示例备份受保护的资源：
+
++
+[listing]
+----
+C:\PS> New-SMBackup -Resources @{"Host"="10.232.204.42";"Uid"="MDC\SID";"PluginName"="postgresql"} -Policy postgresql_policy2
+----
+. 使用 Get-smJobSummaryReport cmdlet 监视作业状态（正在运行、已完成或失败）。
++
+[listing]
+----
+PS C:\> Get-smJobSummaryReport -JobID 123
+----
+. 使用 Get-SmBackupReport cmdlet 监视备份作业详细信息（如备份 ID、备份名称）以执行恢复或克隆操作。
++
+[listing]
+----
+PS C:\> Get-SmBackupReport -JobId 351
+Output:
+BackedUpObjects           : {DB1}
+FailedObjects             : {}
+IsScheduled               : False
+HasMetadata               : False
+SmBackupId                : 269
+SmJobId                   : 2361
+StartDateTime             : 10/4/2016 11:20:45 PM
+EndDateTime               : 10/4/2016 11:21:32 PM
+Duration                  : 00:00:46.2536470
+CreatedDateTime           : 10/4/2016 11:21:09 PM
+Status                    : Completed
+ProtectionGroupName       : Verify_ASUP_Message_windows
+SmProtectionGroupId       : 211
+PolicyName                : test2
+SmPolicyId                : 20
+BackupName                : Verify_ASUP_Message_windows_scc54_10-04-2016_23.20.46.2758
+VerificationStatus        : NotVerified
+VerificationStatuses      :
+SmJobError                :
+BackupType                : SCC_BACKUP
+CatalogingStatus          : NotApplicable
+CatalogingStatuses        :
+ReportDataCreatedDateTime :
+----
+
+
+可以通过运行_Get-Help command_name_来获取有关可与 cmdlet 一起使用的参数及其描述的信息。或者，您也可以参考 https://docs.netapp.com/us-en/snapcenter-cmdlets/index.html["SnapCenter软件 Cmdlet 参考指南"^]。
+
+--
+====

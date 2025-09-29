@@ -1,0 +1,16 @@
+---
+permalink: protect-scsql/concept_multiple_databases_on_the_same_volume.html 
+sidebar: sidebar 
+keywords: Multiple databases 
+summary: 您可以将所有数据库放在同一卷上，因为备份策略有一个选项可以设置每个备份的最大数据库数量（默认值为 100）。 
+---
+= 同一卷上的多个数据库
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您可以将所有数据库放在同一卷上，因为备份策略有一个选项可以设置每个备份的最大数据库数量（默认值为 100）。
+
+例如，如果同一卷中有 200 个数据库，则会创建两个快照，每个快照包含 100 个数据库。

@@ -1,0 +1,283 @@
+---
+permalink: protect-scw/task_clone_from_a_windows_file_system_backup.html 
+sidebar: sidebar 
+keywords: clone 
+summary: 您可以使用SnapCenter克隆 Windows 文件系统备份。如果您想要错误删除或更改的单个文件的副本，那么您可以克隆备份并在克隆中访问该文件。 
+---
+= 从 Windows 文件系统备份克隆
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您可以使用SnapCenter克隆 Windows 文件系统备份。如果您想要错误删除或更改的单个文件的副本，那么您可以克隆备份并在克隆中访问该文件。
+
+.开始之前
+* 您应该已经通过完成添加主机、识别资源和创建存储虚拟机 (SVM) 连接等任务为数据保护做好了准备。
+* 您应该有一个文件系统的备份。
+* 您应确保托管卷的聚合位于存储虚拟机 (SVM) 的已分配聚合列表中。
+* 您不能克隆资源组。您只能克隆单个文件系统备份。
+* 如果备份驻留在具有 VMDK 磁盘的虚拟机上，则SnapCenter无法将备份克隆到物理服务器。
+* 如果您克隆 Windows 群集（例如，共享 LUN 或群集共享卷 (CSV) LUN），则克隆将作为专用 LUN 存储在您指定的主机上。
+* 对于克隆操作，卷挂载点的根目录不能是共享目录。
+* 您不能在非聚合主节点上创建克隆。
+* 您无法为 Windows 文件系统安排重复克隆（克隆生命周期）操作；您只能按需克隆备份。
+* 如果将包含克隆的 LUN 移动到新卷， SnapCenter将不再支持该克隆。例如，您不能使用SnapCenter删除该克隆。
+* 您不能跨环境克隆。例如，从物理磁盘克隆到虚拟磁盘或反之亦然。
+
+
+.关于此任务
+* SCRIPTS_PATH 是使用插件主机的 SMCoreServiceHost.exe.Config 文件中的 PredefinedWindowsScriptsDirectory 键定义的。
++
+如果需要，您可以更改此路径并重新启动 SMcore 服务。为了安全起见，建议您使用默认路径。
+
++
+可以通过 API 从 Swagger 显示该键的值：API /4.7/configsettings
+
++
+您可以使用 GET API 来显示键的值。不支持 SET API。
+
+* 对于ONTAP 9.12.1 及以下版本、作为恢复的一部分从SnapLock Vault 快照创建的克隆将继承SnapLock Vault 到期时间。存储管理员应在SnapLock到期后手动清理克隆。
+
+
+[role="tabbed-block"]
+====
+.SnapCenter UI
+--
+.步骤
+. 在左侧导航窗格中，单击“*资源*”，然后从列表中选择适当的插件。
+. 在资源页面中，从列表中选择*文件系统*。
+. 选择主机。
++
+如果资源受到保护，则会自动显示拓扑视图。
+
+. 从资源列表中，选择要克隆的备份，然后单击克隆图标。
+. 在“选项”页面中，执行以下操作：
++
+|===
+| 对于这个领域... | 操作 
+
+
+ a| 
+克隆服务器
+ a| 
+选择要创建克隆的主机。
+
+
+
+ a| 
+“自动分配挂载点”或“自动分配路径下的卷挂载点”
+ a| 
+选择是否自动分配挂载点或路径下的卷挂载点。
+
+自动分配路径下的卷挂载点：路径下的挂载点使您能够提供将在其中创建挂载点的特定目录。在选择此选项之前，您必须验证目录是否为空。如果目录中存在备份，则挂载操作后备份将处于无效状态。
+
+
+
+ a| 
+存档位置
+ a| 
+如果您要克隆辅助备份，请选择存档位置。
+
+|===
+. 在脚本页面中，指定您想要执行的任何前脚本或后脚本。
++
+
+NOTE: 前言或后记路径不应包含驱动器或共享。该路径应相对于 SCRIPTS_PATH。
+
+. 查看摘要，然后单击“*完成*”。
+. 通过单击“*监视*”>“*作业*”来监视操作进度。
+
+
+--
+.PowerShell cmdlet
+--
+.步骤
+. 使用 Open-SmConnection cmdlet 为指定用户启动与SnapCenter服务器的连接会话。
++
+[listing]
+----
+Open-SmConnection  -SMSbaseurl  https://snapctr.demo.netapp.com:8146
+----
+. 列出可以使用 Get-SmBackup 或 Get-SmResourceGroup cmdlet 克隆的备份。
++
+此示例显示有关所有可用备份的信息：
+
++
+[listing]
+----
+C:\PS>PS C:\> Get-SmBackup
+
+BackupId   BackupName                     BackupTime   BackupType
+--------   ----------                     ----------   ----------
+1          Payroll Dataset_vise-f6_08...  8/4/2015     Full Backup
+                                          11:02:32 AM
+
+2          Payroll Dataset_vise-f6_08...  8/4/2015
+                                          11:23:17 AM
+----
++
+此示例显示有关指定资源组、其资源和相关策略的信息：
+
++
+[listing]
+----
+PS C:\> Get-SmResourceGroup -ListResources –ListPolicies
+
+Description :
+CreationTime : 8/4/2015 3:44:05 PM
+ModificationTime : 8/4/2015 3:44:05 PM
+EnableEmail : False
+EmailSMTPServer :
+EmailFrom :
+EmailTo :
+EmailSubject :
+EnableSysLog : False
+ProtectionGroupType : Backup
+EnableAsupOnFailure : False
+Policies : {FinancePolicy}
+HostResourceMaping : {}
+Configuration : SMCoreContracts.SmCloneConfiguration
+LastBackupStatus :
+VerificationServer :
+EmailBody :
+EmailNotificationPreference : Never
+VerificationServerInfo : SMCoreContracts.SmVerificationServerInfo
+SchedulerSQLInstance :
+CustomText :
+CustomSnapshotFormat :
+SearchResources : False
+ByPassCredential : False
+IsCustomSnapshot :
+MaintenanceStatus : Production
+PluginProtectionGroupTypes : {SMSQL}
+Name : Payrolldataset
+Type : Group
+Id : 1
+Host :
+UserName :
+Passphrase :
+Deleted : False
+Auth : SMCoreContracts.SmAuth
+IsClone : False
+CloneLevel : 0
+ApplySnapvaultUpdate : False
+ApplyRetention : False
+RetentionCount : 0
+RetentionDays : 0
+ApplySnapMirrorUpdate : False
+SnapVaultLabel :
+MirrorVaultUpdateRetryCount : 7
+AppPolicies : {}
+Description : FinancePolicy
+PreScriptPath :
+PreScriptArguments :
+PostScriptPath :
+PostScriptArguments :
+ScriptTimeOut : 60000
+DateModified : 8/4/2015 3:43:30 PM
+DateCreated : 8/4/2015 3:43:30 PM
+Schedule : SMCoreContracts.SmSchedule
+PolicyType : Backup
+PluginPolicyType : SMSQL
+Name : FinancePolicy
+Type :
+Id : 1
+Host :
+UserName :
+Passphrase :
+Deleted : False
+Auth : SMCoreContracts.SmAuth
+IsClone : False
+CloneLevel : 0
+clab-a13-13.sddev.lab.netapp.com
+DatabaseGUID :
+SQLInstance : clab-a13-13
+DbStatus : AutoClosed
+DbAccess : eUndefined
+IsSystemDb : False
+IsSimpleRecoveryMode : False
+IsSelectable : True
+SqlDbFileGroups : {}
+SqlDbLogFiles : {}
+AppFileStorageGroups : {}
+LogDirectory :
+AgName :
+Version :
+VolumeGroupIndex : -1
+IsSecondary : False
+Name : TEST
+Type : SQL Database
+Id : clab-a13-13\TEST
+Host : clab-a13-13.sddev.mycompany.com
+UserName :
+Passphrase :
+Deleted : False
+Auth : SMCoreContracts.SmAuth
+IsClone : False
+----
+. 使用 New-SmClone cmdlet 从现有备份启动克隆操作。
++
+此示例从包含所有日志的指定备份创建克隆：
+
++
+[listing]
+----
+PS C:\> New-SmClone
+-BackupName payroll_dataset_vise-f3_08-05-2015_15.28.28.9774
+-Resources @{"Host"="vise-f3.sddev.mycompany.com";
+"Type"="SQL Database";"Names"="vise-f3\SQLExpress\payroll"}
+-CloneToInstance vise-f3\sqlexpress -AutoAssignMountPoint
+-Suffix _clonefrombackup
+-LogRestoreType All -Policy clonefromprimary_ondemand
+
+PS C:> New-SmBackup -ResourceGroupName PayrollDataset -Policy FinancePolicy
+----
++
+此示例创建指定 Microsoft SQL Server 实例的克隆：
+
++
+[listing]
+----
+PS C:\> New-SmClone
+-BackupName "BackupDS1_NY-VM-SC-SQL_12-08-2015_09.00.24.8367"
+-Resources @{"host"="ny-vm-sc-sql";"Type"="SQL Database";
+"Names"="ny-vm-sc-sql\AdventureWorks2012_data"}
+-AppPluginCode SMSQL -CloneToInstance "ny-vm-sc-sql"
+-Suffix _CLPOSH -AssignMountPointUnderPath "C:\SCMounts"
+----
+. 使用 Get-SmCloneReport cmdlet 查看克隆作业的状态。
++
+此示例显示指定作业 ID 的克隆报告：
+
++
+[listing]
+----
+PS C:\> Get-SmCloneReport -JobId 186
+
+SmCloneId : 1
+SmJobId : 186
+StartDateTime : 8/3/2015 2:43:02 PM
+EndDateTime : 8/3/2015 2:44:08 PM
+Duration : 00:01:06.6760000
+Status : Completed
+ProtectionGroupName : Draper
+SmProtectionGroupId : 4
+PolicyName : OnDemand_Clone
+SmPolicyId : 4
+BackupPolicyName : OnDemand_Full_Log
+SmBackupPolicyId : 1
+CloneHostName : SCSPR0054212005.mycompany.com
+CloneHostId : 4
+CloneName : Draper__clone__08-03-2015_14.43.53
+SourceResources : {Don, Betty, Bobby, Sally}
+ClonedResources : {Don_DRAPER, Betty_DRAPER, Bobby_DRAPER,
+                   Sally_DRAPER}
+----
+
+
+可以通过运行_Get-Help command_name_来获取有关可与 cmdlet 一起使用的参数及其描述的信息。或者，您也可以参考 https://docs.netapp.com/us-en/snapcenter-cmdlets/index.html["SnapCenter软件 Cmdlet 参考指南"^]。
+
+--
+====

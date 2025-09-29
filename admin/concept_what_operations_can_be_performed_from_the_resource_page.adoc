@@ -1,0 +1,185 @@
+---
+permalink: admin/concept_what_operations_can_be_performed_from_the_resource_page.html 
+sidebar: sidebar 
+keywords: Resources page 
+summary: 您可以从资源页面发现资源并执行数据保护操作。根据您用来管理资源的插件，您可以执行的操作会有所不同。 
+---
+= 资源页面支持的操作
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您可以从资源页面发现资源并执行数据保护操作。根据您用来管理资源的插件，您可以执行的操作会有所不同。
+
+在资源页面中，您可以执行以下任务：
+
+|===
+| 您可以执行这些任务... | 对于 Microsoft Exchange Server | 对于 Microsoft SQL Server | 对于 Microsoft Windows | 对于 Oracle 数据库 | 对于 SAP HANA 数据库 
+
+
+ a| 
+确定资源是否可用于备份
+ a| 
+是
+ a| 
+是
+ a| 
+是
+ a| 
+是
+ a| 
+是
+
+
+
+ a| 
+执行资源的按需备份
+ a| 
+是
+ a| 
+是
+ a| 
+是
+ a| 
+是
+ a| 
+是
+
+
+
+ a| 
+从备份还原
+ a| 
+是
+ a| 
+是
+ a| 
+是
+ a| 
+是
+ a| 
+是
+
+
+
+ a| 
+克隆备份
+ a| 
+否
+ a| 
+是
+ a| 
+是
+ a| 
+是
+ a| 
+是
+
+
+
+ a| 
+管理备份
+ a| 
+是
+ a| 
+是
+ a| 
+是
+ a| 
+是
+ a| 
+是
+
+
+
+ a| 
+管理克隆
+ a| 
+否
+ a| 
+是
+ a| 
+是
+ a| 
+是
+ a| 
+是
+
+
+
+ a| 
+管理策略
+ a| 
+是
+ a| 
+是
+ a| 
+是
+ a| 
+是
+ a| 
+是
+
+
+
+ a| 
+管理存储连接
+ a| 
+是
+ a| 
+是
+ a| 
+是
+ a| 
+是
+ a| 
+是
+
+
+
+ a| 
+挂载备份
+ a| 
+否
+ a| 
+否
+ a| 
+否
+ a| 
+是
+ a| 
+否
+
+
+
+ a| 
+卸载备份
+ a| 
+否
+ a| 
+否
+ a| 
+否
+ a| 
+是
+ a| 
+否
+
+
+
+ a| 
+查看详细信息
+ a| 
+是
+ a| 
+是
+ a| 
+是
+ a| 
+是
+ a| 
+是
+
+|===

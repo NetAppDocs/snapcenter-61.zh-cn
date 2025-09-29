@@ -1,0 +1,81 @@
+---
+permalink: protect-scu/reference_prerequisites_for_adding_hosts_and_installing_snapcenter_plug_ins_package_for_linux.html 
+sidebar: sidebar 
+keywords: prerequisites, iSCSI, host requirement for Linux, sudo privileges, non-root user, credentials, authenticate, domain administrator, local administrator, workgroup, sudo, root user 
+summary: 在添加主机和安装插件包之前，您必须完成所有要求。 
+---
+= 添加主机并安装 Linux 插件包的先决条件
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+在添加主机并安装 Linux 的插件包之前，您必须完成所有要求。
+
+* 如果您正在使用 iSCSI，则 iSCSI 服务必须正在运行。
+* 您可以对 root 用户或非 root 用户使用基于密码的身份验证，也可以使用基于 SSH 密钥的身份验证。
++
+非 root 用户可以安装适用于 Unix 文件系统的SnapCenter插件。但是，您应该为非 root 用户配置 sudo 权限来安装和启动插件进程。安装插件后，进程将作为有效的非 root 用户运行。
+
+* 为安装用户创建以 Linux 为身份验证模式的凭据。
+* 您必须在 Linux 主机上安装 Java 11。
++
+
+NOTE: 确保您在 Linux 主机上仅安装了 JAVA 11 的认证版本。
+
++
+有关下载 JAVA 的信息，请参阅： http://www.java.com/en/download/manual.jsp["适用于所有操作系统的 Java 下载"^]
+
+* 您应该将 *bash* 作为插件安装的默认 shell。
+
+
+
+
+== Linux 主机要求
+
+在安装适用于 Linux 的SnapCenter插件包之前，您应该确保主机满足要求。
+
+|===
+| 物品 | 要求 
+
+
+ a| 
+操作系统
+ a| 
+* Red Hat Enterprise Linux
+* Oracle Linux
+* SUSE Linux 企业服务器 (SLES)
+
+
+
+
+ a| 
+主机上SnapCenter插件的最小 RAM
+ a| 
+2 GB
+
+
+
+ a| 
+主机上SnapCenter插件的最小安装和日志空间
+ a| 
+2 GB
+
+
+NOTE: 您应该分配足够的磁盘空间并监控日志文件夹的存储消耗。所需的日志空间取决于要保护的实体的数量和数据保护操作的频率。如果没有足够的磁盘空间，则不会为最近运行的操作创建日志。
+
+
+
+ a| 
+所需的软件包
+ a| 
+Java 11 Oracle Java 和 OpenJDK
+
+
+NOTE: 确保您在 Linux 主机上仅安装了 JAVA 11 的认证版本。
+
+如果您已将 JAVA 升级到最新版本，则必须确保位于 /var/opt/snapcenter/spl/etc/spl.properties 的 JAVA_HOME 选项设置为正确的 JAVA 版本和正确的路径。
+
+|===
+有关受支持版本的最新信息，请参阅 https://imt.netapp.com/matrix/imt.jsp?components=121073;&solution=1257&isHWU&src=IMT["NetApp 互操作性表工具"^]。

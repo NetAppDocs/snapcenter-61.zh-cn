@@ -1,0 +1,14 @@
+---
+section: upgrade
+title: 升级SnapCenter服务器和插件
+entries:
+- title: 配置SnapCenter以检查可用更新
+  url: "/upgrade/task_configure_snapcenter_to_check_for_available_updates.html"
+- title: 升级工作流程
+  url: "/upgrade/upgrade_workflow.html"
+- title: 升级 Windows 主机上的SnapCenter服务器
+  url: "/upgrade/task_upgrade_snapcenter.html"
+- title: 升级 Linux 主机上的SnapCenter服务器
+  url: "/upgrade/upgrade_snapcenter_server_linux.html"
+- title: 升级你的插件包
+  url: "/upgrade/task_upgrade_your_plug_in_packages.html"

@@ -1,0 +1,120 @@
+---
+permalink: install/concept_create_and_manage_igroups.html 
+sidebar: sidebar 
+keywords: igroup 
+summary: '您可以创建启动器组 (igroup) 来指定哪些主机可以访问存储系统上的给定 LUN。您可以使用SnapCenter在 Windows 主机上创建、重命名、修改或删除 igroup。' 
+---
+= 创建和管理 igroup
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+您可以创建启动器组 (igroup) 来指定哪些主机可以访问存储系统上的给定 LUN。您可以使用SnapCenter在 Windows 主机上创建、重命名、修改或删除 igroup。
+
+
+
+== 创建 igroup
+
+您可以使用SnapCenter在 Windows 主机上创建 igroup。当您将 igroup 映射到 LUN 时，igroup 将在创建磁盘或连接磁盘向导中可用。
+
+*步骤*
+
+. 在左侧导航窗格中，单击“*主机*”。
+. 在“主机”页面中，单击 *Igroup*。
+. 在“启动器组”页面中，单击“新建”。
+. 在创建 Igroup 对话框中，定义 igroup：
++
+|===
+| 在这个领域... | 操作 
+
+
+ a| 
+存储系统
+ a| 
+选择要映射到 igroup 的 LUN 的 SVM。
+
+
+
+ a| 
+主机
+ a| 
+选择要在其上创建 igroup 的主机。
+
+
+
+ a| 
+igroup 名称
+ a| 
+输入 igroup 的名称。
+
+
+
+ a| 
+启动程序
+ a| 
+选择发起者。
+
+
+
+ a| 
+类型
+ a| 
+选择启动器类型：iSCSI、FCP 或混合（FCP 和 iSCSI）。
+
+|===
+. 当您对输入的内容满意时，请单击“*确定*”。
++
+SnapCenter在存储系统上创建 igroup。
+
+
+
+
+
+== 重命名 igroup
+
+您可以使用SnapCenter重命名现有的 igroup。
+
+*步骤*
+
+. 在左侧导航窗格中，单击“*主机*”。
+. 在“主机”页面中，单击 *Igroup*。
+. 在启动器组页面中，单击 *Storage Virtual Machine* 字段以显示可用 SVM 的列表，然后选择要重命名的 igroup 的 SVM。
+. 在 SVM 的 igroup 列表中，选择要重命名的 igroup，然后单击“重命名”。
+. 在“重命名 igroup”对话框中，输入 igroup 的新名称，然后单击“重命名”。
+
+
+
+
+== 修改 igroup
+
+您可以使用SnapCenter将 igroup 启动器添加到现有 igroup。创建 igroup 时，您只能添加一个主机。如果要为集群创建 igroup，则可以修改 igroup 以将其他节点添加到该 igroup。
+
+*步骤*
+
+. 在左侧导航窗格中，单击“*主机*”。
+. 在“主机”页面中，单击 *Igroup*。
+. 在“启动器组”页面中，单击“*Storage Virtual Machine*”字段以显示可用 SVM 的下拉列表，然后选择要修改的 igroup 的 SVM。
+. 在 igroup 列表中，选择一个 igroup 并单击“将启动器添加到 igroup”。
+. 选择主机。
+. 选择启动器并单击“*确定*”。
+
+
+
+
+== 删除 igroup
+
+当您不再需要某个 igroup 时，可以使用SnapCenter将其删除。
+
+*步骤*
+
+. 在左侧导航窗格中，单击“*主机*”。
+. 在“主机”页面中，单击 *Igroup*。
+. 在“启动器组”页面中，单击“*Storage Virtual Machine*”字段以显示可用 SVM 的下拉列表，然后选择要删除的 igroup 的 SVM。
+. 在 SVM 的 igroup 列表中，选择要删除的 igroup，然后单击“*删除*”。
+. 在“删除 igroup”对话框中，单击“确定”。
++
+SnapCenter删除 igroup。
+
+
