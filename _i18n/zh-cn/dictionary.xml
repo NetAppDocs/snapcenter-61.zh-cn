@@ -3310,7 +3310,6 @@
   <block id="f78fb51edae6a69d5e1e911a2b6fc268" category="cell">端口号</block>
   <block id="888a77f5ac0748b6c8001822417df8b6" category="cell">协议</block>
   <block id="02674a4ef33e11c879283629996c8ff8" category="cell">方向</block>
-  <block id="ed00b70cc595a411eff2cc42510a291f" category="paragraph">SnapCenter端口</block>
   <block id="202ed3792e2cfa7318b12ead83763c37" category="paragraph">8146</block>
   <block id="0e8433f9a404f1f3ba601c14b026d321" category="paragraph">HTTPS</block>
   <block id="abd4328c725637aabedbd02d3b7ffd40" category="paragraph">双向</block>
@@ -9558,4 +9557,5 @@
   <block id="bdd6d606b70db547418beb7cef6dd4c3" category="list-text">使用密钥检索 Microsoft SQL Server 资源</block>
   <block id="88d9e24753477cfb09f25b21c0a59b9e" category="paragraph">SnapCenter完成 Snapshot 操作后对SnapMirror和SnapVault执行更新。SnapMirror和SnapVault更新作为SnapCenter作业的一部分执行。如果您正在使用SnapMirror主动同步，则对于SnapMirror主动同步和异步关系，请使用默认SnapMirror或SnapVault计划。</block>
   <block id="ea1c96f839915f73d25b910bbc92b734" category="list-text">位于ONTAP FAS、 AFF或ASA主系统和辅助系统上的数据，使用NetApp备份和恢复集成保护到云中的对象和归档存储</block>
+  <block id="e6f36a956625505e0a3733e3e0073fa0" category="paragraph">SnapCenter Web 端口</block>
 </blocks>

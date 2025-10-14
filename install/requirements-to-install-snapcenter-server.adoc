@@ -168,7 +168,7 @@ SnapCenter software需要不同的端口来实现不同组件之间的通信。
 
 
  a| 
-SnapCenter端口
+SnapCenter Web 端口
  a| 
 8146
  a| 
