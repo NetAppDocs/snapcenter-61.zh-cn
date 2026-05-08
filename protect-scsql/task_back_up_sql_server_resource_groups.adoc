@@ -41,6 +41,4 @@ link:task_create_backup_policies_for_sql_server_databases.html["为 SQL Server �
 
 link:task_create_resource_groups_and_attach_policies_for_sql_server.html["为 SQL Server 创建资源组并附加策略"]
 
-https://kb.netapp.com/Advice_and_Troubleshooting/Data_Protection_and_Security/SnapCenter/Clone_operation_might_fail_or_take_longer_time_to_complete_with_default_TCP_TIMEOUT_value["由于 TCP_TIMEOUT 延迟，备份操作因 MySQL 连接错误而失败"]
-
-https://kb.netapp.com/Advice_and_Troubleshooting/Data_Protection_and_Security/SnapCenter/Backup_fails_with_Windows_scheduler_error["备份因 Windows 调度程序错误而失败"]
+https://kb.netapp.com/Advice_and_Troubleshooting/Data_Protection_and_Security/SnapCenter/Backup_fails_with_Windows_scheduler_error["备份因 Windows 调度程序错误而失败"^]
